@@ -85,7 +85,11 @@ function p() {
         echo "$@" 1>&2
     }
     function __d() {
-        __p_e "e:" "$@"
+        __e "e:" "$@"
+        echo "" 1>&2
+
+        _pc_help="true"
+        ___p_help
         exit 1
     }
 
@@ -128,6 +132,10 @@ function p() {
             _p_pass_dir="$PASSWORD_STORE_DIR"
         fi
 
+        if [ "x$P_CWD" != "x" ]; then
+            _p_cwd="$P_CWD"
+        fi
+
         return 0
     }
 
@@ -139,7 +147,8 @@ function p() {
                     [ "x$arg" == "x-h" ]; then
                 _pc_help="true"
                 found_command="true"
-            elif [ "x$arg" == "xls" ] || [ "x$arg" == "xl" ]; then
+            elif [ "x$arg" == "xlist" ] || [ "x$arg" == "xls" ] ||
+                    [ "x$arg" == "xl" ]; then
                 _pc_ls="true"
                 found_command="true"
             elif [ "x$arg" == "xcopy" ] || [ "x$arg" == "xc" ]; then
@@ -166,13 +175,55 @@ function p() {
 
 
     # [ stage: commands ] #
+
+    # ls with optional respect to $P_CWD
+    #
+    # Supports the -d and -a parameters from ls; -a shows .gpg-id and
+    # .gpg suffix as well.
     function ___p_ls() {
         __v "Value of _pc_ls: $_pc_ls"
         if [ "$_pc_ls" == "false" ]; then
             return 0
         fi
 
-        __pass ls "$@"
+        local ls_dir="false"
+        local ls_all="false"
+        local ls_targets=()
+        local ls_target_count=0
+
+        for arg in "$@"; do
+            if [ "x$arg" == "x-a" ] || [ "x$arg" == "x--all" ]; then
+                ls_all="true"
+            elif [ "x$arg" == "x-d" ] || [ "x$arg" == "x--dir" ] ||
+                    [ "x$arg" == "x--directory" ]; then
+                ls_dir="true"
+            else
+                if [ -e "$_p_pass_dir/$_p_cwd/$arg" ]; then
+                    ls_targets+=("$_p_cwd/$arg")
+                elif [ -e "$_p_pass_dir/$_p_cwd/$arg.gpg" ]; then
+                    ls_targets+=("$_p_cwd/$arg")
+                elif [ -e "$_p_pass_dir/$arg" ]; then
+                    ls_targets+=("$arg")
+                elif [ -e "$_p_pass_dir/$arg.gpg" ]; then
+                    ls_targets+=("$arg")
+                else
+                    __d "Unknown argument or path not found: $arg or $_p_cwd/$arg"
+                fi
+            fi
+        done
+
+        ls_target_count="${#ls_targets[@]}"
+
+        if [ "$ls_dir" == "false" ] && [ "$ls_all" == "false" ]; then
+            for path in "${ls_targets[@]}"; do
+                if [ -e "$_p_pass_dir/$path.gpg" ]; then
+                    echo -e "$(tput sgr0)$(tput setaf 1)$(tput bold)$path$(tput sgr0)"
+                fi
+
+                __pass ls "$path"
+                echo ""
+            done
+        fi
     }
 
     function ___p_copy() {
@@ -198,7 +249,6 @@ function p() {
         echo "https://github.com/cipherboy/p"
         echo ""
         echo "Available Commands:"
-        exit 0
     }
 
     # [ stage: core ] #
