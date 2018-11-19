@@ -52,9 +52,6 @@ function p() {
     # at this stage.
     local _p_version="0.1"
     local _p_verbose="${VERBOSE+x}"
-    local _p_mode="local"
-    local _p_mode_user="$USER"
-    local _p_mode_ssh="localhost"
     local _p_cwd="/"
     local _p_remaining=()
 
@@ -72,6 +69,7 @@ function p() {
     # These variables are used to control what functions are called; they use
     # the "_pa" prefix to differentiate themselves from the above variables.
     local _pc_ls="false"
+    local _pc_copy="false"
     local _pc_help="false"
 
     # [ stage: helpers ] #
@@ -125,19 +123,6 @@ function p() {
             _p_jq_path="$_p_jq_which"
         fi
 
-        # Process p execution mode.
-        if [ "x$P_MODE" != "x" ]; then
-            _p_mode="$P_MODE"
-        fi
-
-        if [ "x$P_MODE_USER" != "x" ]; then
-            _p_mode_user="$P_MODE_USER"
-        fi
-
-        if [ "x$P_MODE_SSH" != "x" ]; then
-            _p_mode_ssh="$P_MODE_SSH"
-        fi
-
         # Process path to password store location
         if [ "x$PASSWORD_STORE_DIR" != "x" ]; then
             _p_pass_dir="$PASSWORD_STORE_DIR"
@@ -146,40 +131,30 @@ function p() {
         return 0
     }
 
-    # Proxy p through to a remote p instance; this allows us to perform normal
-    # file system operations in p without caring if we're supposed to be
-    # executing locally, as another user, or remotely -- we're always
-    # executing locally.
-    function __p_remote() {
-        if [ "$_p_mode" == "local" ]; then
-            __v "Using current execution context as $USER..."
-            return 0;
-        elif [ "$_p_mode" == "user" ]; then
-            __v "Using local user execution context as [$_p_mode_user] from [$USER]..."
-            local command="$@"
-            su --login "$_p_mode_user" -c "p $command"
-            exit $?
-        elif [ "$_p_mode" == "ssh" ]; then
-            __v "Using remote ssh execution context: [$_p_mode_ssh]..."
-            ssh -q -t $_p_mode_ssh "bash -i -c 'p $@'"
-            exit $?
-        fi
-    }
-
     # Process command line arguments
     function __p_args() {
-        for arg in $@; do
+        local found_command="false"
+        for arg in "$@"; do
             if [ "x$arg" == "xhelp" ] || [ "x$arg" == "x--help" ] ||
                     [ "x$arg" == "x-h" ]; then
                 _pc_help="true"
+                found_command="true"
             elif [ "x$arg" == "xls" ] || [ "x$arg" == "xl" ]; then
                 _pc_ls="true"
+                found_command="true"
+            elif [ "x$arg" == "xcopy" ] || [ "x$arg" == "xc" ]; then
+                _pc_copy="true"
+                found_command="true"
             elif [ "x$arg" == "x--verbose" ]; then
                 _p_verbose="x"
             else
                 _p_remaining+=("$arg")
             fi
         done
+
+        if [ "$found_command" == "false" ]; then
+            _pc_help="true"
+        fi
     }
 
     # [ stage: execs ] #
@@ -198,6 +173,15 @@ function p() {
         fi
 
         __pass ls "$@"
+    }
+
+    function ___p_copy() {
+        __v "Value of _pc_copy: $_pc_copy"
+        if [ "$_pc_copy" == "false" ]; then
+            return 0
+        fi
+
+        __pass cp "$@"
     }
 
     # Print help information; this is the most complete documentation about
@@ -222,16 +206,14 @@ function p() {
     # Validate our environment is sane.
     __p_env_check
 
-    # Run p in remote mode if necessary based on $_p_mode
-    __p_remote "$@"
-
     # Process command line arguments
     __p_args "$@"
 
     # Each command is expected to handle its own execution environment; that
     # is, __p_ls() is always called and is expected to check _pc_ls to ensure
     # whether or not it needs to run.
-    ___p_ls "$_p_remaining"
+    ___p_ls "${_p_remaining[@]}"
+    ___p_copy "${_p_remaining[@]}"
 
     # Print help as the last thing we do before exiting; this ensures that if
     # an argument error occurred during subcommand parsing, we can print help
