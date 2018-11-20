@@ -86,10 +86,6 @@ function p() {
     }
     function __d() {
         __e "e:" "$@"
-        echo "" 1>&2
-
-        _pc_help="true"
-        ___p_help
         exit 1
     }
 
@@ -166,6 +162,117 @@ function p() {
         fi
     }
 
+    # Join paths for handling by `pass`. This handles the following cases:
+    #
+    #   - leading '/'s
+    #   - `..` as a path segment
+    #   - `.` as a path segment
+    #
+    # Note that we cannot use `[ -d ... ]`, `readlink`, or `abspath` as the
+    # paths may not exist at this stage. Using python's os.path.abspath also
+    # isn't an option since it'd allow us to escape above the password-store
+    # directory and would require us to parse out the `pwd` prefix.
+    function __p_join() {
+        concat_path=""
+    }
+
+    # Simplify a path, echoing the result. Note that the path cannot exceed
+    # the passed depth:
+    #
+    #   ../../../ = /
+    #   a/../../ = /
+    #   a/b/../ = a/
+    #
+    # This is the internal version of the call that does most of the work;
+    # __p_path_simplify(path) calls __p_path_simplify_internal until the
+    # result is stable.
+    function __p_path_simplify_internal() {
+        local path="$1"
+        __v "    starting_path: $path"
+
+        shopt -s extglob
+
+        # Replace occurrences of 'dir/../' with ''
+        current_path=""
+        next_path="$path"
+        while [ "x$current_path" != "x$next_path" ]; do
+            __v "    1:current_path: $current_path"
+            __v "    1:next_path: $next_path"
+            current_path="$next_path"
+            next_path="${current_path/*([^\/])\/..\//}"
+        done
+
+        # Replace occurrences of ^../ (../ at the beginning) with /
+        current_path=""
+        while [ "x$current_path" != "x$next_path" ]; do
+            __v "    2:current_path: $current_path"
+            __v "    2:next_path: $next_path"
+            current_path="$next_path"
+            next_path="${current_path/#..\//\/}"
+        done
+
+        # Replace occurrences of '/./' with '/'
+        current_path=""
+        while [ "x$current_path" != "x$next_path" ]; do
+            __v "    3:current_path: $current_path"
+            __v "    3:next_path: $next_path"
+            current_path="$next_path"
+            next_path="${current_path//\/.\//\/}"
+        done
+
+        # Replace occurrences of '#./' with '/'
+        current_path=""
+        while [ "x$current_path" != "x$next_path" ]; do
+            __v "    4:current_path: $current_path"
+            __v "    4:next_path: $next_path"
+            current_path="$next_path"
+            next_path="${current_path/#.\//\/}"
+        done
+
+        # Replace occurrences of '%/.' with '/'
+        current_path=""
+        while [ "x$current_path" != "x$next_path" ]; do
+            __v "    4:current_path: $current_path"
+            __v "    4:next_path: $next_path"
+            current_path="$next_path"
+            next_path="${current_path/%\/./\/}"
+        done
+
+
+        # Replace occurrences of '//' with '/'
+        current_path=""
+        while [ "x$current_path" != "x$next_path" ]; do
+            __v "    5:current_path: $current_path"
+            __v "    5:next_path: $next_path"
+            current_path="$next_path"
+            next_path="${current_path//\/\//\/}"
+        done
+
+        echo "$current_path"
+    }
+
+    # Note that this is not suitable to call on true file system paths,
+    # especially for destructive operations: the following construct "equals"
+    # '/' or the root, but isn't necessarily so:
+    #
+    #       a/b/c/d/../../../../../
+    #
+    # Answer is given on stdout. stderr is meaningless and contains random
+    # debug information in verbose mode.
+    function __p_path_simplify() {
+        local current_path=""
+        local next_path="$1"
+
+        while [ "x$current_path" != "x$next_path" ]; do
+            __v "current_path: $current_path"
+            __v "next_path: $next_path"
+            current_path="$next_path"
+            next_path="$(__p_path_simplify_internal "$current_path")"
+        done
+
+        echo "$next_path"
+    }
+
     # [ stage: execs ] #
 
     # Execute the pass command based on the contents of
@@ -200,29 +307,54 @@ function p() {
             else
                 if [ -e "$_p_pass_dir/$_p_cwd/$arg" ]; then
                     ls_targets+=("$_p_cwd/$arg")
-                elif [ -e "$_p_pass_dir/$_p_cwd/$arg.gpg" ]; then
-                    ls_targets+=("$_p_cwd/$arg")
                 elif [ -e "$_p_pass_dir/$arg" ]; then
                     ls_targets+=("$arg")
-                elif [ -e "$_p_pass_dir/$arg.gpg" ]; then
-                    ls_targets+=("$arg")
                 else
-                    __d "Unknown argument or path not found: $arg or $_p_cwd/$arg"
+                    __d "Unknown argument or path not found: '$arg' or" \
+                        "'$_p_cwd/$arg'. If the path is an encrypted item," \
+                        "note that \`p\` differs from \`pass\` in that" \
+                        "the \`ls\` command will not show encrypted secrets."
                 fi
             fi
         done
 
         ls_target_count="${#ls_targets[@]}"
 
-        if [ "$ls_dir" == "false" ] && [ "$ls_all" == "false" ]; then
-            for path in "${ls_targets[@]}"; do
-                if [ -e "$_p_pass_dir/$path.gpg" ]; then
-                    echo -e "$(tput sgr0)$(tput setaf 1)$(tput bold)$path$(tput sgr0)"
-                fi
+        # If we have no targets but P_CWD specified, act as if that is our
+        # single argument.
+        if [ "$ls_target_count" == "0" ] && [ "$_p_cwd" != "/" ]; then
+            ls_targets+=("$_p_cwd")
+            ls_target_count=1
+        fi
 
-                __pass ls "$path"
-                echo ""
-            done
+        if [ "$ls_dir" == "false" ] && [ "$ls_all" == "false" ]; then
+            if [ "$ls_target_count" == "0" ]; then
+                __pass ls
+            else
+                # pass lacks support for showing multiple directories;
+                # emulate this by passing each one individually.
+                for path in "${ls_targets[@]}"; do
+                    __pass ls "$path"
+                    echo ""
+                done
+            fi
+        elif [ "$ls_dir" == "false" ] && [ "$ls_all" == "true" ]; then
+            # All mode is equivalent to a raw "tree" command, without
+            # filtering the .gpg-id files and .gpg suffix. We also correctly
+            # show the target directory in color. ;-)
+            if [ "$ls_target_count" == "0" ]; then
+                tree -C "$_p_pass_dir/"
+            else
+                tree -C "$_p_pass_dir/"
+            fi
+        elif [ "$ls_dir" == "true" ] && [ "$ls_all" == "false" ]; then
+            # When we're in dir mode, only show the directories and prefer
+            # colors. `ls` does this best, so best to defer to it.
+            pushd "$_p_pass_dir" >/dev/null
+                ls --color=always -d "${ls_targets[@]}"
+            popd >/dev/null
+        else
+            __d "Current mode ls_dir:$ls_dir,ls_all:$ls_all unsupported!"
         fi
     }
 
