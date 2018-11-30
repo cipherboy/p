@@ -71,6 +71,7 @@ function p() {
     local _pc_ls="false"
     local _pc_copy="false"
     local _pc_cat="false"
+    local _pc_edit="false"
     local _pc_help="false"
 
     # [ stage: helpers ] #
@@ -162,6 +163,9 @@ function p() {
             elif [ "x$arg" == "xshow" ] || [ "x$arg" == "xcat" ] ||
                     [ "x$arg" == "xc" ]; then
                 _pc_cat="true"
+                found_command="true"
+            elif [ "x$arg" == "xedit" ] || [ "x$arg" == "xe" ]; then
+                _pc_edit="true"
                 found_command="true"
             elif [ "x$arg" == "x--verbose" ]; then
                 _p_verbose="x"
@@ -498,6 +502,15 @@ function p() {
         __pass cp "$@"
     }
 
+    function ___p_edit() {
+        __v "Value of _pc_edit: $_pc_edit"
+        if [ "$_pc_edit" == "false" ]; then
+            return 0
+        fi
+
+        __pass edit "$@"
+    }
+
     # Print help information; this is the most complete documentation about
     # using the p interface there is outside of reading the script.
     function ___p_help() {
@@ -512,9 +525,11 @@ function p() {
         echo "https://github.com/cipherboy/p"
         echo ""
         echo "Available Commands:"
+        echo ""
         echo "ls"
         echo "copy"
         echo "cat"
+        echo "edit"
     }
 
     # [ stage: core ] #
@@ -531,6 +546,7 @@ function p() {
     ___p_ls "${_p_remaining[@]}"
     ___p_copy "${_p_remaining[@]}"
     ___p_cat "${_p_remaining[@]}"
+    ___p_edit "${_p_remaining[@]}"
 
     # Print help as the last thing we do before exiting; this ensures that if
     # an argument error occurred during subcommand parsing, we can print help
