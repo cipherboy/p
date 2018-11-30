@@ -147,6 +147,14 @@ function p() {
                     [ "x$arg" == "xl" ]; then
                 _pc_ls="true"
                 found_command="true"
+            elif [ "x$arg" == "xla" ]; then
+                _pc_ls="true"
+                found_command="true"
+                _p_remaining+=("--all")
+            elif [ "x$arg" == "xld" ]; then
+                _pc_ls="true"
+                found_command="true"
+                _p_remaining+=("--dir")
             elif [ "x$arg" == "xcopy" ] || [ "x$arg" == "xc" ]; then
                 _pc_copy="true"
                 found_command="true"
@@ -173,7 +181,16 @@ function p() {
     # isn't an option since it'd allow us to escape above the password-store
     # directory and would require us to parse out the `pwd` prefix.
     function __p_join() {
-        concat_path=""
+        local concated_path=""
+        for arg in "$@"; do
+            if [ "x$concated_path" == "x" ]; then
+                concated_path="$arg"
+            else
+                concated_path="$concated_path/$arg"
+            fi
+        done
+
+        __p_path_simplify "$concated_path"
     }
 
     # Simplify a path, echoing the result. Note that the path cannot exceed
@@ -305,15 +322,26 @@ function p() {
                     [ "x$arg" == "x--directory" ]; then
                 ls_dir="true"
             else
-                if [ -e "$_p_pass_dir/$_p_cwd/$arg" ]; then
-                    ls_targets+=("$_p_cwd/$arg")
-                elif [ -e "$_p_pass_dir/$arg" ]; then
-                    ls_targets+=("$arg")
+                local arg_path="$(__p_path_simplify "$arg")"
+                local arg_cwd_path="$(__p_path_simplify "$_p_cwd/$arg")"
+                if [ -e "$_p_pass_dir/$arg_cwd_path" ]; then
+                    ls_targets+=("$arg_cwd_path")
+                elif [ -e "$_p_pass_dir/$arg_path" ]; then
+                    ls_targets+=("$arg_path")
                 else
-                    __d "Unknown argument or path not found: '$arg' or" \
-                        "'$_p_cwd/$arg'. If the path is an encrypted item," \
-                        "note that \`p\` differs from \`pass\` in that" \
-                        "the \`ls\` command will not show encrypted secrets."
+                    if [ "x$arg_path" != "x$arg_cwd_path" ]; then
+                        __d "Unknown argument, path not found, or not a" \
+                            "directory: '$arg_path' and '$arg_cwd_path'." \
+                            "If the path is an encrypted item, note that" \
+                            " \`p\` differs from \`pass\` in that the " \
+                            "\`ls\` command will not show encrypted secrets."
+                    else
+                        __d "Unknown argument, path not found, or not a" \
+                            "directory: '$arg_path'. If the path is an" \
+                            "encrypted item, note that \`p\` differs from" \
+                            "\`pass\` in that the \`ls\` command will not" \
+                            "show encrypted secrets."
+                    fi
                 fi
             fi
         done
@@ -334,8 +362,13 @@ function p() {
                 # pass lacks support for showing multiple directories;
                 # emulate this by passing each one individually.
                 for path in "${ls_targets[@]}"; do
-                    __pass ls "$path"
-                    echo ""
+                    if [ "$path" == "/" ]; then
+                        __pass ls
+                        echo ""
+                    else
+                        __pass ls "$path"
+                        echo ""
+                    fi
                 done
             fi
         elif [ "$ls_dir" == "false" ] && [ "$ls_all" == "true" ]; then
@@ -343,15 +376,36 @@ function p() {
             # filtering the .gpg-id files and .gpg suffix. We also correctly
             # show the target directory in color. ;-)
             if [ "$ls_target_count" == "0" ]; then
-                tree -C "$_p_pass_dir/"
+                tree -I ".git" -a -C "$_p_pass_dir"
             else
-                tree -C "$_p_pass_dir/"
+                for path in "${ls_targets[@]}"; do
+                    if [ "$path" == "/" ]; then
+                        tree -I ".git" -a -C "$_p_pass_dir"
+                    else
+                        tree -I ".git" -a -C "$_p_pass_dir/$path"
+                    fi
+                done
             fi
         elif [ "$ls_dir" == "true" ] && [ "$ls_all" == "false" ]; then
             # When we're in dir mode, only show the directories and prefer
-            # colors. `ls` does this best, so best to defer to it.
+            # colors. `tree` does this best, so best to defer to it.
             pushd "$_p_pass_dir" >/dev/null
-                ls --color=always -d "${ls_targets[@]}"
+                if [ "$ls_target_count" == "0" ]; then
+                    echo "Password Store"
+                    tree -d -C -l --noreport "$_p_pass_dir" | tail -n +2
+                else
+                    for path in "${ls_targets[@]}"; do
+                        if [ "$path" == "/" ]; then
+                            echo "Password Store"
+                            tree -d -C -l --noreport "$_p_pass_dir" | tail -n +2
+                            echo ""
+                        else
+                            __dir "$path"
+                            tree -d -C -l --noreport "$_p_pass_dir/$path" | tail -n +2
+                            echo ""
+                        fi
+                    done
+                fi
             popd >/dev/null
         else
             __d "Current mode ls_dir:$ls_dir,ls_all:$ls_all unsupported!"
