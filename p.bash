@@ -70,6 +70,7 @@ function p() {
     # the "_pa" prefix to differentiate themselves from the above variables.
     local _pc_ls="false"
     local _pc_copy="false"
+    local _pc_cat="false"
     local _pc_help="false"
 
     # [ stage: helpers ] #
@@ -155,8 +156,12 @@ function p() {
                 _pc_ls="true"
                 found_command="true"
                 _p_remaining+=("--dir")
-            elif [ "x$arg" == "xcopy" ] || [ "x$arg" == "xc" ]; then
+            elif [ "x$arg" == "xcopy" ] || [ "x$arg" == "xcp" ]; then
                 _pc_copy="true"
+                found_command="true"
+            elif [ "x$arg" == "xshow" ] || [ "x$arg" == "xcat" ] ||
+                    [ "x$arg" == "xc" ]; then
+                _pc_cat="true"
                 found_command="true"
             elif [ "x$arg" == "x--verbose" ]; then
                 _p_verbose="x"
@@ -292,9 +297,13 @@ function p() {
 
     # [ stage: execs ] #
 
-    # Execute the pass command based on the contents of
+    # Execute the pass command with the given arguments
     function __pass() {
         $_p_pass_path "$@"
+    }
+
+    function __jq() {
+        $_p_jq_path "$@"
     }
 
 
@@ -316,13 +325,15 @@ function p() {
         local ls_target_count=0
 
         for arg in "$@"; do
-            if [ "x$arg" == "x-a" ] || [ "x$arg" == "x--all" ]; then
+            if [ "x$arg" == "x--all" ] || [ "x$arg" == "x-all" ] ||
+                    [ "x$arg" == "x-a" ]; then
                 ls_all="true"
-            elif [ "x$arg" == "x-d" ] || [ "x$arg" == "x--dir" ] ||
-                    [ "x$arg" == "x--directory" ]; then
+            elif [ "x$arg" == "x--directory" ] || [ "x$arg" == "x--dir" ] ||
+                    [ "x$arg" == "x-directory" ] || [ "x$arg" == "x-dir" ] ||
+                    [ "x$arg" == "x-d" ]; then
                 ls_dir="true"
             else
-                local arg_path="$(__p_path_simplify "$arg")"
+                local arg_path="$(__p_path_simplify "/$arg")"
                 local arg_cwd_path="$(__p_path_simplify "$_p_cwd/$arg")"
                 if [ -e "$_p_pass_dir/$arg_cwd_path" ]; then
                     ls_targets+=("$arg_cwd_path")
@@ -412,6 +423,72 @@ function p() {
         fi
     }
 
+    # cat with optional respect to $P_CWD
+    #
+    # Supports formatting and optionally colorizing the result with jq.
+    function ___p_cat() {
+        __v "Value of _pc_cat: $_pc_cat"
+        if [ "$_pc_cat" == "false" ]; then
+            return 0
+        fi
+
+        local cat_raw="false"
+        local cat_colorize="true"
+        local cat_targets=()
+
+        for arg in "$@"; do
+            if [ "x$arg" == "x--raw" ] || [ "x$arg" == "x-raw" ] ||
+                    [ "x$arg" == "-r" ]; then
+                cat_raw="true"
+            elif [ "x$arg" == "x--no-color" ] || [ "x$arg" == "x-n-color" ] ||
+                    [ "x$arg" == "-n" ]; then
+                cat_colorize="false"
+            else
+                local arg_path="$(__p_path_simplify "/$arg")"
+                local arg_cwd_path="$(__p_path_simplify "$_p_cwd/$arg")"
+                if [ -e "$_p_pass_dir/$arg_cwd_path.gpg" ]; then
+                    cat_targets+=("$arg_cwd_path")
+                elif [ -e "$_p_pass_dir/$arg_path.gpg" ]; then
+                    cat_targets+=("$arg_path")
+                else
+                    if [ "x$arg_path" != "x$arg_cwd_path" ]; then
+                        __d "Unknown argument, path not found, or not a" \
+                            "file: '$arg_path' and '$arg_cwd_path'." \
+                            "If the path is a directory, note that \`p\` " \
+                            "differs from \`pass\` in that the \`cat\`" \
+                            "command will not show directories."
+                    else
+                        __d "Unknown argument, path not found, or not a" \
+                            "file: '$arg_path'. If the path is a directory," \
+                            " note that \`p\` differs from \`pass\` in that" \
+                            "the \`cat\` command will not show directories."
+                    fi
+                fi
+            fi
+        done
+
+        for target in "${cat_targets[@]}"; do
+            if [ "$cat_raw" == "false" ]; then
+                local content="$(__pass show "$target")"
+                local first_line="$(echo "$content" | head -n 1)"
+                local rest="$(echo "$content" | tail -n +2)"
+
+                # Check if the remaining contents are json
+                echo "$rest" | jq . >/dev/null 2>/dev/null
+                local is_json="$?"
+
+                echo "$first_line"
+                if [ "$cat_colorize" == "true" ] && [ "$is_json" == "0" ]; then
+                    echo "$rest" | jq -C -S
+                else
+                    echo "$rest"
+                fi
+            else
+                __pass show "$target"
+            fi
+        done
+    }
+
     function ___p_copy() {
         __v "Value of _pc_copy: $_pc_copy"
         if [ "$_pc_copy" == "false" ]; then
@@ -435,6 +512,9 @@ function p() {
         echo "https://github.com/cipherboy/p"
         echo ""
         echo "Available Commands:"
+        echo "ls"
+        echo "copy"
+        echo "cat"
     }
 
     # [ stage: core ] #
@@ -450,6 +530,7 @@ function p() {
     # whether or not it needs to run.
     ___p_ls "${_p_remaining[@]}"
     ___p_copy "${_p_remaining[@]}"
+    ___p_cat "${_p_remaining[@]}"
 
     # Print help as the last thing we do before exiting; this ensures that if
     # an argument error occurred during subcommand parsing, we can print help
