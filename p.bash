@@ -72,6 +72,7 @@ function p() {
     local _pc_copy="false"
     local _pc_cat="false"
     local _pc_edit="false"
+    local _pc_json="false"
     local _pc_help="false"
 
     # [ stage: helpers ] #
@@ -140,7 +141,11 @@ function p() {
     # Process command line arguments
     function __p_args() {
         local found_command="false"
-        for arg in "$@"; do
+
+        for count in $(seq 1 $#); do
+            local arg="$1"
+            shift
+
             if [ "x$arg" == "xhelp" ] || [ "x$arg" == "x--help" ] ||
                     [ "x$arg" == "x-h" ]; then
                 _pc_help="true"
@@ -167,16 +172,39 @@ function p() {
             elif [ "x$arg" == "xedit" ] || [ "x$arg" == "xe" ]; then
                 _pc_edit="true"
                 found_command="true"
+            elif [ "x$arg" == "xjson" ] || [ "x$arg" == "xj" ]; then
+                _pc_json="true"
+                found_command="true"
+            elif [ "x$arg" == "xget" ] || [ "x$arg" == "xg" ] ||
+                    [ "x$arg" == "xjg" ]; then
+                _pc_json="true"
+                found_command="true"
+                _p_remaining+=("get")
+            elif [ "x$arg" == "xset" ] || [ "x$arg" == "xs" ] ||
+                    [ "x$arg" == "xjs" ]; then
+                _pc_json="true"
+                found_command="true"
+                _p_remaining+=("set")
             elif [ "x$arg" == "x--verbose" ]; then
+                _p_verbose="x"
+            else
+                echo "Unknown global option or argument: $arg"
+                _pc_help="true"
+                return 0
+            fi
+
+            if [ "x$found_command" == "xtrue" ]; then
+                break
+            fi
+        done
+
+        for arg in "$@"; do
+            if [ "x$arg" == "x--verbose" ]; then
                 _p_verbose="x"
             else
                 _p_remaining+=("$arg")
             fi
         done
-
-        if [ "$found_command" == "false" ]; then
-            _pc_help="true"
-        fi
     }
 
     # Join paths for handling by `pass`. This handles the following cases:
@@ -297,6 +325,19 @@ function p() {
         done
 
         echo "$next_path"
+    }
+
+    # Prints the output of jq as a "properly formatted" pass entry; in
+    # particular, print the contents of the password prior to the JSON
+    # structure. Note that the password is updated to match the JSON
+    # structure. Meant to be used as part of a pipe chain.
+    function __p_print_json() {
+        # Note that this buffers until it has read all input up to this
+        # point. This means that __p_print_json will stall if the input
+        # hasn't finished.
+        local stdin="$(cat -)"
+        echo "$stdin" | jq -r -M '.password'
+        echo "$stdin" | jq -r -M '.'
     }
 
     # [ stage: execs ] #
@@ -437,6 +478,7 @@ function p() {
         fi
 
         local cat_raw="false"
+        local cat_json_only="false"
         local cat_colorize="true"
         local cat_targets=()
 
@@ -444,6 +486,10 @@ function p() {
             if [ "x$arg" == "x--raw" ] || [ "x$arg" == "x-raw" ] ||
                     [ "x$arg" == "-r" ]; then
                 cat_raw="true"
+            elif [ "x$arg" == "x--json-only" ] || [ "x$arg" == "x-json-only" ] ||
+                    [ "x$arg" == "x--json" ] || [ "x$arg" == "x-json" ] ||
+                    [ "x$arg" == "x-j" ]; then
+                cat_json_only="true"
             elif [ "x$arg" == "x--no-color" ] || [ "x$arg" == "x-n-color" ] ||
                     [ "x$arg" == "-n" ]; then
                 cat_colorize="false"
@@ -478,12 +524,14 @@ function p() {
                 local rest="$(echo "$content" | tail -n +2)"
 
                 # Check if the remaining contents are json
-                echo "$rest" | jq . >/dev/null 2>/dev/null
+                echo "$rest" | __jq . >/dev/null 2>/dev/null
                 local is_json="$?"
 
-                echo "$first_line"
+                if [ "$cat_json_only" == "false" ]; then
+                    echo "$first_line"
+                fi
                 if [ "$cat_colorize" == "true" ] && [ "$is_json" == "0" ]; then
-                    echo "$rest" | jq -C -S
+                    echo "$rest" | __jq -C -S
                 else
                     echo "$rest"
                 fi
@@ -502,6 +550,7 @@ function p() {
         __pass cp "$@"
     }
 
+    # Passthrough function for pass edit. Currently ignores $_p_cwd.
     function ___p_edit() {
         __v "Value of _pc_edit: $_pc_edit"
         if [ "$_pc_edit" == "false" ]; then
@@ -509,6 +558,53 @@ function p() {
         fi
 
         __pass edit "$@"
+    }
+
+    # Function for reading and editing JSON structure of files. Since pass
+    # has an unofficial format with the first line being the password, we
+    # must be careful to modify the first line to match the vlaue of password
+    # iff the password matches the present JSON value and we're updating it.
+    # Otherwise, we'll print a warning about what we're supposed to do.
+    #
+    # Remote execution requirements: this command must be executed on the
+    # remote host entirely.
+    function ___p_json() {
+        __v "Value of _pc_json: $_pc_json"
+        if [ "$_pc_json" == "false" ]; then
+            return 0
+        fi
+
+        j_command="$1"
+        j_file="$2"
+        j_key="$3"
+        j_value="$4"
+
+        if [ "x$j_command" == "xget" ] && (( $# == 3 )); then
+            # Perform get operation on file / key
+            _pc_cat="true" ___p_cat --json-only --no-color "$j_file" | jq -r ".$j_key"
+        elif [ "x$j_command" == "xset" ] && (( $# == 4 )); then
+            # Perform set operation on file / key = value
+            if [ "x$j_key" == "xpassword" ]; then
+                _pc_cat="true" ___p_cat --json-only --no-color "$j_file" | jq ".old_passwords=[.password]+.old_passwords|.password=\"$j_value\"" | __p_print_json | pass insert -m -f "$j_file"
+            else
+                _pc_cat="true" ___p_cat --json-only --no-color "$j_file" | jq ".$key=\"$j_value\"" | __p_print_json | pass insert -m -f "$j_file"
+            fi
+        else
+            echo "Usage: p json <subcommand> <arguments>"
+            echo ""
+            echo "Subcommands:"
+            echo "    get <file> <key> - read key from the file's JSON data"
+            echo "    help - show this help text"
+            echo "    set <file> <key> <value> - set the value of key in file"
+            echo ""
+            echo "Note:"
+            echo "The underlying JSON is manipulated using \`jq\`. The filter"
+            echo "is created of the form '.\$key=\"\$value\"'. Note that this"
+            echo "filter is created in \`/dev/shm\` and passed to jq as a"
+            echo "file."
+
+            return 1
+        fi
     }
 
     # Print help information; this is the most complete documentation about
@@ -547,6 +643,7 @@ function p() {
     ___p_copy "${_p_remaining[@]}"
     ___p_cat "${_p_remaining[@]}"
     ___p_edit "${_p_remaining[@]}"
+    ___p_json "${_p_remaining[@]}"
 
     # Print help as the last thing we do before exiting; this ensures that if
     # an argument error occurred during subcommand parsing, we can print help
