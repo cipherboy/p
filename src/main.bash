@@ -45,28 +45,28 @@ function p() {
     # $HOME/.bashrc is given (to update environment variables as necessary).
 
     # [ stage: variables ] #
-    source utils/globals.bash
+    . utils/globals.bash
 
     # [ stage: helpers ] #
-    source utils/helpers.bash
+    . utils/helpers.bash
 
     # [ stage: functions ] #
-    source utils/env.bash
-    source utils/args.bash
-    source utils/paths.bash
-    source utils/print_json.bash
+    . utils/env.bash
+    . utils/args.bash
+    . utils/paths.bash
+    . utils/print_json.bash
 
     # [ stage: execs ] #
-    source utils/execs.bash
+    . utils/execs.bash
 
     # [ stage: commands ] #
-    source commands/ls.bash
-    source commands/copy.bash
-    source commands/cat.bash
-    source commands/edit.bash
-    source commands/json.bash
+    . commands/ls.bash
+    . commands/copy.bash
+    . commands/cat.bash
+    . commands/edit.bash
+    . commands/json.bash
 
-    source commands/help.bash
+    . commands/help.bash
 
     # [ stage: core ] #
 

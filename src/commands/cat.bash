@@ -24,28 +24,24 @@ function ___p_cat() {
                 [ "x$arg" == "-n" ]; then
             cat_colorize="false"
         else
-            local arg_path="$(__p_path_simplify "/$arg")"
-            local arg_cwd_path="$(__p_path_simplify "$_p_cwd/$arg")"
-            if [ -e "$_p_pass_dir/$arg_cwd_path.gpg" ]; then
-                cat_targets+=("$arg_cwd_path")
-            elif [ -e "$_p_pass_dir/$arg_path.gpg" ]; then
+            __p_find_file "$arg"
+            local arg_path="$(__p_find_file "$arg")"
+            if [ "x$arg_path" != "x" ]; then
                 cat_targets+=("$arg_path")
             else
-                if [ "x$arg_path" != "x$arg_cwd_path" ]; then
-                    __d "Unknown argument, path not found, or not a" \
-                        "file: '$arg_path' and '$arg_cwd_path'." \
-                        "If the path is a directory, note that \`p\` " \
-                        "differs from \`pass\` in that the \`cat\`" \
-                        "command will not show directories."
-                else
-                    __d "Unknown argument, path not found, or not a" \
-                        "file: '$arg_path'. If the path is a directory," \
-                        " note that \`p\` differs from \`pass\` in that" \
-                        "the \`cat\` command will not show directories."
-                fi
+                __d "Unknown argument, path not found, or not a file: " \
+                    "$arg. If the path is a directory, note that \`p\` " \
+                    "differs from \`pass\` in that the \`cat\` command " \
+                    "will not show directories."
             fi
         fi
     done
+
+    if [ ! -t 1 ]; then
+        # Refuse to colorize when output is not a terminal; otherwise, `jq`
+        # tends to throw errors...
+        cat_colorize="false"
+    fi
 
     for target in "${cat_targets[@]}"; do
         if [ "$cat_raw" == "false" ]; then

@@ -117,3 +117,20 @@ function __p_path_simplify() {
 
     echo "$next_path"
 }
+
+# Find the referenced file; these end in .gpg
+function __p_find_file() {
+    local name="$1"
+
+    local path="$(__p_path_simplify "/$name")"
+    local cwd_path="$(__p_path_simplify "$_p_cwd/$name")"
+    if [ -e "$_p_pass_dir/$arg_cwd_path.gpg" ]; then
+        echo "$arg_cwd_path"
+        return 0
+    elif [ -e "$_p_pass_dir/$arg_path.gpg" ]; then
+        echo "$arg_path"
+        return 0
+    fi
+
+    return 1
+}

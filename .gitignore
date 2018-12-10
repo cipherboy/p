@@ -6,3 +6,5 @@ Session.vim
 .netrwhist
 *~
 
+*.pyc
+bin/p
