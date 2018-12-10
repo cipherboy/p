@@ -124,11 +124,28 @@ function __p_find_file() {
 
     local path="$(__p_path_simplify "/$name")"
     local cwd_path="$(__p_path_simplify "$_p_cwd/$name")"
-    if [ -e "$_p_pass_dir/$arg_cwd_path.gpg" ]; then
-        echo "$arg_cwd_path"
+    if [ -e "$_p_pass_dir/$cwd_path.gpg" ]; then
+        echo "$cwd_path"
         return 0
-    elif [ -e "$_p_pass_dir/$arg_path.gpg" ]; then
-        echo "$arg_path"
+    elif [ -e "$_p_pass_dir/$path.gpg" ]; then
+        echo "$path"
+        return 0
+    fi
+
+    return 1
+}
+
+# Find the referenced directory.
+function __p_find_dir() {
+    local name="$1"
+
+    local path="$(__p_path_simplify "/$name")"
+    local cwd_path="$(__p_path_simplify "$_p_cwd/$name")"
+    if [ -e "$_p_pass_dir/$cwd_path" ]; then
+        echo "$cwd_path"
+        return 0
+    elif [ -e "$_p_pass_dir/$path" ]; then
+        echo "$path"
         return 0
     fi
 

@@ -22,26 +22,15 @@ function ___p_ls() {
                 [ "x$arg" == "x-d" ]; then
             ls_dir="true"
         else
-            local arg_path="$(__p_path_simplify "/$arg")"
-            local arg_cwd_path="$(__p_path_simplify "$_p_cwd/$arg")"
-            if [ -e "$_p_pass_dir/$arg_cwd_path" ]; then
-                ls_targets+=("$arg_cwd_path")
-            elif [ -e "$_p_pass_dir/$arg_path" ]; then
-                ls_targets+=("$arg_path")
+            local arg_dir="$(__p_find_dir "$arg")"
+            if [ "x$arg_dir" != "x" ]; then
+                ls_targets+=("$arg_dir")
             else
-                if [ "x$arg_path" != "x$arg_cwd_path" ]; then
-                    __d "Unknown argument, path not found, or not a" \
-                        "directory: '$arg_path' and '$arg_cwd_path'." \
-                        "If the path is an encrypted item, note that" \
-                        " \`p\` differs from \`pass\` in that the " \
-                        "\`ls\` command will not show encrypted secrets."
-                else
-                    __d "Unknown argument, path not found, or not a" \
-                        "directory: '$arg_path'. If the path is an" \
-                        "encrypted item, note that \`p\` differs from" \
-                        "\`pass\` in that the \`ls\` command will not" \
-                        "show encrypted secrets."
-                fi
+                __d "Unknown argument, path not found, or not a" \
+                    "directory: '$arg'. If the path is an" \
+                    "encrypted item, note that \`p\` differs from" \
+                    "\`pass\` in that the \`ls\` command will not" \
+                    "show encrypted secrets."
             fi
         fi
     done

@@ -24,7 +24,6 @@ function ___p_cat() {
                 [ "x$arg" == "-n" ]; then
             cat_colorize="false"
         else
-            __p_find_file "$arg"
             local arg_path="$(__p_find_file "$arg")"
             if [ "x$arg_path" != "x" ]; then
                 cat_targets+=("$arg_path")
