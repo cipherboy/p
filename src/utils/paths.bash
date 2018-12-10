@@ -44,7 +44,7 @@ function __p_path_simplify_internal() {
         __v "    1:current_path: $current_path"
         __v "    1:next_path: $next_path"
         current_path="$next_path"
-        next_path="${current_path/*([^\/])\/..\//}"
+        next_path="${current_path/+([^\/])\/..\//}"
     done
 
     # Replace occurrences of ^../ (../ at the beginning) with /

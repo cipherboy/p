@@ -65,6 +65,7 @@ function p() {
     . commands/cat.bash
     . commands/edit.bash
     . commands/json.bash
+    . commands/mkdir.bash
 
     . commands/help.bash
 
@@ -84,6 +85,7 @@ function p() {
     ___p_cat "${_p_remaining[@]}"
     ___p_edit "${_p_remaining[@]}"
     ___p_json "${_p_remaining[@]}"
+    ___p_mkdir "${_p_remaining[@]}"
 
     # Print help as the last thing we do before exiting; this ensures that if
     # an argument error occurred during subcommand parsing, we can print help
