@@ -5,5 +5,13 @@ function ___p_edit() {
         return 0
     fi
 
-    __pass edit "$@"
+    local file="$(__p_find_file "$1")"
+
+    if [ $# == 1 ] && [ "x$file" != "x" ]; then
+        __pass edit "$file"
+    else
+        echo "Usage: p edit <file>"
+        echo ""
+        echo "<file>: path or cwd-relative path to a file tracked by pass"
+    fi
 }

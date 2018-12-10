@@ -6,7 +6,7 @@ function __v() {
     fi
 }
 function __e() {
-    echo "$@" 1>&2
+    echo -e "$@" 1>&2
 }
 function __d() {
     __e "e:" "$@"
