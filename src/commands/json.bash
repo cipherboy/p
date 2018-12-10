@@ -12,10 +12,10 @@ function ___p_json() {
         return 0
     fi
 
-    j_command="$1"
-    j_file="$2"
-    j_key="$3"
-    j_value="$4"
+    local j_command="$1"
+    local j_file="$2"
+    local j_key="$3"
+    local j_value="$4"
 
     if [ "x$j_command" == "xget" ] && [ "x$j_file" != "x" ] &&
             (( $# >= 2 )) && (( $# <= 3 )); then
@@ -33,7 +33,7 @@ function ___p_json() {
         if [ "x$j_key" == "xpassword" ]; then
             _pc_cat="true" ___p_cat --json-only "$j_file" | jq ".old_passwords=[.password]+.old_passwords|.password=\"$j_value\"" | __p_print_json | pass insert -m -f "$j_file"
         else
-            _pc_cat="true" ___p_cat --json-only "$j_file" | jq ".$key=\"$j_value\"" | __p_print_json | pass insert -m -f "$j_file"
+            _pc_cat="true" ___p_cat --json-only "$j_file" | jq ".$j_key=\"$j_value\"" | __p_print_json | pass insert -m -f "$j_file"
         fi
     else
         echo "Usage: p json <subcommand> <arguments>"
