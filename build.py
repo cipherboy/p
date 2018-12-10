@@ -15,7 +15,7 @@ def main():
     # Recreate /bin/ if necessary
     if os.path.exists(BIN_DIR):
         shutil.rmtree(BIN_DIR)
-    os.makedirs(BIN_DIR, exist_ok=False)
+    os.makedirs(BIN_DIR)
 
     # Build p executable. Whenever a
     p_file = open(EXECUTABLE, 'w')
