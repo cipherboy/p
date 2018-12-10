@@ -13,7 +13,7 @@ function ___p_json() {
     fi
 
     j_command="$1"
-    j_file="$(__p_find_file "$2")"
+    j_file="$2"
     j_key="$3"
     j_value="$4"
 
@@ -25,15 +25,15 @@ function ___p_json() {
             j_key="password"
         fi
 
-        _pc_cat="true" ___p_cat --json-only --no-color "$j_file" | jq -r ".$j_key"
+        _pc_cat="true" ___p_cat --json-only "$j_file" | jq -r ".$j_key"
     elif [ "x$j_command" == "xset" ] && [ "x$j_file" != "x" ] &&
             (( $# == 4 )); then
 
         # Perform set operation on file / key = value
         if [ "x$j_key" == "xpassword" ]; then
-            _pc_cat="true" ___p_cat --json-only --no-color "$j_file" | jq ".old_passwords=[.password]+.old_passwords|.password=\"$j_value\"" | __p_print_json | pass insert -m -f "$j_file"
+            _pc_cat="true" ___p_cat --json-only "$j_file" | jq ".old_passwords=[.password]+.old_passwords|.password=\"$j_value\"" | __p_print_json | pass insert -m -f "$j_file"
         else
-            _pc_cat="true" ___p_cat --json-only --no-color "$j_file" | jq ".$key=\"$j_value\"" | __p_print_json | pass insert -m -f "$j_file"
+            _pc_cat="true" ___p_cat --json-only "$j_file" | jq ".$key=\"$j_value\"" | __p_print_json | pass insert -m -f "$j_file"
         fi
     else
         echo "Usage: p json <subcommand> <arguments>"
