@@ -29,7 +29,11 @@ function ___p_mkdir() {
         echo ""
         echo "<dir>: relative (to cwd) or absolute (if prefixed with a /)"
         echo "       path to create."
-        echo "--recursive, -r: recursively make directory; default"
+        echo "--recursive, -r: recursively make directory"
+        echo ""
+        echo "Note: mkdir will attempt to propagate .gpg-id from the last-seen"
+        echo "directory with a .gpg-id. This ensures that all permission"
+        echo "changes have explicit side effects."
         return 0
     fi
 
