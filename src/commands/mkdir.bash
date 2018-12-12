@@ -39,7 +39,8 @@ function ___p_mkdir() {
 
     if [ "x${m_path:0:1}" != "x/" ]; then
         # When creating a directory recursively, simplify
-        m_path="$(__p_path_simplify "$p_cwd/$m_path")"
+        __v "Treating path as relative: \`$_p_cwd\` -> \`$m_path\`"
+        m_path="$(__p_path_simplify "$_p_cwd/$m_path")"
     fi
 
     __v "Creating directory $m_path"

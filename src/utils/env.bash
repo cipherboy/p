@@ -36,6 +36,7 @@ function __p_env_check() {
     fi
 
     if [ "x$P_CWD" != "x" ]; then
+        __v "Loading cwd from environment: \`$P_CWD\`"
         _p_cwd="$P_CWD"
     fi
 
