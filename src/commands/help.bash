@@ -15,6 +15,7 @@ function ___p_help() {
     echo " - ls: list files and directories"
     echo " - copy: copy the contents of one file to another location"
     echo " - cat: show the contents of a file"
+    echo " - cd: change directories"
     echo " - edit: edit a file"
     echo " - json: perform simple get/set manipulations on a file"
     echo " - mkdir: make a directory"
