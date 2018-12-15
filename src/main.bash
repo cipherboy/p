@@ -55,6 +55,7 @@ function p() {
     . utils/args.bash
     . utils/paths.bash
     . utils/print_json.bash
+    . utils/rtypr.bash
 
     # [ stage: execs ] #
     . utils/execs.bash
