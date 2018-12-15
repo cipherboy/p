@@ -37,9 +37,18 @@ function __p_path_simplify_internal() {
 
     shopt -s extglob
 
-    # Replace occurrences of 'dir/../' with ''
+    # Replace occurrences of '//' with '/'
     current_path=""
     next_path="$path"
+    while [ "x$current_path" != "x$next_path" ]; do
+        __v "    5:current_path: $current_path"
+        __v "    5:next_path: $next_path"
+        current_path="$next_path"
+        next_path="${current_path//\/\//\/}"
+    done
+
+    # Replace occurrences of 'dir/../' with ''
+    current_path=""
     while [ "x$current_path" != "x$next_path" ]; do
         __v "    1:current_path: $current_path"
         __v "    1:next_path: $next_path"
@@ -54,6 +63,15 @@ function __p_path_simplify_internal() {
         __v "    2:next_path: $next_path"
         current_path="$next_path"
         next_path="${current_path/#..\//\/}"
+    done
+
+    # Replace occurrences of ^/../ with /
+    current_path=""
+    while [ "x$current_path" != "x$next_path" ]; do
+        __v "    2:current_path: $current_path"
+        __v "    2:next_path: $next_path"
+        current_path="$next_path"
+        next_path="${current_path/#\/..\//\/}"
     done
 
     # Replace occurrences of '/./' with '/'
@@ -81,16 +99,6 @@ function __p_path_simplify_internal() {
         __v "    4:next_path: $next_path"
         current_path="$next_path"
         next_path="${current_path/%\/./\/}"
-    done
-
-
-    # Replace occurrences of '//' with '/'
-    current_path=""
-    while [ "x$current_path" != "x$next_path" ]; do
-        __v "    5:current_path: $current_path"
-        __v "    5:next_path: $next_path"
-        current_path="$next_path"
-        next_path="${current_path//\/\//\/}"
     done
 
     echo "$current_path"
@@ -145,6 +153,28 @@ function __p_find_dir() {
         echo "$cwd_path"
         return 0
     elif [ -e "$_p_pass_dir/$path" ]; then
+        echo "$path"
+        return 0
+    fi
+
+    return 1
+}
+
+# Check if a given path is a file.
+function __p_is_file() {
+    local path="$1"
+    if [ -e "$_p_pass_dir/$path.gpg" ]; then
+        echo "$path"
+        return 0
+    fi
+
+    return 1
+}
+
+# Check if a given path is a directory.
+function __p_is_dir() {
+    local path="$1"
+    if [ -e "$_p_pass_dir/$path" ]; then
         echo "$path"
         return 0
     fi

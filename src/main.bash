@@ -63,6 +63,7 @@ function p() {
     . commands/ls.bash
     . commands/copy.bash
     . commands/cat.bash
+    . commands/cd.bash
     . commands/edit.bash
     . commands/json.bash
     . commands/mkdir.bash
@@ -83,6 +84,7 @@ function p() {
     ___p_ls "${_p_remaining[@]}"
     ___p_copy "${_p_remaining[@]}"
     ___p_cat "${_p_remaining[@]}"
+    ___p_cd "${_p_remaining[@]}"
     ___p_edit "${_p_remaining[@]}"
     ___p_json "${_p_remaining[@]}"
     ___p_mkdir "${_p_remaining[@]}"

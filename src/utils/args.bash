@@ -59,6 +59,10 @@ function __p_args() {
             # mkdir command
             _pc_mkdir="true"
             found_command="true"
+        elif [ "x$arg" == "xcd" ]; then
+            # cd command
+            _pc_cd="true"
+            found_command="true"
         elif [ "x$arg" == "x--verbose" ]; then
             # enables global verbose mode
             _p_verbose="x"
