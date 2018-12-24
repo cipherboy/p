@@ -132,12 +132,27 @@ function __p_find_file() {
 
     local path="$(__p_path_simplify "/$name")"
     local cwd_path="$(__p_path_simplify "$_p_cwd/$name")"
-    if [ -e "$_p_pass_dir/$cwd_path.gpg" ]; then
-        echo "$cwd_path"
-        return 0
-    elif [ -e "$_p_pass_dir/$path.gpg" ]; then
-        echo "$path"
-        return 0
+    local first_char="${name:0:1}"
+
+    # Handle absolute vs. relative paths correctly: absolute paths get
+    # checked first if the path begins with a /, else check relative paths
+    # first.
+    if [ "x$first_char" == "x/" ]; then
+        if [ -e "$_p_pass_dir/$path.gpg" ]; then
+            echo "$path"
+            return 0
+        elif [ -e "$_p_pass_dir/$cwd_path.gpg" ]; then
+            echo "$cwd_path"
+            return 0
+        fi
+    else
+        if [ -e "$_p_pass_dir/$cwd_path.gpg" ]; then
+            echo "$cwd_path"
+            return 0
+        elif [ -e "$_p_pass_dir/$path.gpg" ]; then
+            echo "$path"
+            return 0
+        fi
     fi
 
     return 1
@@ -149,12 +164,27 @@ function __p_find_dir() {
 
     local path="$(__p_path_simplify "/$name")"
     local cwd_path="$(__p_path_simplify "$_p_cwd/$name")"
-    if [ -e "$_p_pass_dir/$cwd_path" ]; then
-        echo "$cwd_path"
-        return 0
-    elif [ -e "$_p_pass_dir/$path" ]; then
-        echo "$path"
-        return 0
+    local first_char="${name:0:1}"
+
+    # Handle absolute vs. relative paths correctly: absolute paths get
+    # checked first if the path begins with a /, else check relative paths
+    # first.
+    if [ "x$first_char" == "x/" ]; then
+        if [ -e "$_p_pass_dir/$path" ]; then
+            echo "$path"
+            return 0
+        elif [ -e "$_p_pass_dir/$cwd_path" ]; then
+            echo "$cwd_path"
+            return 0
+        fi
+    else
+        if [ -e "$_p_pass_dir/$cwd_path" ]; then
+            echo "$cwd_path"
+            return 0
+        elif [ -e "$_p_pass_dir/$path" ]; then
+            echo "$path"
+            return 0
+        fi
     fi
 
     return 1
