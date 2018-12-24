@@ -7,6 +7,6 @@ function __p_print_json() {
     # point. This means that __p_print_json will stall if the input
     # hasn't finished.
     local stdin="$(cat -)"
-    echo "$stdin" | jq -r -M '.password'
-    echo "$stdin" | jq -r -M '.'
+    jq -r -M '.password' <<< "$stdin"
+    jq -r -M '.' <<< "$stdin"
 }
