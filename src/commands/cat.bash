@@ -8,7 +8,8 @@ function ___p_cat() {
     fi
 
     local cat_raw="false"
-    local cat_json_only="false"
+    local cat_show_password="true"
+    local cat_show_json="true"
     local cat_colorize="true"
     local cat_targets=()
 
@@ -19,7 +20,15 @@ function ___p_cat() {
         elif [ "x$arg" == "x--json-only" ] || [ "x$arg" == "x-json-only" ] ||
                 [ "x$arg" == "x--json" ] || [ "x$arg" == "x-json" ] ||
                 [ "x$arg" == "x-j" ]; then
-            cat_json_only="true"
+            cat_show_password="false"
+            cat_show_json="true"
+        elif [ "x$arg" == "x--password-only" ] ||
+                [ "x$arg" == "x-password-only" ] ||
+                [ "x$arg" == "x--password" ] ||
+                [ "x$arg" == "x-password" ] ||
+                [ "x$arg" == "x-p" ]; then
+            cat_show_password="true"
+            cat_show_json="false"
         elif [ "x$arg" == "x--no-color" ] || [ "x$arg" == "x-n-color" ] ||
                 [ "x$arg" == "-n" ]; then
             cat_colorize="false"
@@ -52,13 +61,15 @@ function ___p_cat() {
             echo "$rest" | __jq . >/dev/null 2>/dev/null
             local is_json="$?"
 
-            if [ "$cat_json_only" == "false" ]; then
+            if [ "$cat_show_password" == "true" ]; then
                 echo "$first_line"
             fi
-            if [ "$cat_colorize" == "true" ] && [ "$is_json" == "0" ]; then
-                echo "$rest" | __jq -C -S
-            else
-                echo "$rest"
+            if [ "$cat_show_json" == "true" ]; then
+                if [ "$cat_colorize" == "true" ] && [ "$is_json" == "0" ]; then
+                    echo "$rest" | __jq -C -S
+                else
+                    echo "$rest"
+                fi
             fi
         else
             __pass show "$target"
