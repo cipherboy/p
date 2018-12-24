@@ -6,9 +6,18 @@ function ___p_edit() {
     fi
 
     local file="$(__p_find_file "$1")"
+    local is_help="false"
+    if [ "x$1" == "x--help" ] || [ "x$1" == "x-help" ] ||
+            [ "x$1" == "x-h" ] || [ "x$1" == "x" ]; then
+        is_help="true"
+    fi
 
-    if [ $# == 1 ] && [ "x$file" != "x" ]; then
-        __pass edit "$file"
+    if [ $# == 1 ] && [ "$is_help" == "false" ]; then
+        if [ "x$file" != "x" ]; then
+            __pass edit "$file"
+        else
+            __pass edit "$1"
+        fi
     else
         echo "Usage: p edit <file>"
         echo ""
