@@ -5,9 +5,15 @@ function __v() {
         echo "v:" "$@" 1>&2
     fi
 }
+
 function __e() {
     echo -e "$@" 1>&2
 }
+
+function __p_dir() {
+    echo "$@"
+}
+
 function __d() {
     __e "e:" "$@"
     exit 1

@@ -89,7 +89,7 @@ function ___p_ls() {
                         tree -d -C -l --noreport "$_p_pass_dir" | tail -n +2
                         echo ""
                     else
-                        __dir "$path"
+                        __p_dir "$path"
                         tree -d -C -l --noreport "$_p_pass_dir/$path" | tail -n +2
                         echo ""
                     fi
