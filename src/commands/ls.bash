@@ -55,7 +55,8 @@ function ___p_ls() {
                     __pass ls
                     echo ""
                 else
-                    __pass ls "$path"
+                    __p_dir "$path"
+                    __pass ls "$path" | tail -n +2
                     echo ""
                 fi
             done

@@ -49,6 +49,7 @@ function p() {
 
     # [ stage: helpers ] #
     . utils/helpers.bash
+    . utils/colors.bash
 
     # [ stage: functions ] #
     . utils/env.bash

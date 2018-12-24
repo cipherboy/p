@@ -11,7 +11,7 @@ function __e() {
 }
 
 function __p_dir() {
-    echo "$@"
+    echo -e "$(__p_ecode "$(__p_ls_color di)")$@$(__p_ecode reset)"
 }
 
 function __d() {
