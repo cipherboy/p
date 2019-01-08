@@ -6,7 +6,7 @@
 #
 # Please fix any rtypr bugs there and then sync here once merged.
 # Thanks!
-function rtypr() {
+function __rtypr() {
     # Input event device to simulate events on.
     local input_device=""
 
