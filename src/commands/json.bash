@@ -5,7 +5,7 @@
 # Otherwise, we'll print a warning about what we're supposed to do.
 #
 # Remote execution requirements: this command must be executed on the
-# remote host entirely.
+# remote host, except for retype-related commands.
 function ___p_json() {
     __v "Value of _pc_json: $_pc_json"
     if [ "$_pc_json" == "false" ]; then
@@ -35,12 +35,24 @@ function ___p_json() {
         else
             _pc_cat="true" ___p_cat --json-only "$j_file" | jq ".$j_key=\"$j_value\"" | __p_print_json | pass insert -m -f "$j_file"
         fi
+    elif [ "x$j_command" = "xretype" ] && [ "x$j_file" != "x" ] &&
+            (( $# >= 2 )) && (( $# <= 3 )); then
+
+        # Similar to a get operation, perform a retype operation on the
+        # file / key.
+        if [ "x$j_key" == "x" ]; then
+            j_key="password"
+        fi
+
+        local value="$(_pc_cat="true" ___p_cat --json-only "$j_file" | jq -r ".$j_key")"
+        __rtypr "$value"
     else
         echo "Usage: p json <subcommand> <arguments>"
         echo ""
         echo "Subcommands:"
         echo "    get <file> <key> - read key from the file's JSON data"
         echo "    help - show this help text"
+        echo "    retype <file> <key> - retype the specified key from the file"
         echo "    set <file> <key> <value> - set the value of key in file"
         echo ""
         echo "Note:"
