@@ -63,6 +63,15 @@ function __p_args() {
             # cd command
             _pc_cd="true"
             found_command="true"
+        elif [ "x$arg" == "xgit" ] || [ "x$arg" == "xgt" ]; then
+            # git command
+            _pc_git="true"
+            found_command="true"
+        elif [ "x$arg" == "xgts" ]; then
+            # git command with status subcommand
+            _pc_git="true"
+            found_command="true"
+            _p_remaining+=("status")
         elif [ "x$arg" == "x--verbose" ]; then
             # enables global verbose mode
             _p_verbose="x"

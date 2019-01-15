@@ -19,6 +19,7 @@ function ___p_help() {
     echo " - edit: edit a file"
     echo " - json: perform simple get/set manipulations on a file"
     echo " - mkdir: make a directory"
+    echo " - git: run git commands in password store"
     echo ""
     echo "For more information about a particular command, including its"
     echo "command line arguments and subcommands, pass --help to the"
