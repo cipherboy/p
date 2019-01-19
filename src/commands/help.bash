@@ -22,6 +22,7 @@ function ___p_help() {
     echo " - git: run git commands in the password store"
     echo " - encrypt: store a file in the password store"
     echo " - decrypt: extract a file in the password store"
+    echo " - open: run a command to view a file in the password store"
     echo ""
     echo "For more information about a particular command, including its"
     echo "command line arguments and subcommands, pass --help to the"

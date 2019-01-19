@@ -95,6 +95,10 @@ function __p_args() {
             # decrypt command
             _pc_decrypt="true"
             found_command="true"
+        elif [ "x$arg" == "xopen" ]; then
+            # open command
+            _pc_open="true"
+            found_command="true"
         elif [ "x$arg" == "x--verbose" ]; then
             # enables global verbose mode
             _p_verbose="x"
