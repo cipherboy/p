@@ -72,6 +72,21 @@ function __p_args() {
             _pc_git="true"
             found_command="true"
             _p_remaining+=("status")
+        elif [ "x$arg" == "xgtl" ]; then
+            # git command with log subcommand
+            _pc_git="true"
+            found_command="true"
+            _p_remaining+=("log")
+        elif [ "x$arg" == "xgtp" ]; then
+            # git command with push subcommand
+            _pc_git="true"
+            found_command="true"
+            _p_remaining+=("push")
+        elif [ "x$arg" == "xgtu" ]; then
+            # git command with pull subcommand
+            _pc_git="true"
+            found_command="true"
+            _p_remaining+=("pull")
         elif [ "x$arg" == "x--verbose" ]; then
             # enables global verbose mode
             _p_verbose="x"
