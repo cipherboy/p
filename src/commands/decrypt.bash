@@ -10,9 +10,16 @@ function ___p_decrypt() {
     if (( $# != 2 )); then
         echo "Usage: p decrypt <name> <path>"
         echo "Decrypt the entry <name> and store it at <path>."
+        echo ""
+        echo "Note: <path> can be '-', in which case <name> will be written" \
+             "to stdout."
 
         return 1
     fi
 
-    __pass show "$entry" > "$path"
+    if [ "x$path" != "x-" ]; then
+        __pass show "$entry" > "$path"
+    else
+        __pass show "$entry"
+    fi
 }
