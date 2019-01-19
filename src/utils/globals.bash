@@ -22,6 +22,7 @@ local _p_jq_url="https://stedolan.github.io/jq/"
 # the "_pa" prefix to differentiate themselves from the above variables.
 local _pc_ls="false"
 local _pc_cp="false"
+local _pc_mv="false"
 local _pc_cat="false"
 local _pc_cd="false"
 local _pc_edit="false"

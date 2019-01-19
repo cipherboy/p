@@ -30,6 +30,10 @@ function __p_args() {
             # cp command
             _pc_cp="true"
             found_command="true"
+        elif [ "x$arg" == "xmove" ] || [ "x$arg" == "xmv" ]; then
+            # mv command
+            _pc_mv="true"
+            found_command="true"
         elif [ "x$arg" == "xshow" ] || [ "x$arg" == "xcat" ] ||
                 [ "x$arg" == "xc" ]; then
             # cat command

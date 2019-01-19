@@ -64,6 +64,7 @@ function p() {
     # [ stage: commands ] #
     . commands/ls.bash
     . commands/cp.bash
+    . commands/mv.bash
     . commands/cat.bash
     . commands/cd.bash
     . commands/edit.bash
@@ -89,6 +90,7 @@ function p() {
     # whether or not it needs to run.
     ___p_ls "${_p_remaining[@]}"
     ___p_cp "${_p_remaining[@]}"
+    ___p_mv "${_p_remaining[@]}"
     ___p_cat "${_p_remaining[@]}"
     ___p_cd "${_p_remaining[@]}"
     ___p_edit "${_p_remaining[@]}"
