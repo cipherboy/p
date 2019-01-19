@@ -211,3 +211,61 @@ function __p_is_dir() {
 
     return 1
 }
+
+# Create a user-owned private temporary directory.
+function __p_mk_secure_tmp() {
+    local tmp_base="$TMPDIR"
+
+    local user_id="$(id --user --real)"
+    local group_id="$(id --group --real)"
+
+    if [ "x$tmp_base" == "x" ] && [ -d "/run/user/$user_id" ]; then
+        tmp_base="/run/user/$user_id"
+    elif [ "x$tmp_base" == "x" ] && [ -d /dev/shm ]; then
+        tmp_base="/dev/shm"
+    elif [ "x$tmp_base" == "x" ] && [ -d "$HOME/tmp" ]; then
+        tmp_base="$HOME/tmp"
+    else
+        tmp_base="/tmp"
+    fi
+
+    tmp_base="$tmp_base/p-password-store-$user_id"
+    __v "Using tmp_base=\"$tmp_base\""
+
+    if [ ! -d "$tmp_base" ]; then
+        mkdir "$tmp_base"
+
+        chown -R "$user_id:$group_id" "$tmp_base" >/dev/null 2>&1
+        chmod -R 700 "$tmp_base" >/dev/null 2>&1
+    fi
+
+    local new_tmp=""
+    new_tmp="$(mktemp --directory --tmpdir="$tmp_base")"
+    local ret=$?
+
+    if (( ret != 0 )) || [ ! -d "$new_tmp" ]; then
+        __e "Failed to create temporary directory: mktemp - $ret"
+        exit 1
+    fi
+
+    chown -R "$user_id:$group_id" "$new_tmp" >/dev/null 2>&1
+    chmod -R 700 "$new_tmp" >/dev/null 2>&1
+
+    echo "$new_tmp"
+    return 0
+}
+
+# Remove a secure tmporary directory.
+#
+# TODO: secure file deletion (shred fallback of dd)
+function __p_rm_secure_tmp() {
+    local tmp="$1"
+    local parent="$(dirname "$tmp")"
+
+    rm -rf "$tmp" 2>/dev/null
+    rmdir "$parent" 2>/dev/null
+
+    # rmdir may fail; this is acceptable as other temporary directories
+    # were in use (i.e., concurrent access)
+    return 0
+}
