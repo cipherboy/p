@@ -87,6 +87,10 @@ function __p_args() {
             _pc_git="true"
             found_command="true"
             _p_remaining+=("pull")
+        elif [ "x$arg" == "xencrypt" ]; then
+            # encrypt command
+            _pc_encrypt="true"
+            found_command="true"
         elif [ "x$arg" == "x--verbose" ]; then
             # enables global verbose mode
             _p_verbose="x"
