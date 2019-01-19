@@ -34,6 +34,10 @@ function __p_args() {
             # mv command
             _pc_mv="true"
             found_command="true"
+        elif [ "x$arg" == "xremove" ] || [ "x$arg" == "xrm" ]; then
+            # rm command
+            _pc_rm="true"
+            found_command="true"
         elif [ "x$arg" == "xshow" ] || [ "x$arg" == "xcat" ] ||
                 [ "x$arg" == "xc" ]; then
             # cat command
