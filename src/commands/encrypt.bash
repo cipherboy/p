@@ -17,8 +17,8 @@ function ___p_encrypt() {
     fi
 
     if [ "x$path" != "x-" ]; then
-        __pass insert --multiline "$entry" < "$path"
+        __pass insert --multiline "$entry" < "$path" >/dev/null
     else
-        __pass insert --multiline "$entry"
+        __pass insert --multiline "$entry" >/dev/null
     fi
 }
