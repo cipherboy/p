@@ -107,6 +107,11 @@ function __p_args() {
             # open command
             _pc_open="true"
             found_command="true"
+        elif [ "x$arg" == "xthrough" ] || [ "x$arg" == "xpass" ] ||
+                [ "x$arg" == "xthru" ] || [ "x$arg" == "xt" ]; then
+            # passthrough command
+            _pc_through="true"
+            found_command="true"
         elif [ "x$arg" == "x--verbose" ]; then
             # enables global verbose mode
             _p_verbose="x"

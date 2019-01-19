@@ -25,6 +25,7 @@ function ___p_help() {
     echo " - encrypt: store a file in the password store"
     echo " - decrypt: extract a file in the password store"
     echo " - open: run a command to view a file in the password store"
+    echo " - pass: pass command through to pass (for accessing extensions)"
     echo ""
     echo "For more information about a particular command, including its"
     echo "command line arguments and subcommands, pass --help to the"
