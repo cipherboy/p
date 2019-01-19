@@ -71,6 +71,7 @@ function p() {
     . commands/mkdir.bash
     . commands/git.bash
     . commands/encrypt.bash
+    . commands/decrypt.bash
 
     . commands/help.bash
 
@@ -94,6 +95,7 @@ function p() {
     ___p_mkdir "${_p_remaining[@]}"
     ___p_git "${_p_remaining[@]}"
     ___p_encrypt "${_p_remaining[@]}"
+    ___p_decrypt "${_p_remaining[@]}"
 
     # Print help as the last thing we do before exiting; this ensures that if
     # an argument error occurred during subcommand parsing, we can print help
