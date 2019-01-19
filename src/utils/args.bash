@@ -27,8 +27,8 @@ function __p_args() {
             found_command="true"
             _p_remaining+=("--dir")
         elif [ "x$arg" == "xcopy" ] || [ "x$arg" == "xcp" ]; then
-            # copy command
-            _pc_copy="true"
+            # cp command
+            _pc_cp="true"
             found_command="true"
         elif [ "x$arg" == "xshow" ] || [ "x$arg" == "xcat" ] ||
                 [ "x$arg" == "xc" ]; then

@@ -63,7 +63,7 @@ function p() {
 
     # [ stage: commands ] #
     . commands/ls.bash
-    . commands/copy.bash
+    . commands/cp.bash
     . commands/cat.bash
     . commands/cd.bash
     . commands/edit.bash
@@ -88,7 +88,7 @@ function p() {
     # is, __p_ls() is always called and is expected to check _pc_ls to ensure
     # whether or not it needs to run.
     ___p_ls "${_p_remaining[@]}"
-    ___p_copy "${_p_remaining[@]}"
+    ___p_cp "${_p_remaining[@]}"
     ___p_cat "${_p_remaining[@]}"
     ___p_cd "${_p_remaining[@]}"
     ___p_edit "${_p_remaining[@]}"

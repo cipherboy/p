@@ -21,7 +21,7 @@ local _p_jq_url="https://stedolan.github.io/jq/"
 # These variables are used to control what functions are called; they use
 # the "_pa" prefix to differentiate themselves from the above variables.
 local _pc_ls="false"
-local _pc_copy="false"
+local _pc_cp="false"
 local _pc_cat="false"
 local _pc_cd="false"
 local _pc_edit="false"

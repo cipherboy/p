@@ -13,7 +13,7 @@ function ___p_help() {
     echo ""
     echo "Available Commands:"
     echo " - ls: list files and directories"
-    echo " - copy: copy the contents of one file to another location"
+    echo " - cp: copy the contents of one file to another location"
     echo " - cat: show the contents of a file"
     echo " - cd: change directories"
     echo " - edit: edit a file"
