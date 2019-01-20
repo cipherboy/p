@@ -44,5 +44,6 @@ function ___p_help() {
     echo ""
     echo "Global options:"
     echo ""
+    echo "--password-store-dir <dir>: password store directory to use"
     echo "--verbose: enable verbose output for debugging"
 }

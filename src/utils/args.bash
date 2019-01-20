@@ -2,7 +2,7 @@
 function __p_args() {
     local found_command="false"
 
-    for count in $(seq 1 $#); do
+    while (( $# > 0 )); do
         local arg="$1"
         shift
 
@@ -116,6 +116,9 @@ function __p_args() {
             # clone command
             _pc_clone="true"
             found_command="true"
+        elif [ "x$arg" == "x--password-store-dir" ]; then
+            _p_pass_dir="$1"
+            shift
         elif [ "x$arg" == "x--verbose" ]; then
             # enables global verbose mode
             _p_verbose="x"
@@ -133,11 +136,17 @@ function __p_args() {
         fi
     done
 
-    for arg in "$@"; do
+    while (( $# > 0 )); do
+        local arg="$1"
+        shift
+
         if [ "x$arg" == "x--verbose" ]; then
             # enables global verbose mode if it is persent in the command
             # arguments
             _p_verbose="x"
+        elif [ "x$arg" == "x--password-store-dir" ]; then
+            _p_pass_dir="$1"
+            shift
         else
             _p_remaining+=("$arg")
         fi
