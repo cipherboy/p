@@ -9,18 +9,29 @@ function ___p_open() {
     local command=""
     local seen_command="false"
     local args=()
+
     local help="false"
+    local read_only="false"
 
     while (( $# > 0 )); do
         local arg="$1"
         shift
 
-        if [ "x$arg" == "x--help" ] || [ "x$arg" == "x-help" ] ||
-                [ "x$arg" == "xhelp" ] || [ "x$arg" == "x-h" ]; then
-            help="true"
-        elif [ "$seen_name" == "false" ]; then
-            name="$arg"
-            seen_name="true"
+        if [ "$seen_name" == "false" ]; then
+            if [ "x$arg" == "x--help" ] || [ "x$arg" == "x-help" ] ||
+                    [ "x$arg" == "xhelp" ] || [ "x$arg" == "x-h" ]; then
+                help="true"
+            elif [ "x$arg" == "x--read-only" ] || [ "x$arg" == "x--readonly" ] ||
+                    [ "x$arg" == "x-read-only" ] || [ "x$arg" == "x-readonly" ] ||
+                    [ "x$arg" == "x--ro" ] || [ "x$arg" == "x-ro" ] ||
+                    [ "x$arg" == "x-r" ]; then
+                read_only="true"
+            elif [ "x$arg" == "x--" ]; then
+                continue
+            else
+                name="$arg"
+                seen_name="true"
+            fi
         elif [ "x$arg" == "x--" ]; then
             continue
         elif [ "$seen_command" == "false" ]; then
@@ -73,7 +84,10 @@ function ___p_open() {
 
     _pc_decrypt="true" ___p_decrypt "$name" "$tmp"
     "$command" "${processed_args[@]}"
-    _pc_encrypt="true" ___p_encrypt "$tmp" "$name"
+
+    if [ "$read_only" == "false" ]; then
+        _pc_encrypt="true" ___p_encrypt "$tmp" "$name"
+    fi
 
     __p_rm_secure_tmp "$tmp"
 }
