@@ -116,6 +116,10 @@ function __p_args() {
             # clone command
             _pc_clone="true"
             found_command="true"
+        elif [ "x$arg" == "xcreate" ]; then
+            # create command
+            _pc_create="true"
+            found_command="true"
         elif [ "x$arg" == "x--password-store-dir" ]; then
             _p_pass_dir="$1"
             shift

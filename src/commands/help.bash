@@ -13,6 +13,7 @@ function ___p_help() {
     echo ""
     echo "Available commands:"
     echo " Setup:"
+    echo "  - create: create a store from scratch"
     echo "  - clone: create a store from a git repository"
     echo ""
     echo " Basic navigation:"
