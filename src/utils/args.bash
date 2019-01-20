@@ -112,6 +112,10 @@ function __p_args() {
             # passthrough command
             _pc_through="true"
             found_command="true"
+        elif [ "x$arg" == "xclone" ]; then
+            # clone command
+            _pc_clone="true"
+            found_command="true"
         elif [ "x$arg" == "x--verbose" ]; then
             # enables global verbose mode
             _p_verbose="x"
