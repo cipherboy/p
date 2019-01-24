@@ -78,6 +78,7 @@ function p() {
     . commands/through.bash
     . commands/clone.bash
     . commands/create.bash
+    . commands/locate.bash
 
     . commands/help.bash
 
@@ -108,6 +109,7 @@ function p() {
     ___p_through "${_p_remaining[@]}"
     ___p_clone "${_p_remaining[@]}"
     ___p_create "${_p_remaining[@]}"
+    ___p_locate "${_p_remaining[@]}"
 
     # Print help as the last thing we do before exiting; this ensures that if
     # an argument error occurred during subcommand parsing, we can print help
