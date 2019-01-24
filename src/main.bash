@@ -62,23 +62,23 @@ function p() {
     . utils/execs.bash
 
     # [ stage: commands ] #
-    . commands/ls.bash
-    . commands/cp.bash
-    . commands/mv.bash
-    . commands/rm.bash
     . commands/cat.bash
     . commands/cd.bash
-    . commands/edit.bash
-    . commands/json.bash
-    . commands/mkdir.bash
-    . commands/git.bash
-    . commands/encrypt.bash
-    . commands/decrypt.bash
-    . commands/open.bash
-    . commands/through.bash
     . commands/clone.bash
+    . commands/cp.bash
     . commands/create.bash
+    . commands/decrypt.bash
+    . commands/edit.bash
+    . commands/encrypt.bash
+    . commands/git.bash
+    . commands/json.bash
     . commands/locate.bash
+    . commands/ls.bash
+    . commands/mkdir.bash
+    . commands/open.bash
+    . commands/mv.bash
+    . commands/rm.bash
+    . commands/through.bash
 
     . commands/help.bash
 
@@ -93,23 +93,24 @@ function p() {
     # Each command is expected to handle its own execution environment; that
     # is, __p_ls() is always called and is expected to check _pc_ls to ensure
     # whether or not it needs to run.
-    ___p_ls "${_p_remaining[@]}"
-    ___p_cp "${_p_remaining[@]}"
-    ___p_mv "${_p_remaining[@]}"
-    ___p_rm "${_p_remaining[@]}"
+
     ___p_cat "${_p_remaining[@]}"
     ___p_cd "${_p_remaining[@]}"
-    ___p_edit "${_p_remaining[@]}"
-    ___p_json "${_p_remaining[@]}"
-    ___p_mkdir "${_p_remaining[@]}"
-    ___p_git "${_p_remaining[@]}"
-    ___p_encrypt "${_p_remaining[@]}"
-    ___p_decrypt "${_p_remaining[@]}"
-    ___p_open "${_p_remaining[@]}"
-    ___p_through "${_p_remaining[@]}"
     ___p_clone "${_p_remaining[@]}"
+    ___p_cp "${_p_remaining[@]}"
     ___p_create "${_p_remaining[@]}"
     ___p_locate "${_p_remaining[@]}"
+    ___p_decrypt "${_p_remaining[@]}"
+    ___p_edit "${_p_remaining[@]}"
+    ___p_encrypt "${_p_remaining[@]}"
+    ___p_git "${_p_remaining[@]}"
+    ___p_json "${_p_remaining[@]}"
+    ___p_ls "${_p_remaining[@]}"
+    ___p_mkdir "${_p_remaining[@]}"
+    ___p_mv "${_p_remaining[@]}"
+    ___p_open "${_p_remaining[@]}"
+    ___p_rm "${_p_remaining[@]}"
+    ___p_through "${_p_remaining[@]}"
 
     # Print help as the last thing we do before exiting; this ensures that if
     # an argument error occurred during subcommand parsing, we can print help
