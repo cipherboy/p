@@ -35,6 +35,11 @@ function __p_env_check() {
         _p_pass_dir="$PASSWORD_STORE_DIR"
     fi
 
+    # Process path to gnupg home location
+    if [ "x$GNUPGHOME" != "x" ]; then
+        _p_pass_gpg_dir="$GNUPGHOME"
+    fi
+
     if [ "x$P_CWD" != "x" ]; then
         __v "Loading cwd from environment: \`$P_CWD\`"
         _p_cwd="$P_CWD"

@@ -127,6 +127,9 @@ function __p_args() {
         elif [ "x$arg" == "x--password-store-dir" ]; then
             _p_pass_dir="$1"
             shift
+        elif [ "x$arg" == "x--gpg-home-dir" ]; then
+            _p_pass_gpg_dir="$1"
+            shift
         elif [ "x$arg" == "x--verbose" ]; then
             # enables global verbose mode
             _p_verbose="x"
@@ -154,6 +157,9 @@ function __p_args() {
             _p_verbose="x"
         elif [ "x$arg" == "x--password-store-dir" ]; then
             _p_pass_dir="$1"
+            shift
+        elif [ "x$arg" == "x--gpg-home-dir" ]; then
+            _p_pass_gpg_dir="$1"
             shift
         else
             _p_remaining+=("$arg")

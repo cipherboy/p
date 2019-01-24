@@ -46,7 +46,7 @@ function ___p_help() {
     echo ""
     echo ""
     echo "Global options:"
-    echo ""
-    echo "--password-store-dir <dir>: password store directory to use"
-    echo "--verbose: enable verbose output for debugging"
+    echo " --password-store-dir <dir>: password store directory to use"
+    echo " --gpg-home-dir <dir>: gpg home directory to use"
+    echo " --verbose: enable verbose output for debugging"
 }
