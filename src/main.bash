@@ -70,6 +70,7 @@ function p() {
     . commands/decrypt.bash
     . commands/edit.bash
     . commands/encrypt.bash
+    . commands/find.bash
     . commands/git.bash
     . commands/json.bash
     . commands/locate.bash
@@ -103,6 +104,7 @@ function p() {
     ___p_decrypt "${_p_remaining[@]}"
     ___p_edit "${_p_remaining[@]}"
     ___p_encrypt "${_p_remaining[@]}"
+    ___p_find "${_p_remaining[@]}"
     ___p_git "${_p_remaining[@]}"
     ___p_json "${_p_remaining[@]}"
     ___p_ls "${_p_remaining[@]}"

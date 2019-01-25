@@ -124,6 +124,10 @@ function __p_args() {
             # locate command
             _pc_locate="true"
             found_command="true"
+        elif [ "x$arg" == "xfind" ]; then
+            # find command
+            _pc_find="true"
+            found_command="true"
         elif [ "x$arg" == "x--password-store-dir" ]; then
             _p_pass_dir="$1"
             shift

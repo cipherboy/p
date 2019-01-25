@@ -20,6 +20,7 @@ function ___p_help() {
     echo " Basic navigation:"
     echo "  - cd: change directories"
     echo "  - cp: copy the contents of one file to another location"
+    echo "  - find: list all files in the password store"
     echo "  - locate: list files and directories matching a pattern"
     echo "  - ls: list files and directories"
     echo "  - mkdir: make a directory"
