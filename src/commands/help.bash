@@ -6,7 +6,7 @@ function ___p_help() {
         return
     fi
 
-    echo "Usage: p [global options] cmd [args]"
+    echo "Usage: p [global options] <cmd> [args]"
     echo ""
     echo "p - version $_p_version"
     echo "https://github.com/cipherboy/p"

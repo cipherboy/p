@@ -46,6 +46,34 @@ function ___p_keys() {
         elif [ "x$subcommand" == "xdelete" ]; then
             ___p_keys_dir_delete "$@"
         fi
+    else
+        echo "Usage: p keys <cmd> [arguments]"
+        echo "Manages encryption keys for password store."
+        echo ""
+        echo "Available commands:"
+        echo " Key management:"
+        echo "  - init <id>: initialize key management"
+        echo "  - import <nickname> <id>: import a key from gpg's database"
+        echo "  - list: list all keys"
+        echo "  - regen: recreate all .gpg-id files and re-encrypt accordingly"
+        echo ""
+        echo " Group management:"
+        echo "  - group create @<group name> <nickname> [...]: create a new group"
+        echo "  - group add @<group name> <nickname> [...]: add keys to group"
+        echo "  - group remove @<group name> <nickname> [...]: remove keys from group"
+        echo "  - group delete @<group name> <nickname> [...]: delete group"
+        echo ""
+        echo " Directory management:"
+        echo "  - dir create /<path> <nickname> [...]: keys to encrypt path with"
+        echo "  - dir add /<path> <nickname> [...]: add keys to list"
+        echo "  - dir regen /<path>: regenerate .gpg-id and re-encrypt directory"
+        echo "  - dir remove /<path> <nickname> [...]: remove keys from list"
+        echo "  - dir delete /<path> <nickname> [...]: delete directory"
+        echo ""
+        echo "Notes:"
+        echo "  - A group may include other groups in the included key list."
+        echo "  - All groups must begin with an @ symbol."
+        echo "  - A directory may be assigned keys by nickname or groups."
     fi
 }
 
