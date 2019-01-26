@@ -52,8 +52,9 @@ function p() {
     . utils/colors.bash
 
     # [ stage: functions ] #
-    . utils/env.bash
     . utils/args.bash
+    . utils/env.bash
+    . utils/genpass.bash
     . utils/paths.bash
     . utils/print_json.bash
     . utils/rtypr.bash
@@ -71,6 +72,7 @@ function p() {
     . commands/edit.bash
     . commands/encrypt.bash
     . commands/find.bash
+    . commands/generate.bash
     . commands/git.bash
     . commands/json.bash
     . commands/locate.bash
@@ -105,6 +107,7 @@ function p() {
     ___p_edit "${_p_remaining[@]}"
     ___p_encrypt "${_p_remaining[@]}"
     ___p_find "${_p_remaining[@]}"
+    ___p_generate "${_p_remaining[@]}"
     ___p_git "${_p_remaining[@]}"
     ___p_json "${_p_remaining[@]}"
     ___p_ls "${_p_remaining[@]}"

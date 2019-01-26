@@ -128,6 +128,10 @@ function __p_args() {
             # find command
             _pc_find="true"
             found_command="true"
+        elif [ "x$arg" == "xgenerate" ] || [ "x$arg" == "xgen" ]; then
+            # generate command
+            _pc_generate="true"
+            found_command="true"
         elif [ "x$arg" == "x--password-store-dir" ]; then
             _p_pass_dir="$1"
             shift
