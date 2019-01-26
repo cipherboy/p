@@ -132,6 +132,11 @@ function __p_args() {
             # generate command
             _pc_generate="true"
             found_command="true"
+        elif [ "x$arg" == "xkeys" ] || [ "x$arg" == "xkey" ] ||
+                [ "x$arg" == "xkey" ]; then
+            # keys command
+            _pc_keys="true"
+            found_command="true"
         elif [ "x$arg" == "x--password-store-dir" ]; then
             _p_pass_dir="$1"
             shift

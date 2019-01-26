@@ -55,6 +55,7 @@ function p() {
     . utils/args.bash
     . utils/env.bash
     . utils/genpass.bash
+    . utils/gpg.bash
     . utils/paths.bash
     . utils/print_json.bash
     . utils/rtypr.bash
@@ -75,6 +76,7 @@ function p() {
     . commands/generate.bash
     . commands/git.bash
     . commands/json.bash
+    . commands/keys.bash
     . commands/locate.bash
     . commands/ls.bash
     . commands/mkdir.bash
@@ -110,6 +112,7 @@ function p() {
     ___p_generate "${_p_remaining[@]}"
     ___p_git "${_p_remaining[@]}"
     ___p_json "${_p_remaining[@]}"
+    ___p_keys "${_p_remaining[@]}"
     ___p_ls "${_p_remaining[@]}"
     ___p_mkdir "${_p_remaining[@]}"
     ___p_mv "${_p_remaining[@]}"
