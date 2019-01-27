@@ -21,6 +21,8 @@ function ___p_keys() {
         ___p_keys_delete "$@"
     elif [ "x$command" == "xrename" ]; then
         ___p_keys_rename "$@"
+    elif [ "x$command" == "xupdate" ]; then
+        ___p_keys_update "$@"
     elif [ "x$command" == "xgpg" ]; then
         local subcommand="$1"
         shift
@@ -81,6 +83,7 @@ function ___p_keys() {
         echo "  - regen: recreate all .gpg-id files and re-encrypt accordingly"
         echo "  - delete <nickname>: delete a key and all its uses"
         echo "  - rename <old> <new>: rename a key"
+        echo "  - update <nickname>: update a key (e.g., for signatures)"
         echo ""
         echo " Group management:"
         echo "  - group create @<group name> <nickname> [...]: create a new group"
@@ -168,6 +171,18 @@ function ___p_keys_import() {
     cat - <<< "$config" |
         jq ".keys[\"$nickname\"]=\"$fingerprint\"" |
         __p_keys_write_config
+}
+
+function ___p_keys_update() {
+    local nickname="$1"
+    local key_base="/.p/keys"
+    local config="$(__p_keys_read_config)"
+    local fingerprint="$(jq -r ".keys[\"$nickname\"]" <<< "$config")"
+
+    _pc_open="true" ___p_open --read-only "$key_base/$fingerprint.pem" -- __gpg --import
+
+    __p_gpg_export_key "$fingerprint" - |
+        _pc_encrypt="true" ___p_encrypt - "$key_base/$fingerprint.pem"
 }
 
 function ___p_keys_export() {
