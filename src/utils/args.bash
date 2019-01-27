@@ -146,6 +146,11 @@ function __p_args() {
             _pc_keys="true"
             found_command="true"
             _p_remaining+=("dirs")
+        elif [ "x$arg" == "xgpg" ]; then
+            # keys command with gpg subcommand
+            _pc_keys="true"
+            found_command="true"
+            _p_remaining+=("gpg")
         elif [ "x$arg" == "xsearch" ] || [ "x$arg" == "xgrep" ]; then
             # search command
             _pc_search="true"

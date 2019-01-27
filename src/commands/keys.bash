@@ -21,8 +21,19 @@ function ___p_keys() {
         ___p_keys_delete "$@"
     elif [ "x$command" == "xrename" ]; then
         ___p_keys_rename "$@"
-    elif [ "x$command" == "xgenerate" ] || [ "x$command" == "xgen" ]; then
-        ___p_keys_generate "$@"
+    elif [ "x$command" == "xgpg" ]; then
+        local subcommand="$1"
+        shift
+
+        if [ "x$subcommand" == "xgenerate" ] || [ "x$subcommand" == "xgen" ]; then
+            ___p_keys_gpg_generate "$@"
+        elif [ "x$subcommand" == "ximport" ]; then
+            ___p_keys_gpg_import "$@"
+        elif [ "x$subcommand" == "xlist" ]; then
+            ___p_keys_gpg_list "$@"
+        elif [ "x$subcommand" == "xtrust" ] || [ "x$subcommand" == "xsign" ]; then
+            ___p_keys_gpg_trust "$@"
+        fi
     elif [ "x$command" == "xgroups" ] || [ "x$command" == "xgroup" ] ||
             [ "x$command" == "xg" ]; then
         local subcommand="$1"
@@ -85,6 +96,12 @@ function ___p_keys() {
         echo "  - dir remove /<path> <nickname> [...]: remove keys from list"
         echo "  - dir delete /<path> <nickname> [...]: delete directory"
         echo "  - dir list: list all directories and their members"
+        echo ""
+        echo " GPG commands:"
+        echo "  - gpg generate <name> <email>: generate a new GPG key"
+        echo "  - gpg import <file>: import a key from a key file"
+        echo "  - gpg list [<id>]: list all GPG keys, optionally those matching <id>"
+        echo "  - gpg trust <id>: trust and sign a key"
         echo ""
         echo "Notes:"
         echo "  - A group may include other groups in the included key list."
@@ -219,7 +236,7 @@ function ___p_keys_rename() {
     __p_keys_write_config <<< "$updated"
 }
 
-function ___p_keys_generate() {
+function ___p_keys_gpg_generate() {
     local key_base="/.p/keys"
     local nickname="$1"
     local name="$2"
@@ -234,11 +251,31 @@ function ___p_keys_generate() {
     local tmpdir="$(__p_mk_secure_tmp)"
     pushd "$tmpdir" >/dev/null
         __p_gpg_batch_generate "$tmpdir/key.batch" "$name" "$email"
+        ret=$?
+    popd >/dev/null/generate
 
-        local fingerprint="$(__p_gpg_get_fingerprint "$name" "$email")"
-        ___p_keys_import "$nickname" "$fingerprint"
-    popd >/dev/null
-    __p_rm_secure_tmp "$tmpdir"
+    if (( ret == 0 )); then
+        __p_rm_secure_tmp "$tmpdir"
+    else
+        echo "Error during operation: refusing to remove $tmpdir"
+    fi
+}
+
+function ___p_keys_gpg_import() {
+    local file="$1"
+
+    __gpg --import "$file"
+}
+
+function ___p_keys_gpg_list() {
+    __gpg --list-keys --keyid-format LONG "$@"
+}
+
+function ___p_keys_gpg_trust() {
+    local id="$1"
+
+    echo -e "4\nsave\n" | __gpg --command-fd 0 --expert --edit-key "$id" trust
+    __gpg --edit-key "$id" sign
 }
 
 function ___p_keys_group_create() {
