@@ -15,12 +15,14 @@ function ___p_keys() {
         ___p_keys_import "$@"
     elif [ "x$command" == "xexport" ]; then
         ___p_keys_export "$@"
-    elif [ "x$command" == "xregen" ]; then
+    elif [ "x$command" == "xregenerate" ] || [ "x$command" == "xregen" ]; then
         ___p_keys_regen "$@"
     elif [ "x$command" == "xdelete" ]; then
         ___p_keys_delete "$@"
     elif [ "x$command" == "xrename" ]; then
         ___p_keys_rename "$@"
+    elif [ "x$command" == "xgenerate" ] || [ "x$command" == "xgen" ]; then
+        ___p_keys_generate "$@"
     elif [ "x$command" == "xgroups" ] || [ "x$command" == "xgroup" ] ||
             [ "x$command" == "xg" ]; then
         local subcommand="$1"
@@ -109,12 +111,12 @@ function ___p_keys_init() {
         jq ".keys={\"default\": \"$fingerprint\"}" |
         jq '.groups={}' |
         jq ".dirs={\"/\": [\"default\"]}" |
-        _pc_encrypt="true" ___p_encrypt - "$key_base/config.json"
+        __p_keys_write_config
 }
 
 function ___p_keys_list() {
     local key_base="/.p/keys"
-    local config="$(_pc_decrypt="true" ___p_decrypt "$key_base/config.json" -)"
+    local config="$(__p_keys_read_config)"
 
     for nickname in $(jq -r '.keys | keys[]' <<< "$config"); do
         local fingerprint="$(jq -r ".keys[\"$nickname\"]" <<< "$config")"
@@ -144,17 +146,17 @@ function ___p_keys_import() {
     __p_gpg_export_key "$fingerprint" - |
         _pc_encrypt="true" ___p_encrypt - "$key_base/$fingerprint.pem"
 
-    local config="$(_pc_decrypt="true" ___p_decrypt "$key_base/config.json" -)"
+    local config="$(__p_keys_read_config)"
 
     cat - <<< "$config" |
         jq ".keys[\"$nickname\"]=\"$fingerprint\"" |
-        _pc_encrypt="true" ___p_encrypt - "$key_base/config.json"
+        __p_keys_write_config
 }
 
 function ___p_keys_export() {
     local nickname="$1"
     local key_base="/.p/keys"
-    local config="$(_pc_decrypt="true" ___p_decrypt "$key_base/config.json" -)"
+    local config="$(__p_keys_read_config)"
     local fingerprint="$(jq -r ".keys[\"$nickname\"]" <<< "$config")"
 
     if [ "x$fingerprint" == "xnull" ]; then
@@ -168,7 +170,7 @@ function ___p_keys_export() {
 function ___p_keys_delete() {
     local nickname="$1"
     local key_base="/.p/keys"
-    local config="$(_pc_decrypt="true" ___p_decrypt "$key_base/config.json" -)"
+    local config="$(__p_keys_read_config)"
     local fingerprint="$(jq -r ".keys[\"$nickname\"]" <<< "$config")"
 
     if [ "x$fingerprint" == "xnull" ]; then
@@ -188,14 +190,14 @@ function ___p_keys_delete() {
 
     _pc_rm="true" ___p_rm -rf "$key_base/$fingerprint.pem"
 
-    _pc_encrypt="true" ___p_encrypt - "$key_base/config.json" <<< "$updated"
+    __p_keys_write_config <<< "$updated"
 }
 
 function ___p_keys_rename() {
     local nickname="$1"
     local new_nickname="$2"
     local key_base="/.p/keys"
-    local config="$(_pc_decrypt="true" ___p_decrypt "$key_base/config.json" -)"
+    local config="$(__p_keys_read_config)"
     local fingerprint="$(jq -r ".keys[\"$nickname\"]" <<< "$config")"
 
     if [ "x$fingerprint" == "xnull" ]; then
@@ -214,7 +216,29 @@ function ___p_keys_rename() {
         updated="$(jq "( .dirs[\"$dir\"] | select(\"$nickname\") ) |= \"$new_nickname\"" <<< "$updated")"
     done
 
-    _pc_encrypt="true" ___p_encrypt - "$key_base/config.json" <<< "$updated"
+    __p_keys_write_config <<< "$updated"
+}
+
+function ___p_keys_generate() {
+    local key_base="/.p/keys"
+    local nickname="$1"
+    local name="$2"
+    local email="$3"
+
+    if __p_gpg_is_id "$name" "$email"; then
+        __e "Error: resulting GPG key will not be uniquely determined by: $name and $email"
+        return 1
+    fi
+
+    # Create a temporary directory for the new key.
+    local tmpdir="$(__p_mk_secure_tmp)"
+    pushd "$tmpdir" >/dev/null
+        __p_gpg_batch_generate "$tmpdir/key.batch" "$name" "$email"
+
+        local fingerprint="$(__p_gpg_get_fingerprint "$name" "$email")"
+        ___p_keys_import "$nickname" "$fingerprint"
+    popd >/dev/null
+    __p_rm_secure_tmp "$tmpdir"
 }
 
 function ___p_keys_group_create() {
@@ -227,7 +251,7 @@ function ___p_keys_group_create() {
         return 1
     fi
 
-    local config="$(_pc_decrypt="true" ___p_decrypt "$key_base/config.json" -)"
+    local config="$(__p_keys_read_config)"
 
     local updated="$(jq ".groups[\"$name\"]=[]" <<< "$config")"
 
@@ -235,7 +259,7 @@ function ___p_keys_group_create() {
         updated="$(jq ".groups[\"$name\"]+=[\"$arg\"]" <<< "$updated")"
     done
 
-    _pc_encrypt="true" ___p_encrypt - "$key_base/config.json" <<< "$updated"
+    __p_keys_write_config <<< "$updated"
 }
 
 function ___p_keys_group_add() {
@@ -248,18 +272,18 @@ function ___p_keys_group_add() {
         return 1
     fi
 
-    local updated="$(_pc_decrypt="true" ___p_decrypt "$key_base/config.json" -)"
+    local updated="$(__p_keys_read_config)"
 
     for arg in "$@"; do
         updated="$(jq ".groups[\"$name\"]+=[\"$arg\"]" <<< "$updated")"
     done
 
-    _pc_encrypt="true" ___p_encrypt - "$key_base/config.json" <<< "$updated"
+    __p_keys_write_config <<< "$updated"
 }
 
 function ___p_keys_group_list() {
     local key_base="/.p/keys"
-    local config="$(_pc_decrypt="true" ___p_decrypt "$key_base/config.json" -)"
+    local config="$(__p_keys_read_config)"
 
     for name in $(jq -r ".groups | keys[]" <<< "$config"); do
         echo "group: $name"
@@ -281,13 +305,13 @@ function ___p_keys_group_remove() {
         return 1
     fi
 
-    local updated="$(_pc_decrypt="true" ___p_decrypt "$key_base/config.json" -)"
+    local updated="$(__p_keys_read_config)"
 
     for arg in "$@"; do
         updated="$(jq ".groups[\"$name\"]-=[\"$arg\"]" <<< "$updated")"
     done
 
-    _pc_encrypt="true" ___p_encrypt - "$key_base/config.json" <<< "$updated"
+    __p_keys_write_config <<< "$updated"
 }
 
 function ___p_keys_group_delete() {
@@ -299,10 +323,10 @@ function ___p_keys_group_delete() {
         return 1
     fi
 
-    local config="$(_pc_decrypt="true" ___p_decrypt "$key_base/config.json" -)"
+    local config="$(__p_keys_read_config)"
     local updated="$(jq "del(.groups[\"$name\"])" <<< "$config")"
 
-    _pc_encrypt="true" ___p_encrypt - "$key_base/config.json" <<< "$updated"
+    __p_keys_write_config <<< "$updated"
 }
 
 function ___p_keys_dir_create() {
@@ -315,7 +339,7 @@ function ___p_keys_dir_create() {
         return 1
     fi
 
-    local config="$(_pc_decrypt="true" ___p_decrypt "$key_base/config.json" -)"
+    local config="$(__p_keys_read_config)"
 
     local updated="$(jq ".dirs[\"$dir\"]=[]" <<< "$config")"
 
@@ -323,7 +347,7 @@ function ___p_keys_dir_create() {
         updated="$(jq ".dirs[\"$dir\"]+=[\"$arg\"]" <<< "$updated")"
     done
 
-    _pc_encrypt="true" ___p_encrypt - "$key_base/config.json" <<< "$updated"
+    __p_keys_write_config <<< "$updated"
 }
 
 function ___p_keys_dir_add() {
@@ -336,18 +360,18 @@ function ___p_keys_dir_add() {
         return 1
     fi
 
-    local updated="$(_pc_decrypt="true" ___p_decrypt "$key_base/config.json" -)"
+    local updated="$(__p_keys_read_config)"
 
     for arg in "$@"; do
         updated="$(jq ".dirs[\"$dir\"]+=[\"$arg\"]" <<< "$updated")"
     done
 
-    _pc_encrypt="true" ___p_encrypt - "$key_base/config.json" <<< "$updated"
+    __p_keys_write_config <<< "$updated"
 }
 
 function ___p_keys_dir_list() {
     local key_base="/.p/keys"
-    local config="$(_pc_decrypt="true" ___p_decrypt "$key_base/config.json" -)"
+    local config="$(__p_keys_read_config)"
 
     for dir in $(jq -r ".dirs | keys[]" <<< "$config"); do
         echo "dir: $dir"
@@ -369,7 +393,7 @@ function ___p_keys_dir_regen() {
         return 1
     fi
 
-    local config="$(_pc_decrypt="true" ___p_decrypt "$key_base/config.json" -)"
+    local config="$(__p_keys_read_config)"
 
     if [ ! -d "$_p_pass_dir/$dir" ]; then
         __e "Directory does not exist on disk: $dir"
@@ -428,13 +452,13 @@ function ___p_keys_dir_remove() {
         return 1
     fi
 
-    local updated="$(_pc_decrypt="true" ___p_decrypt "$key_base/config.json" -)"
+    local updated="$(__p_keys_read_config)"
 
     for arg in "$@"; do
         updated="$(jq ".dirs[\"$dir\"]-=[\"$arg\"]" <<< "$updated")"
     done
 
-    _pc_encrypt="true" ___p_encrypt - "$key_base/config.json" <<< "$updated"
+    __p_keys_write_config <<< "$updated"
 }
 
 function ___p_keys_dir_delete() {
@@ -446,15 +470,15 @@ function ___p_keys_dir_delete() {
         return 1
     fi
 
-    local config="$(_pc_decrypt="true" ___p_decrypt "$key_base/config.json" -)"
+    local config="$(__p_keys_read_config)"
     local updated="$(jq "del(.dirs[\"$dir\"])" <<< "$config")"
 
-    _pc_encrypt="true" ___p_encrypt - "$key_base/config.json" <<< "$updated"
+    __p_keys_write_config <<< "$updated"
 }
 
 function ___p_keys_regen() {
     local key_base="/.p/keys"
-    local config="$(_pc_decrypt="true" ___p_decrypt "$key_base/config.json" -)"
+    local config="$(__p_keys_read_config)"
 
     for dir in $(jq -r '.dirs | keys[]' <<< "$config"); do
         ___p_keys_dir_regen "$dir"

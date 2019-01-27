@@ -1,6 +1,5 @@
 __p_gpg_is_id() {
-    local id="$1"
-    local lines="$(__gpg --with-colons --list-keys "$id" 2>/dev/null | grep '^pub:' | wc -l)"
+    local lines="$(__gpg --with-colons --list-keys "$@" 2>/dev/null | grep '^pub:' | wc -l)"
 
     if (( lines == 1 )); then
         return 0
@@ -10,12 +9,10 @@ __p_gpg_is_id() {
 }
 
 __p_gpg_get_fingerprint() {
-    local id="$1"
-
-    if __p_gpg_is_id "$id"; then
-        __gpg --with-colons --list-keys --keyid-format LONG "$id" | grep -C 1 '^pub:' | grep '^fpr:' | awk -F ':' '{print $(NF-1)}'
+    if __p_gpg_is_id "$@"; then
+        __gpg --with-colons --list-keys --keyid-format LONG "$@" | grep -C 1 '^pub:' | grep '^fpr:' | awk -F ':' '{print $(NF-1)}'
     else
-        __e "Identifier is not unique: $id"
+        __e "Identifier is not unique:" "$@"
         return 1
     fi
 }
@@ -25,4 +22,23 @@ __p_gpg_export_key() {
     local file="$2"
 
     __gpg --armor --output "$file" --export "$id"
+}
+
+__p_gpg_batch_generate() {
+    local filename="$1"
+    local name="$2"
+    local email="$3"
+
+    echo "Key-Type: RSA" > "$filename"
+    echo "Key-Length: 4096" >> "$filename"
+    echo "Key-Usage: sign,auth" >> "$filename"
+    echo "Subkey-Type: RSA" >> "$filename"
+    echo "Subkey-Length: 4096" >> "$filename"
+    echo "Subkey-Usage: encrypt,sign" >> "$filename"
+    echo "Name-Real: $name" >> "$filename"
+    echo "Name-Email: $email" >> "$filename"
+    echo "Expire-Date: 35y" >> "$filename"
+    echo "%commit" >> "$filename"
+
+    __gpg --batch --generate-key "$filename"
 }
