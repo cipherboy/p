@@ -56,6 +56,7 @@ function p() {
     . utils/env.bash
     . utils/genpass.bash
     . utils/gpg.bash
+    . utils/keys.bash
     . utils/paths.bash
     . utils/print_json.bash
     . utils/rtypr.bash
@@ -75,7 +76,6 @@ function p() {
     . commands/find.bash
     . commands/generate.bash
     . commands/git.bash
-    . commands/grep.bash
     . commands/json.bash
     . commands/keys.bash
     . commands/locate.bash
@@ -84,6 +84,7 @@ function p() {
     . commands/open.bash
     . commands/mv.bash
     . commands/rm.bash
+    . commands/search.bash
     . commands/through.bash
 
     . commands/help.bash
@@ -112,7 +113,6 @@ function p() {
     ___p_find "${_p_remaining[@]}"
     ___p_generate "${_p_remaining[@]}"
     ___p_git "${_p_remaining[@]}"
-    ___p_grep "${_p_remaining[@]}"
     ___p_json "${_p_remaining[@]}"
     ___p_keys "${_p_remaining[@]}"
     ___p_ls "${_p_remaining[@]}"
@@ -120,6 +120,7 @@ function p() {
     ___p_mv "${_p_remaining[@]}"
     ___p_open "${_p_remaining[@]}"
     ___p_rm "${_p_remaining[@]}"
+    ___p_search "${_p_remaining[@]}"
     ___p_through "${_p_remaining[@]}"
 
     # Print help as the last thing we do before exiting; this ensures that if
