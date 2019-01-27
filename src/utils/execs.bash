@@ -12,6 +12,19 @@ function __pass() {
     )
 }
 
+# Execute gpg with the given arguments. Fallback to gpg if gpg2 is not
+# available.
+function __gpg() {
+    (
+        export GNUPGHOME="$_p_pass_gpg_dir"
+        if command -v gpg2  > /dev/null; then
+            gpg2 "$@"
+        else
+            gpg "$@"
+        fi
+    )
+}
+
 # Execute the jq command with the given arguments.
 function __jq() {
     $_p_jq_path "$@"

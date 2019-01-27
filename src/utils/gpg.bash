@@ -1,6 +1,6 @@
 __p_gpg_is_id() {
     local id="$1"
-    local lines="$(gpg2 --with-colons --list-keys "$id" | grep '^pub:' | wc -l)"
+    local lines="$(__gpg --with-colons --list-keys "$id" 2>/dev/null | grep '^pub:' | wc -l)"
 
     if (( lines == 1 )); then
         return 0
@@ -12,12 +12,17 @@ __p_gpg_is_id() {
 __p_gpg_get_fingerprint() {
     local id="$1"
 
-    gpg2 --with-colons --list-keys --keyid-format LONG "$id" | grep -C 1 '^pub:' | grep '^fpr:' | awk -F ':' '{print $(NF-1)}'
+    if __p_gpg_is_id "$id"; then
+        __gpg --with-colons --list-keys --keyid-format LONG "$id" | grep -C 1 '^pub:' | grep '^fpr:' | awk -F ':' '{print $(NF-1)}'
+    else
+        __e "Identifier is not unique: $id"
+        return 1
+    fi
 }
 
 __p_gpg_export_key() {
     local id="$1"
     local file="$2"
 
-    gpg2 --armor --output "$file" --export "$id"
+    __gpg --armor --output "$file" --export "$id"
 }

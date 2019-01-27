@@ -132,11 +132,20 @@ function __p_args() {
             # generate command
             _pc_generate="true"
             found_command="true"
-        elif [ "x$arg" == "xkeys" ] || [ "x$arg" == "xkey" ] ||
-                [ "x$arg" == "xkey" ]; then
+        elif [ "x$arg" == "xkeys" ] || [ "x$arg" == "xkey" ]; then
             # keys command
             _pc_keys="true"
             found_command="true"
+        elif [ "x$arg" == "xgroups" ] || [ "x$arg" == "xgroup" ]; then
+            # keys command with groups subcommand
+            _pc_keys="true"
+            found_command="true"
+            _p_remaining+=("groups")
+        elif [ "x$arg" == "xdirs" ] || [ "x$arg" == "xdir" ]; then
+            # keys command with dirs subcommand
+            _pc_keys="true"
+            found_command="true"
+            _p_remaining+=("dirs")
         elif [ "x$arg" == "x--password-store-dir" ]; then
             _p_pass_dir="$1"
             shift
