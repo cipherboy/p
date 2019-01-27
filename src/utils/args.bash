@@ -146,6 +146,10 @@ function __p_args() {
             _pc_keys="true"
             found_command="true"
             _p_remaining+=("dirs")
+        elif [ "x$arg" == "xsearch" ] || [ "x$arg" == "xgrep" ]; then
+            # search command
+            _pc_search="true"
+            found_command="true"
         elif [ "x$arg" == "x--password-store-dir" ]; then
             _p_pass_dir="$1"
             shift

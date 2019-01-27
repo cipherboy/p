@@ -75,6 +75,7 @@ function p() {
     . commands/find.bash
     . commands/generate.bash
     . commands/git.bash
+    . commands/grep.bash
     . commands/json.bash
     . commands/keys.bash
     . commands/locate.bash
@@ -111,6 +112,7 @@ function p() {
     ___p_find "${_p_remaining[@]}"
     ___p_generate "${_p_remaining[@]}"
     ___p_git "${_p_remaining[@]}"
+    ___p_grep "${_p_remaining[@]}"
     ___p_json "${_p_remaining[@]}"
     ___p_keys "${_p_remaining[@]}"
     ___p_ls "${_p_remaining[@]}"
