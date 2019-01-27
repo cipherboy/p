@@ -19,6 +19,8 @@ function ___p_keys() {
         ___p_keys_regen "$@"
     elif [ "x$command" == "xdelete" ]; then
         ___p_keys_delete "$@"
+    elif [ "x$command" == "xrename" ]; then
+        ___p_keys_rename "$@"
     elif [ "x$command" == "xgroups" ] || [ "x$command" == "xgroup" ] ||
             [ "x$command" == "xg" ]; then
         local subcommand="$1"
@@ -65,6 +67,7 @@ function ___p_keys() {
         echo "  - list: list all keys tracked by p"
         echo "  - regen: recreate all .gpg-id files and re-encrypt accordingly"
         echo "  - delete <nickname>: delete a key and all its uses"
+        echo "  - rename <old> <new>: rename a key"
         echo ""
         echo " Group management:"
         echo "  - group create @<group name> <nickname> [...]: create a new group"
@@ -169,21 +172,47 @@ function ___p_keys_delete() {
     local fingerprint="$(jq -r ".keys[\"$nickname\"]" <<< "$config")"
 
     if [ "x$fingerprint" == "xnull" ]; then
-        __e "Unknown key for nickname; $nickname"
+        __e "Unknown key for nickname: $nickname"
         return 1
     fi
 
-    local updated="$(jq "del(.keys[\"$nickname\"])" <<< "$config" )"
+    local updated="$(jq "del(.keys[\"$nickname\"])" <<< "$config")"
 
     for name in $(jq -r ".groups | keys[]" <<< "$config"); do
-        updated="$(jq ".groups[\"$name\"]-=[\"$nickname\"]" <<< "$updated" )"
+        updated="$(jq ".groups[\"$name\"]-=[\"$nickname\"]" <<< "$updated")"
     done
 
     for dir in $(jq -r ".dirs | keys[]" <<< "$config"); do
-        updated="$(jq ".dirs[\"$dir\"]-=[\"$nickname\"]" <<< "$updated" )"
+        updated="$(jq ".dirs[\"$dir\"]-=[\"$nickname\"]" <<< "$updated")"
     done
 
     _pc_rm="true" ___p_rm -rf "$key_base/$fingerprint.pem"
+
+    _pc_encrypt="true" ___p_encrypt - "$key_base/config.json" <<< "$updated"
+}
+
+function ___p_keys_rename() {
+    local nickname="$1"
+    local new_nickname="$2"
+    local key_base="/.p/keys"
+    local config="$(_pc_decrypt="true" ___p_decrypt "$key_base/config.json" -)"
+    local fingerprint="$(jq -r ".keys[\"$nickname\"]" <<< "$config")"
+
+    if [ "x$fingerprint" == "xnull" ]; then
+        __e "Unknown key for nickname: $nickname"
+        return 1
+    fi
+
+    local updated="$(jq "del(.keys[\"$nickname\"])" <<< "$config")"
+    updated="$(jq ".keys[\"$new_nickname\"]=\"$fingerprint\"" <<< "$updated")"
+
+    for name in $(jq -r ".groups | keys[]" <<< "$config"); do
+        updated="$(jq "( .groups[\"$name\"] | select(\"$nickname\") ) |= \"$new_nickname\"" <<< "$updated")"
+    done
+
+    for dir in $(jq -r ".dirs | keys[]" <<< "$config"); do
+        updated="$(jq "( .dirs[\"$dir\"] | select(\"$nickname\") ) |= \"$new_nickname\"" <<< "$updated")"
+    done
 
     _pc_encrypt="true" ___p_encrypt - "$key_base/config.json" <<< "$updated"
 }
