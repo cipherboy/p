@@ -146,7 +146,7 @@ function ___p_keys_list() {
 
         # Display information about the key
         _pc_decrypt="true" ___p_decrypt "$key_base/$fingerprint.pem" - |
-            gpg2 --dry-run --keyid-format long --import-options show-only \
+            __gpg --dry-run --keyid-format long --import-options show-only \
                 --import 2>/dev/null |
             sed 's/^/    /g'
     done
@@ -253,9 +253,8 @@ function ___p_keys_rename() {
 
 function ___p_keys_gpg_generate() {
     local key_base="/.p/keys"
-    local nickname="$1"
-    local name="$2"
-    local email="$3"
+    local name="$1"
+    local email="$2"
 
     if __p_gpg_is_id "$name" "$email"; then
         __e "Error: resulting GPG key will not be uniquely determined by: $name and $email"
@@ -265,9 +264,14 @@ function ___p_keys_gpg_generate() {
     # Create a temporary directory for the new key.
     local tmpdir="$(__p_mk_secure_tmp)"
     pushd "$tmpdir" >/dev/null
-        __p_gpg_batch_generate "$tmpdir/key.batch" "$name" "$email"
+        if (( $# == 3 )); then
+            local password="$3"
+            __p_gpg_batch_generate "$tmpdir/key.batch" "$name" "$email" "$password"
+        else
+            __p_gpg_batch_generate "$tmpdir/key.batch" "$name" "$email"
+        fi
         ret=$?
-    popd >/dev/null/generate
+    popd >/dev/null
 
     if (( ret == 0 )); then
         __p_rm_secure_tmp "$tmpdir"

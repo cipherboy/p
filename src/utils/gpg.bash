@@ -28,10 +28,14 @@ __p_gpg_batch_generate() {
     local filename="$1"
     local name="$2"
     local email="$3"
+    local password="$4"
 
     echo "Key-Type: RSA" > "$filename"
     echo "Key-Length: 4096" >> "$filename"
     echo "Key-Usage: sign,auth" >> "$filename"
+    if (( $# == 4 )); then
+        echo "Passphrase: $password" >> "$filename"
+    fi
     echo "Subkey-Type: RSA" >> "$filename"
     echo "Subkey-Length: 4096" >> "$filename"
     echo "Subkey-Usage: encrypt,sign" >> "$filename"

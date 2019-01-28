@@ -34,7 +34,7 @@ function ___p_create() {
         init_git="false"
     fi
 
-    gpg2 --list-keys "$gpg_id" >/dev/null 2>&1
+    __gpg --list-keys "$gpg_id" >/dev/null 2>&1
     local ret=$?
 
     if [ "$help" == "true" ] || [ "x$gpg_id" == "x" ] || (( ret != 0 )) ||
