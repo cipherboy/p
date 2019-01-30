@@ -48,12 +48,25 @@ function ___p_json() {
 
         local value="$(_pc_cat="true" ___p_cat --json-only "$j_file" | jq -r ".$j_key")"
         __rtypr "$value"
+    elif [ "x$j_command" == "xkinit" ] && [ "x$j_file" != "x" ] &&
+            (( $# == 2 )); then
+        local file="$(_pc_cat="true" ___p_cat --json-only "$j_file")"
+
+        local principal="$(jq -r ".principal" <<< "$file")"
+        if [ "x$principal" == "x" ]; then
+            principal="$(jq -r ".username" <<< "$file")"
+        fi
+
+        local password="$(jq -r ".password" <<< "$file")"
+
+        kinit "$principal" <<< "$password"
     else
         echo "Usage: p json <subcommand> <arguments>"
         echo ""
         echo "Subcommands:"
         echo "    get <file> <key> - read key from the file's JSON data"
         echo "    help - show this help text"
+        echo "    kinit <file> - perform kinit with credentials from the file"
         echo "    retype <file> <key> - retype the specified key from the file"
         echo "    set <file> <key> <value> - set the value of key in file"
         echo ""
