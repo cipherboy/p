@@ -33,6 +33,10 @@ function ___p_keys() {
             ___p_keys_gpg_import "$@"
         elif [ "x$subcommand" == "xlist" ]; then
             ___p_keys_gpg_list "$@"
+        elif [ "x$subcommand" == "xpassword" ] ||
+                [ "x$subcommand" == "xpasswd" ] ||
+                [ "x$subcommand" == "xpass" ]; then
+            ___p_keys_gpg_password "$@"
         elif [ "x$subcommand" == "xtrust" ] || [ "x$subcommand" == "xsign" ]; then
             ___p_keys_gpg_trust "$@"
         fi
@@ -104,6 +108,7 @@ function ___p_keys() {
         echo "  - gpg generate <name> <email>: generate a new GPG key"
         echo "  - gpg import <file>: import a key from a key file"
         echo "  - gpg list [<id>]: list all GPG keys, optionally those matching <id>"
+        echo "  - gpg password <id>: change the password on a key"
         echo "  - gpg trust <id>: trust and sign a key"
         echo ""
         echo "Notes:"
@@ -288,6 +293,12 @@ function ___p_keys_gpg_import() {
 
 function ___p_keys_gpg_list() {
     __gpg --list-keys --keyid-format LONG "$@"
+}
+
+function ___p_keys_gpg_password() {
+    local id="$1"
+
+    __gpg --edit-key "$id" password
 }
 
 function ___p_keys_gpg_trust() {
