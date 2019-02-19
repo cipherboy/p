@@ -23,14 +23,14 @@ function ___p_ls() {
             ls_dir="true"
         else
             local arg_dir="$(__p_find_dir "$arg")"
+            local arg_file="$(__p_is_file "$arg")"
+
             if [ "x$arg_dir" != "x" ]; then
                 ls_targets+=("$arg_dir")
+            elif [ "x$arg_file" != "x" ]; then
+                ls_targets+=("$arg_file")
             else
-                __d "Unknown argument, path not found, or not a" \
-                    "directory: '$arg'. If the path is an" \
-                    "encrypted item, note that \`p\` differs from" \
-                    "\`pass\` in that the \`ls\` command will not" \
-                    "show encrypted secrets."
+                __d "Unknown argument or path not found: '$arg'."
             fi
         fi
     done
@@ -51,9 +51,12 @@ function ___p_ls() {
             # pass lacks support for showing multiple directories;
             # emulate this by passing each one individually.
             for path in "${ls_targets[@]}"; do
+                file_path="$(__p_is_file "$path")"
                 if [ "$path" == "/" ]; then
                     __pass ls
                     echo ""
+                elif [ "x$file_path" != "x" ]; then
+                    echo "$file_path"
                 else
                     __p_dir "$path"
                     __pass ls "$path" | tail -n +2
@@ -69,8 +72,11 @@ function ___p_ls() {
             tree -I ".git" -a -C "$_p_pass_dir"
         else
             for path in "${ls_targets[@]}"; do
+                file_path="$(__p_is_file "$path")"
                 if [ "$path" == "/" ]; then
                     tree -I ".git" -a -C "$_p_pass_dir"
+                elif [ "x$file_path" != "x" ]; then
+                    echo "$file_path"
                 else
                     tree -I ".git" -a -C "$_p_pass_dir/$path"
                 fi
@@ -85,10 +91,13 @@ function ___p_ls() {
                 tree -d -C -l --noreport "$_p_pass_dir" | tail -n +2
             else
                 for path in "${ls_targets[@]}"; do
+                    file_path="$(__p_is_file "$path")"
                     if [ "$path" == "/" ]; then
                         echo "Password Store"
                         tree -d -C -l --noreport "$_p_pass_dir" | tail -n +2
                         echo ""
+                    elif [ "x$file_path" != "x" ]; then
+                       echo "$file_path"
                     else
                         __p_dir "$path"
                         tree -d -C -l --noreport "$_p_pass_dir/$path" | tail -n +2
