@@ -66,17 +66,14 @@ function ___p_cd() {
         return 0
     fi
 
-    local absolute_path="$(__p_path_simplify "/$path")"
-    absolute_path="$(__p_is_dir "$absolute_path")"
-    local relative_path="$(__p_path_simplify "$_p_cwd/$path")"
-    relative_path="$(__p_is_dir "$relative_path")"
+    local absolute_path="$(__p_find_dir "/$path")"
+    local relative_path="$(__p_find_dir "/$_p_cwd/$path")"
 
     local final_path="$_p_cwd"
 
     if [ "x$mode" == "x" ]; then
         # When path appears to be absolute, try treating it as such.
         if [ "x${path:0:1}" == "x/" ] && [ "x$absolute_path" != "x" ]; then
-            echo "$absolute_path"
             final_path="$absolute_path"
         elif [ "x$relative_path" != "x" ]; then
             final_path="$relative_path"

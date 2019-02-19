@@ -126,60 +126,42 @@ function __p_path_simplify() {
     echo "$next_path"
 }
 
-# Find the referenced file; these end in .gpg
-function __p_find_file() {
+function __p_exists() {
     local name="$1"
-
     local path="$(__p_path_simplify "/$name")"
     local cwd_path="$(__p_path_simplify "$_p_cwd/$name")"
-    local first_char="${name:0:1}"
 
-    # Handle absolute vs. relative paths correctly: absolute paths get
-    # checked first if the path begins with a /, else check relative paths
-    # first.
+    local first_char="${name:0:1}"
     if [ "x$first_char" == "x/" ]; then
+        # This path is absolute; treat it as coming from the root of the
+        # password store.
         if [ -e "$_p_pass_dir/$path.gpg" ]; then
             echo "$path"
             return 0
-        elif [ -e "$_p_pass_dir/$cwd_path.gpg" ]; then
-            echo "$cwd_path"
+        elif [ -e "$_p_pass_dir/$path" ]; then
+            echo "$path"
             return 0
         fi
-    else
+    elif [ "x$first_char" == "x." ]; then
+        # This path is relative; treat it as coming relative to cwd.
         if [ -e "$_p_pass_dir/$cwd_path.gpg" ]; then
             echo "$cwd_path"
-            return 0
-        elif [ -e "$_p_pass_dir/$path.gpg" ]; then
-            echo "$path"
-            return 0
-        fi
-    fi
-
-    return 1
-}
-
-# Find the referenced directory.
-function __p_find_dir() {
-    local name="$1"
-
-    local path="$(__p_path_simplify "/$name")"
-    local cwd_path="$(__p_path_simplify "$_p_cwd/$name")"
-    local first_char="${name:0:1}"
-
-    # Handle absolute vs. relative paths correctly: absolute paths get
-    # checked first if the path begins with a /, else check relative paths
-    # first.
-    if [ "x$first_char" == "x/" ]; then
-        if [ -e "$_p_pass_dir/$path" ]; then
-            echo "$path"
             return 0
         elif [ -e "$_p_pass_dir/$cwd_path" ]; then
             echo "$cwd_path"
             return 0
         fi
     else
-        if [ -e "$_p_pass_dir/$cwd_path" ]; then
+        # Assume we're relative to $_p_cwd first, then try an absolute
+        # path.
+        if [ -e "$_p_pass_dir/$cwd_path.gpg" ]; then
             echo "$cwd_path"
+            return 0
+        elif [ -e "$_p_pass_dir/$cwd_path" ]; then
+            echo "$cwd_path"
+            return 0
+        elif [ -e "$_p_pass_dir/$path.gpg" ]; then
+            echo "$path"
             return 0
         elif [ -e "$_p_pass_dir/$path" ]; then
             echo "$path"
@@ -190,10 +172,16 @@ function __p_find_dir() {
     return 1
 }
 
-# Check if a given path is a file.
-function __p_is_file() {
-    local path="$1"
-    if [ -e "$_p_pass_dir/$path.gpg" ]; then
+# Find the referenced file; these end in .gpg.
+function __p_find_file() {
+    local name="$1"
+    local path=""
+    local ret=0
+
+    path="$(__p_exists "$name")"
+    ret=$?
+
+    if (( ret == 0 )) && [ -e "$_p_pass_dir/$path.gpg" ]; then
         echo "$path"
         return 0
     fi
@@ -201,15 +189,33 @@ function __p_is_file() {
     return 1
 }
 
-# Check if a given path is a directory.
-function __p_is_dir() {
-    local path="$1"
-    if [ -e "$_p_pass_dir/$path" ]; then
+# Find the referenced directory.
+function __p_find_dir() {
+    local name="$1"
+    local path=""
+    local ret=0
+
+    path="$(__p_exists "$name")"
+    ret=$?
+
+    if (( ret == 0 )) && [ -e "$_p_pass_dir/$path" ]; then
         echo "$path"
         return 0
     fi
 
     return 1
+}
+
+# Check if a given path is a file.
+function __p_is_file() {
+    local name="$1"
+    __p_find_file "$name" >/dev/null
+}
+
+# Check if a given path is a directory.
+function __p_is_dir() {
+    local name="$1"
+    __p_find_dir "$name" >/dev/null
 }
 
 # Create a user-owned private temporary directory.

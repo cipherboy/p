@@ -22,13 +22,10 @@ function ___p_ls() {
                 [ "x$arg" == "x-d" ]; then
             ls_dir="true"
         else
-            local arg_dir="$(__p_find_dir "$arg")"
-            local arg_file="$(__p_is_file "$arg")"
+            local arg_path="$(__p_exists "$arg")"
 
-            if [ "x$arg_dir" != "x" ]; then
-                ls_targets+=("$arg_dir")
-            elif [ "x$arg_file" != "x" ]; then
-                ls_targets+=("$arg_file")
+            if [ "x$arg_path" != "x" ]; then
+                ls_targets+=("$arg_path")
             else
                 __d "Unknown argument or path not found: '$arg'."
             fi
@@ -37,74 +34,57 @@ function ___p_ls() {
 
     ls_target_count="${#ls_targets[@]}"
 
-    # If we have no targets but P_CWD specified, act as if that is our
-    # single argument.
-    if [ "$ls_target_count" == "0" ] && [ "$_p_cwd" != "/" ]; then
+    # If we have no targets, set one: $_p_cwd (defaults to /).
+    if (( $ls_target_count == 0 )); then
         ls_targets+=("$_p_cwd")
         ls_target_count=1
     fi
 
     if [ "$ls_dir" == "false" ] && [ "$ls_all" == "false" ]; then
-        if [ "$ls_target_count" == "0" ]; then
-            __pass ls
-        else
-            # pass lacks support for showing multiple directories;
-            # emulate this by passing each one individually.
-            for path in "${ls_targets[@]}"; do
-                file_path="$(__p_is_file "$path")"
-                if [ "$path" == "/" ]; then
-                    __pass ls
-                    echo ""
-                elif [ "x$file_path" != "x" ]; then
-                    echo "$file_path"
-                else
-                    __p_dir "$path"
-                    __pass ls "$path" | tail -n +2
-                    echo ""
-                fi
-            done
-        fi
+        # pass lacks support for showing multiple directories;  emulate
+        # this by passing each one individually.
+        for path in "${ls_targets[@]}"; do
+            if [ "$path" == "/" ]; then
+                __pass ls
+                echo ""
+            elif __p_is_file "$path"; then
+                echo "$path"
+            else
+                __p_dir "$path"
+                __pass ls "$path" | tail -n +2
+                echo ""
+            fi
+        done
     elif [ "$ls_dir" == "false" ] && [ "$ls_all" == "true" ]; then
         # All mode is equivalent to a raw "tree" command, without
         # filtering the .gpg-id files and .gpg suffix. We also correctly
         # show the target directory in color. ;-)
-        if [ "$ls_target_count" == "0" ]; then
-            tree -I ".git" -a -C "$_p_pass_dir"
-        else
-            for path in "${ls_targets[@]}"; do
-                file_path="$(__p_is_file "$path")"
-                if [ "$path" == "/" ]; then
-                    tree -I ".git" -a -C "$_p_pass_dir"
-                elif [ "x$file_path" != "x" ]; then
-                    echo "$file_path"
-                else
-                    tree -I ".git" -a -C "$_p_pass_dir/$path"
-                fi
-            done
-        fi
+        for path in "${ls_targets[@]}"; do
+            if [ "$path" == "/" ]; then
+                tree -I ".git" -a -C "$_p_pass_dir"
+            elif __p_is_file "$path"; then
+                echo "$path.gpg"
+            else
+                tree -I ".git" -a -C "$_p_pass_dir/$path"
+            fi
+        done
     elif [ "$ls_dir" == "true" ] && [ "$ls_all" == "false" ]; then
         # When we're in dir mode, only show the directories and prefer
         # colors. `tree` does this best, so best to defer to it.
         pushd "$_p_pass_dir" >/dev/null
-            if [ "$ls_target_count" == "0" ]; then
-                echo "Password Store"
-                tree -d -C -l --noreport "$_p_pass_dir" | tail -n +2
-            else
-                for path in "${ls_targets[@]}"; do
-                    file_path="$(__p_is_file "$path")"
-                    if [ "$path" == "/" ]; then
-                        echo "Password Store"
-                        tree -d -C -l --noreport "$_p_pass_dir" | tail -n +2
-                        echo ""
-                    elif [ "x$file_path" != "x" ]; then
-                       echo "$file_path"
-                    else
-                        __p_dir "$path"
-                        tree -d -C -l --noreport "$_p_pass_dir/$path" | tail -n +2
-                        echo ""
-                    fi
-                done
-            fi
+            for path in "${ls_targets[@]}"; do
+                if [ "$path" == "/" ]; then
+                    echo "Password Store"
+                    tree -d -C -l --noreport "$_p_pass_dir" | tail -n +2
+                    echo ""
+                elif __p_is_file "$path"; then
+                    echo "$path.gpg"
+                else
+                    __p_dir "$path"
+                    tree -d -C -l --noreport "$_p_pass_dir/$path" | tail -n +2
+                    echo ""
+                fi
+            done
         popd >/dev/null
     else
         __d "Current mode ls_dir:$ls_dir,ls_all:$ls_all unsupported!"
