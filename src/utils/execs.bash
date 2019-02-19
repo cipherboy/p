@@ -8,6 +8,7 @@ function __pass() {
     (
         export PASSWORD_STORE_DIR="$_p_pass_dir"
         export GNUPGHOME="$_p_pass_gpg_dir"
+        export EDITOR="$_p_editor"
         $_p_pass_path "$@"
     )
 }

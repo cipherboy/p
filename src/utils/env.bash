@@ -40,6 +40,16 @@ function __p_env_check() {
         _p_pass_gpg_dir="$GNUPGHOME"
     fi
 
+    # Process $EDITOR before $P_EDITOR so P_EDITOR overrides
+    if [ "x$EDITOR" != "x" ]; then
+        _p_editor="$EDITOR"
+    fi
+
+    # Handle p-specific editor settings as well
+    if [ "x$P_EDITOR" != "x" ]; then
+        _p_editor="$P_EDITOR"
+    fi
+
     if [ "x$P_CWD" != "x" ]; then
         __v "Loading cwd from environment: \`$P_CWD\`"
         _p_cwd="$P_CWD"

@@ -13,6 +13,7 @@ local _p_pass_which="$(command -v pass)"
 local _p_pass_url="https://www.passwordstore.org/"
 local _p_pass_dir="$HOME/.password-store"
 local _p_pass_gpg_dir="$HOME/.gnupg"
+local _p_editor="$(command -v vi)"
 
 # jq-related variables
 local _p_jq_path="$P_JQ"
