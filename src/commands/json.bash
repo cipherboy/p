@@ -33,9 +33,9 @@ function ___p_json() {
         if [ "x$j_key" == "xpassword" ]; then
             local json="$(_pc_cat="true" ___p_cat --json-only "$j_file")"
 
-            jq ".old_passwords=[.password]+.old_passwords|.password=\"$j_value\"" <<< "$json" | __p_print_json | pass insert -m -f "$j_file"
+            jq ".old_passwords=[.password]+.old_passwords|.password=\"$j_value\"" <<< "$json" | __p_print_json | __pass insert -m -f "$j_file"
         else
-            jq ".$j_key=\"$j_value\"" <<< "$json" | __p_print_json | pass insert -m -f "$j_file"
+            jq ".$j_key=\"$j_value\"" <<< "$json" | __p_print_json | __pass insert -m -f "$j_file"
         fi
     elif [ "x$j_command" = "xretype" ] && [ "x$j_file" != "x" ] &&
             (( $# >= 2 )) && (( $# <= 3 )); then

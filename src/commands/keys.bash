@@ -506,7 +506,7 @@ function ___p_keys_dir_regen() {
 
     local sorted="$(sort -u "$gpgid")"
     cat - <<< "$sorted" > "$gpgid"
-    pass init --path="$dir" $(cat "$gpgid")
+    __pass init --path="$dir" $(cat "$gpgid")
 }
 
 function ___p_keys_dir_remove() {
