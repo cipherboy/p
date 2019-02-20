@@ -12,6 +12,7 @@ function ___p_open() {
 
     local help="false"
     local read_only="false"
+    local lock="true"
 
     while (( $# > 0 )); do
         local arg="$1"
@@ -26,6 +27,9 @@ function ___p_open() {
                     [ "x$arg" == "x--ro" ] || [ "x$arg" == "x-ro" ] ||
                     [ "x$arg" == "x-r" ]; then
                 read_only="true"
+            elif [ "x$arg" == "x--no-lock" ] || [ "x$arg" == "x-no-lock" ] ||
+                    [ "x$arg" == "x-n" ]; then
+                lock="false"
             elif [ "x$arg" == "x--" ]; then
                 continue
             else
@@ -44,11 +48,16 @@ function ___p_open() {
 
     if [ "$help" == "true" ] || [ "$seen_name" == "false" ] ||
             [ "$seen_command" == "false" ]; then
-        echo "Usage: p open <name> [--] <command> [<args...>]"
+        echo "Usage: p open [options] <name> [--] <command> [<args...>]"
+        echo ""
         echo "Decrypt the entry <name>, storing it in a temporary location;"
         echo "execute <command> with <args>, replacing '{}' with the decrypted"
         echo "file location. When <command> completes, re-encrypt the file to"
         echo "<name>."
+        echo ""
+        echo "Options:"
+        echo "    --read-only: do not save changes made to the file."
+        echo "    --no-lock: do not try to acquire a lock first."
         echo ""
         echo "If {} isn't specified in the arguments, the temporary path is"
         echo "appended to the command line arguments"
@@ -82,11 +91,24 @@ function ___p_open() {
         processed_args+=("$tmp")
     fi
 
+    if [ "$read_only" == "false" ] && [ "$lock" = "true" ]; then
+        if ! __p_lock "$name"; then
+            __e "Error acquiring lock for file."
+            __e "  To remove the lock file, run \`p unlock $name\`."
+            __e "  To ignore the lock file, specify the --no-lock option."
+            return 1
+        fi
+    fi
+
     _pc_decrypt="true" ___p_decrypt "$name" "$tmp"
     "$command" "${processed_args[@]}"
 
     if [ "$read_only" == "false" ]; then
         _pc_encrypt="true" ___p_encrypt "$tmp" "$name"
+
+        if [ "$lock" == "true" ]; then
+            __p_unlock "$name"
+        fi
     fi
 
     __p_rm_secure_tmp "$tmp"

@@ -57,6 +57,7 @@ function p() {
     . utils/genpass.bash
     . utils/gpg.bash
     . utils/keys.bash
+    . utils/locks.bash
     . utils/paths.bash
     . utils/print_json.bash
     . utils/rtypr.bash
