@@ -9,6 +9,7 @@ function ___p_create() {
 
     local init_git="true"
     local help="false"
+    local gpg_error="false"
 
     while (( $# > 0 )); do
         local arg="$1"
@@ -31,43 +32,58 @@ function ___p_create() {
     done
 
     if [ ! -e "$HOME/.gitconfig" ]; then
+        __v "No ~/.gitconfig present -- refusing to initialize git"
         init_git="false"
     fi
 
-    __gpg --list-keys "$gpg_id" >/dev/null 2>&1
-    local ret=$?
+    if [ ! -e "$_p_pass_dir/.gpg-id" ]; then
+        __gpg --list-keys "$gpg_id" >/dev/null 2>&1
+        local ret=$?
+        if [ "x$gpg_id" == "x" ] || (( ret != 0 )); then
+            help="true"
+            gpg_error="true"
+        fi
+    fi
 
-    if [ "$help" == "true" ] || [ "x$gpg_id" == "x" ] || (( ret != 0 )) ||
-            [ -d "$_p_pass_dir" ]; then
+    if [ "$help" == "true" ]; then
         echo "Usage: p create [options] <gpg_id>"
-        echo "Create a new password store."
+        echo "Create a new password store or progressively reinitialize an existing one."
         echo ""
         echo "Options:"
         echo "--no-git, -n: don't create the password store with git."
 
-        if [ "x$gpg_id" != "x" ] && (( ret != 0 )); then
+        if [ "$gpg_error" == "true" ]; then
             echo ""
             __e "Unknown gpg key: \`$gpg_id\`"
-            return 1
-        fi
-
-        if [ -d "$_p_pass_dir" ]; then
-            echo ""
-            __e "Password directory \`$_p_pass_dir\` already exists."
-            __e "Please choose a different directory."
             return 1
         fi
 
         return 0
     fi
 
-    mkdir -p "$_p_pass_dir/.p"
+    if [ ! -d "$_p_pass_dir/.p" ]; then
+        mkdir -p "$_p_pass_dir/.p"
+    fi
 
     if [ "$init_git" == "true" ]; then
         pushd "$_p_pass_dir" >/dev/null
-            git init
+            git init >/dev/null
+            git add -A >/dev/null
+            git commit -m "Store repository contents" >/dev/null
         popd >/dev/null
     fi
 
-    __pass init "$gpg_id"
+    if [ ! -e "$_p_pass_dir/.gpg-id" ]; then
+        __pass init "$gpg_id"
+    fi
+
+    if ! grep -qs "^\*\.lock$" "$_p_pass_dir/.gitignore"; then
+        echo "*.lock" > "$_p_pass_dir/.gitignore"
+        __pass git add "$_p_pass_dir/.gitignore" >/dev/null
+        __pass git commit -m "Add *.lock to .gitignore" >/dev/null
+    fi
+
+    if [ ! -d "$_p_pass_dir/.p/keys" ]; then
+        _pc_keys="true" ___p_keys init "$(cat "$_p_pass_dir/.gpg-id")"
+    fi
 }
