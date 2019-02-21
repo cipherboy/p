@@ -86,6 +86,7 @@ function p() {
     . commands/mv.bash
     . commands/rm.bash
     . commands/search.bash
+    . commands/sync.bash
     . commands/through.bash
 
     . commands/help.bash
@@ -122,6 +123,7 @@ function p() {
     ___p_open "${_p_remaining[@]}"
     ___p_rm "${_p_remaining[@]}"
     ___p_search "${_p_remaining[@]}"
+    ___p_sync "${_p_remaining[@]}"
     ___p_through "${_p_remaining[@]}"
 
     # Print help as the last thing we do before exiting; this ensures that if

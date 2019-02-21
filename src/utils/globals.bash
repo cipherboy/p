@@ -42,6 +42,7 @@ local _pc_open="false"
 local _pc_ls="false"
 local _pc_rm="false"
 local _pc_search="false"
+local _pc_sync="false"
 local _pc_through="false"
 
 local _pc_help="false"

@@ -155,6 +155,10 @@ function __p_args() {
             # search command
             _pc_search="true"
             found_command="true"
+        elif [ "x$arg" == "xsync" ]; then
+            # sync command
+            _pc_sync="true"
+            found_command="true"
         elif [ "x$arg" == "x--password-store-dir" ]; then
             _p_pass_dir="$1"
             shift
