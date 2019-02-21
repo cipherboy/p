@@ -5,6 +5,8 @@
 # are _useful_ however; that'd require state beyond the scope of this
 # function.
 function __p_env_check() {
+    local git_root="$(git rev-parse --show-toplevel 2>/dev/null)"
+
     # Validate path to `pass` binary.
     if [ "x$_p_pass_path" == "x" ] && [ "x$_p_pass_which" == "x" ]; then
         __e "Cannot find \`pass\` executable! Please provide it in the"
@@ -28,6 +30,12 @@ function __p_env_check() {
         exit 1
     elif [ "x$_p_jq_path" == "x" ]; then
         _p_jq_path="$_p_jq_which"
+    fi
+
+    # If the current directory is a git repository and GITROOT/.gpg-id exists,
+    # treat this as the _p_pass_dir unless overriden.
+    if [ "x$git_root" != "x" ] && [ -e "$git_root/.gpg-id" ]; then
+        _p_pass_dir="$git_root"
     fi
 
     # Process path to password store location
