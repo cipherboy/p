@@ -35,7 +35,7 @@ function ___p_ls() {
     ls_target_count="${#ls_targets[@]}"
 
     # If we have no targets, set one: $_p_cwd (defaults to /).
-    if (( $ls_target_count == 0 )); then
+    if (( ls_target_count == 0 )); then
         ls_targets+=("$_p_cwd")
         ls_target_count=1
     fi
