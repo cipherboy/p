@@ -1,17 +1,7 @@
-function t_dir() {
-    local dir="$(mktemp -d)"
-    local user="$(id --user)"
-    local group="$(id --group)"
+export __CUR_DIR="$(dirname "${BASH_SOURCE[0]}")"
+export __BIN_DIR="$__CUR_DIR/../bin"
 
-    chown -R "$user:$group" "$dir"
-    chmod -R 700 "$dir"
-
-    echo "$dir"
-}
-
-function __e() {
-    echo "e:" "$@" 1>&2
-}
+source "$__CUR_DIR/common.bash"
 
 export t_expect_success=0
 export t_expect_total=0
@@ -29,6 +19,15 @@ function t_expect_file() {
     t_expect_total=$((t_expect_total += 1))
     if [ ! -e "$1" ]; then
         __e "Expected \`$1\` to be a file."
+        exit 1
+    fi
+    t_expect_success=$((t_expect_success += 1))
+}
+
+function t_expect_not_exist() {
+    t_expect_total=$((t_expect_total += 1))
+    if [ -e "$1" ]; then
+        __e "Expected \`$1\` to not exist."
         exit 1
     fi
     t_expect_success=$((t_expect_success += 1))
@@ -56,6 +55,6 @@ function t_expect_line_in_file() {
     t_expect_success=$((t_expect_success += 1))
 }
 
-function t_expect_stats() {
+function t_expect_done() {
     echo "[[ expectations: $t_expect_success / $t_expect_total ]]"
 }
