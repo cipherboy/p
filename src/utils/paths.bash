@@ -200,8 +200,6 @@ function __p_exists() {
         fi
     done
 
-    echo "${#cwd_results[@]} ${#relative_results[@]} ${#name_results[@]}" > /tmp/count
-
     if (( ${#cwd_results[@]} == 1 )); then
         echo "${cwd_results[0]}"
         return 0
