@@ -14,7 +14,7 @@ function ___p_edit() {
 
     if [ $# == 1 ] && [ "$is_help" == "false" ]; then
         if [ "x$file" != "x" ]; then
-            _pc_open="true" ___p_open "$file" -- $_p_editor
+            _pc_open="true" ___p_open "$file" -- "$_p_editor"
         else
             __pass edit "$1"
         fi
