@@ -67,9 +67,9 @@ function ___p_create() {
 
     if [ "$init_git" == "true" ]; then
         pushd "$_p_pass_dir" >/dev/null
-            git init >/dev/null
-            git add -A >/dev/null
-            git commit -m "Store repository contents" >/dev/null
+            __pass git init >/dev/null
+            __pass git add -A >/dev/null
+            __pass git commit -m "Store repository contents" >/dev/null
         popd >/dev/null
     fi
 
