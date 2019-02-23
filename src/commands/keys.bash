@@ -476,7 +476,6 @@ function ___p_keys_dir_regen() {
     local path="$_p_pass_dir/$dir"
     local gpgid="$path/.gpg-id"
 
-    local fingerprints=()
     local names=()
 
     rm "$gpgid" && touch "$gpgid"
@@ -487,7 +486,7 @@ function ___p_keys_dir_regen() {
 
     while (( ${#names} > 0 )); do
         local name="${names[0]}"
-        unset names[0]
+        unset "names[0]"
         names=("${names[@]}")
 
         if [ "x${name:0:1}" == "x@" ]; then
@@ -506,7 +505,8 @@ function ___p_keys_dir_regen() {
 
     local sorted="$(sort -u "$gpgid")"
     cat - <<< "$sorted" > "$gpgid"
-    __pass init --path="$dir" $(cat "$gpgid")
+    mapfile -t gpg_ids < "$gpgid"
+    __pass init --path="$dir" "${gpg_ids[@]}"
 }
 
 function ___p_keys_dir_remove() {
