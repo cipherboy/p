@@ -56,13 +56,13 @@ function ___p_mkdir() {
 
     local gpg_id_path="$_p_pass_dir/.gpg-id"
     local m_path_recurse="$m_path"
-    while [ 1 ]; do
+    while true; do
         if [ -e "$_p_pass_dir/$m_path_recurse/.gpg-id" ]; then
             gpg_id_path="$_p_pass_dir/$m_path_recurse/.gpg-id"
             break
         fi
 
-        if [ "/$m_path_recurse" == "x/" ]; then
+        if [ "x$m_path_recurse" == "x/" ]; then
             # We've reached the root and can't find a .gpg-id, break.
             break
         fi
@@ -76,7 +76,7 @@ function ___p_mkdir() {
     fi
 
     local m_path_recurse="$m_path"
-    while [ 1 ]; do
+    while true; do
         local target_path="$_p_pass_dir/$m_path_recurse/.gpg-id"
         if [ ! -e "$target_path" ]; then
             cp "$gpg_id_path" "$target_path"
