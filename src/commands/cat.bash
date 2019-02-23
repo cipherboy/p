@@ -52,8 +52,8 @@ function ___p_cat() {
     fi
 
     for target in "${cat_targets[@]}"; do
+        local content="$(__pass show "$target")"
         if [ "$cat_raw" == "false" ]; then
-            local content="$(__pass show "$target")"
             local first_line="$(head -n 1 <<< "$content")"
             local rest="$(tail -n +2 <<< "$content")"
 
@@ -66,10 +66,32 @@ function ___p_cat() {
             local is_rest_json="$?"
 
             if [ "$cat_show_password" == "true" ] &&
-                    (( is_content_json != 0 )); then
-                echo "$first_line"
-            fi
-            if [ "$cat_show_json" == "true" ]; then
+                    [ "$cat_show_json" == "true" ]; then
+                if (( is_content_json == 0 )); then
+                    if [ "$cat_colorize" == "true" ]; then
+                        __jq -C -S <<< "$content"
+                    else
+                        echo "$content"
+                    fi
+                elif (( is_rest_json == 0 )); then
+                    echo "$first_line"
+                    if [ "$cat_colorize" == "true" ]; then
+                        __jq -C -S <<< "$rest"
+                    else
+                        echo "$rest"
+                    fi
+                else
+                    echo "$content"
+                fi
+            elif [ "$cat_show_password" == "true" ] &&
+                    [ "$cat_show_json" == "false" ]; then
+                if (( is_rest_json == 0 )); then
+                    echo "$first_line"
+                elif (( is_content_json != 0 )); then
+                    echo "$content"
+                fi
+            elif [ "$cat_show_password" == "false" ] &&
+                    [ "$cat_show_json" == "true" ]; then
                 if (( is_content_json == 0 )); then
                     if [ "$cat_colorize" == "true" ]; then
                         __jq -C -S <<< "$content"
@@ -84,8 +106,8 @@ function ___p_cat() {
                     fi
                 fi
             fi
-        else
-            __pass show "$target"
+        elif [ "$cat_raw" == "true" ]; then
+            echo "$content"
         fi
     done
 }
