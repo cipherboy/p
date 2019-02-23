@@ -1,9 +1,4 @@
 function ___p_keys() {
-    __v "Value of _pc_keys: $_pc_keys"
-    if [ "$_pc_keys" == "false" ]; then
-        return 0
-    fi
-
     local command="$1"
     shift
 
@@ -128,7 +123,7 @@ function ___p_keys_init() {
     mkdir -p "$keys_absolute"
 
     __p_gpg_export_key "$fingerprint" - |
-        _pc_encrypt="true" ___p_encrypt - "$key_base/$fingerprint.pem"
+        ___p_encrypt - "$key_base/$fingerprint.pem"
 
 
     # Generate initial key configuration
@@ -150,7 +145,7 @@ function ___p_keys_list() {
         echo "key info:"
 
         # Display information about the key
-        _pc_decrypt="true" ___p_decrypt "$key_base/$fingerprint.pem" - |
+        ___p_decrypt "$key_base/$fingerprint.pem" - |
             __gpg --dry-run --keyid-format long --import-options show-only \
                 --import 2>/dev/null |
             sed 's/^/    /g'
@@ -169,7 +164,7 @@ function ___p_keys_import() {
     fi
 
     __p_gpg_export_key "$fingerprint" - |
-        _pc_encrypt="true" ___p_encrypt - "$key_base/$fingerprint.pem"
+        ___p_encrypt - "$key_base/$fingerprint.pem"
 
     local config="$(__p_keys_read_config)"
 
@@ -184,10 +179,10 @@ function ___p_keys_update() {
     local config="$(__p_keys_read_config)"
     local fingerprint="$(jq -r ".keys[\"$nickname\"]" <<< "$config")"
 
-    _pc_open="true" ___p_open --read-only "$key_base/$fingerprint.pem" -- __gpg --import
+    ___p_open --read-only "$key_base/$fingerprint.pem" -- __gpg --import
 
     __p_gpg_export_key "$fingerprint" - |
-        _pc_encrypt="true" ___p_encrypt - "$key_base/$fingerprint.pem"
+        ___p_encrypt - "$key_base/$fingerprint.pem"
 }
 
 function ___p_keys_export() {
@@ -201,7 +196,7 @@ function ___p_keys_export() {
         return 1
     fi
 
-    _pc_open="true" ___p_open --read-only "$key_base/$fingerprint.pem" -- __gpg --import
+    ___p_open --read-only "$key_base/$fingerprint.pem" -- __gpg --import
 }
 
 function ___p_keys_delete() {
@@ -225,7 +220,7 @@ function ___p_keys_delete() {
         updated="$(jq ".dirs[\"$dir\"]-=[\"$nickname\"]" <<< "$updated")"
     done
 
-    _pc_rm="true" ___p_rm -rf "$key_base/$fingerprint.pem"
+    ___p_rm -rf "$key_base/$fingerprint.pem"
 
     __p_keys_write_config <<< "$updated"
 }

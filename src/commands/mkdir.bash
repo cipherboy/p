@@ -1,11 +1,6 @@
 # Command for making a new directory, and optionally initializing it with a
 # set of known GPG IDs.
 function ___p_mkdir() {
-    __v "Value of _pc_mkdir: $_pc_mkdir"
-    if [ "$_pc_mkdir" == "false" ]; then
-        return 0
-    fi
-
     local m_path=""
     local m_recursive=""
     local m_absolute="false"

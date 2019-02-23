@@ -1,9 +1,4 @@
 function ___p_generate() {
-    __v "Value of _pc_generate: $_pc_generate"
-    if [ "$_pc_generate" == "false" ]; then
-        return 0
-    fi
-
     local format=""
     local mode=""
     local name=""
@@ -95,6 +90,6 @@ function ___p_generate() {
     cat - <<< "$password"
 
     if [ "x$name" != "x" ]; then
-        _pc_json="true" ___p_json set "$name" "password" "$password"
+        ___p_json set "$name" "password" "$password"
     fi
 }

@@ -1,9 +1,4 @@
 function ___p_create() {
-    __v "Value of _pc_create: $_pc_create"
-    if [ "$_pc_create" == "false" ]; then
-        return 0
-    fi
-
     local gpg_id=""
     local seen_gpg_id="false"
 
@@ -86,6 +81,6 @@ function ___p_create() {
     fi
 
     if [ ! -d "$_p_pass_dir/.p/keys" ]; then
-        _pc_keys="true" ___p_keys init "$(cat "$_p_pass_dir/.gpg-id")"
+        ___p_keys init "$(cat "$_p_pass_dir/.gpg-id")"
     fi
 }

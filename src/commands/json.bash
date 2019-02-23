@@ -7,11 +7,6 @@
 # Remote execution requirements: this command must be executed on the
 # remote host, except for retype-related commands.
 function ___p_json() {
-    __v "Value of _pc_json: $_pc_json"
-    if [ "$_pc_json" == "false" ]; then
-        return 0
-    fi
-
     local j_command="$1"
     local j_file="$2"
     local j_key="$3"
@@ -25,13 +20,13 @@ function ___p_json() {
             j_key="password"
         fi
 
-        _pc_cat="true" ___p_cat --json-only "$j_file" | jq -r ".$j_key"
+        ___p_cat --json-only "$j_file" | jq -r ".$j_key"
     elif [ "x$j_command" == "xset" ] && [ "x$j_file" != "x" ] &&
             (( $# == 4 )); then
 
         # Perform set operation on file / key = value
         if [ "x$j_key" == "xpassword" ]; then
-            local json="$(_pc_cat="true" ___p_cat --json-only "$j_file")"
+            local json="$(___p_cat --json-only "$j_file")"
 
             jq ".old_passwords=[.password]+.old_passwords|.password=\"$j_value\"" <<< "$json" | __p_print_json | __pass insert -m -f "$j_file"
         else
@@ -46,11 +41,11 @@ function ___p_json() {
             j_key="password"
         fi
 
-        local value="$(_pc_cat="true" ___p_cat --json-only "$j_file" | jq -r ".$j_key")"
+        local value="$(___p_cat --json-only "$j_file" | jq -r ".$j_key")"
         __rtypr "$value"
     elif [ "x$j_command" == "xkinit" ] && [ "x$j_file" != "x" ] &&
             (( $# == 2 )); then
-        local file="$(_pc_cat="true" ___p_cat --json-only "$j_file")"
+        local file="$(___p_cat --json-only "$j_file")"
 
         local principal="$(jq -r ".principal" <<< "$file")"
         if [ "x$principal" == "x" ]; then

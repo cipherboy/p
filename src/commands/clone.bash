@@ -1,9 +1,4 @@
 function ___p_clone() {
-    __v "Value of _pc_clone: $_pc_clone"
-    if [ "$_pc_clone" == "false" ]; then
-        return 0
-    fi
-
     if (( $# != 1 )) || [ "x$1" == "x--help" ] || [ "x$1" == "x-help" ] ||
             [ "x$1" == "x-h" ] || [ -d "$_p_pass_dir" ]; then
         echo "Usage: p clone <uri>"

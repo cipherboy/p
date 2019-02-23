@@ -2,11 +2,6 @@
 #
 # Supports formatting and optionally colorizing the result with jq.
 function ___p_cat() {
-    __v "Value of _pc_cat: $_pc_cat"
-    if [ "$_pc_cat" == "false" ]; then
-        return 0
-    fi
-
     local cat_raw="false"
     local cat_show_password="true"
     local cat_show_json="true"

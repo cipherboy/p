@@ -1,9 +1,4 @@
 function ___p_encrypt() {
-    __v "Value of _pc_encrypt: $_pc_encrypt"
-    if [ "$_pc_encrypt" == "false" ]; then
-        return 0
-    fi
-
     local path="$1"
     local entry="$2"
 

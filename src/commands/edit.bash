@@ -1,10 +1,5 @@
 # Passthrough function for pass edit. Currently ignores $_p_cwd.
 function ___p_edit() {
-    __v "Value of _pc_edit: $_pc_edit"
-    if [ "$_pc_edit" == "false" ]; then
-        return 0
-    fi
-
     local file="$(__p_find_file "$1")"
     local is_help="false"
     if [ "x$1" == "x--help" ] || [ "x$1" == "x-help" ] ||
@@ -14,7 +9,7 @@ function ___p_edit() {
 
     if [ $# == 1 ] && [ "$is_help" == "false" ]; then
         if [ "x$file" != "x" ]; then
-            _pc_open="true" ___p_open "$file" -- "$_p_editor"
+            ___p_open "$file" -- "$_p_editor"
         else
             __pass edit "$1"
         fi

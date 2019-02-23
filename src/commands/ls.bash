@@ -3,11 +3,6 @@
 # Supports the -d and -a parameters from ls; -a shows .gpg-id and
 # .gpg suffix as well.
 function ___p_ls() {
-    __v "Value of _pc_ls: $_pc_ls"
-    if [ "$_pc_ls" == "false" ]; then
-        return 0
-    fi
-
     local ls_dir="false"
     local ls_all="false"
     local ls_targets=()

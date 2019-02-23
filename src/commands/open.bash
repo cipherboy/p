@@ -1,9 +1,4 @@
 function ___p_open() {
-    __v "Value of _pc_open: $_pc_open"
-    if [ "$_pc_open" == "false" ]; then
-        return 0
-    fi
-
     local name=""
     local seen_name="false"
     local command=""
@@ -100,11 +95,11 @@ function ___p_open() {
         fi
     fi
 
-    _pc_decrypt="true" ___p_decrypt "$name" "$tmp"
+    ___p_decrypt "$name" "$tmp"
     "$command" "${processed_args[@]}"
 
     if [ "$read_only" == "false" ]; then
-        _pc_encrypt="true" ___p_encrypt "$tmp" "$name"
+        ___p_encrypt "$tmp" "$name"
 
         if [ "$lock" == "true" ]; then
             __p_unlock "$name"

@@ -1,10 +1,5 @@
 # Sane git syncing with branches.
 function ___p_sync() {
-    __v "Value of _pc_sync: $_pc_sync"
-    if [ "$_pc_sync" == "false" ]; then
-        return 0
-    fi
-
     local branch="$1"
     local origin="$2"
     local remote="$3"

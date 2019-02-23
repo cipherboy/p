@@ -6,11 +6,6 @@
 #   export P_CWD="$(p cd "$1")"'
 # }
 function ___p_cd() {
-    __v "Value of _pc_cd: $_pc_cd"
-    if [ "$_pc_cd" == "false" ]; then
-        return 0
-    fi
-
     # Mode is a variable which defines the mode for interpreting the path
     # argument to cd: auto, relative, or absolute.
     local mode=""
