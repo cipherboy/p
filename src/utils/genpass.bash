@@ -17,22 +17,22 @@ function __genpass() {
                 echo '\'
                 ;;
             d)
-                tr -cd '[:digit:]' < /dev/urandom | fold -w $length | head -n 1
+                tr -cd '[:digit:]' < /dev/urandom | fold -w "$length" | head -n 1
                 ;;
             c)
-                tr -cd '[:alnum:]' < /dev/urandom | fold -w $length | head -n 1
+                tr -cd '[:alnum:]' < /dev/urandom | fold -w "$length" | head -n 1
                 ;;
             l)
-                tr -cd '[:lower:]' < /dev/urandom | fold -w $length | head -n 1
+                tr -cd '[:lower:]' < /dev/urandom | fold -w "$length" | head -n 1
                 ;;
             u)
-                tr -cd '[:upper:]' < /dev/urandom | fold -w $length | head -n 1
+                tr -cd '[:upper:]' < /dev/urandom | fold -w "$length" | head -n 1
                 ;;
             w)
-                grep '^[a-z]*$' /usr/share/dict/words | shuf -n $length | tr -d '\n'
+                grep '^[a-z]*$' /usr/share/dict/words | shuf -n "$length" | tr -d '\n'
                 ;;
             W)
-                grep '^[a-z]*$' /usr/share/dict/words | shuf -n $length | tr -d '\n' | tr '[:lower:]' '[:upper:]'
+                grep '^[a-z]*$' /usr/share/dict/words | shuf -n "$length" | tr -d '\n' | tr '[:lower:]' '[:upper:]'
                 ;;
             *)
                 ;;

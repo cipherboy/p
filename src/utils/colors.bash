@@ -17,7 +17,7 @@ function __p_ls_color() {
 
 # Parse an escape code
 function __p_ecode() {
-    if [ ! -t ]; then
+    if [ ! -t 1 ]; then
         return 0
     fi
 

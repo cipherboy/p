@@ -15,7 +15,7 @@ function __rtypr() {
     # underling command and APIs seem fast enough.
     function __detect_input_device() {
         # 100 is an admittedly arbitrary bound.
-        for index in `seq 0 100`; do
+        for index in $(seq 0 100); do
             device_path="/dev/input/event$index"
 
             # If the device path doesn't exist (since they are sequentially
@@ -123,7 +123,7 @@ function __rtypr() {
         local char="$1"
         local codepoint="$(iconv --from=utf8 --to=utf32be <<< "$char" | xxd -p | wc -c)"
 
-        [ "$unicode" == "true" ] && (( $codepoint <= 9 ))
+        [ "$unicode" == "true" ] && (( codepoint <= 9 ))
     }
 
     # Type the given character as a UTF32 code point. That is done via the
@@ -460,7 +460,7 @@ function __rtypr() {
         local show_help="false"
         local file_path=""
 
-        for arg_index in $(seq 1 "$#"); do
+        while (( $# > 0 )); do
             local arg="$1"
             shift
 

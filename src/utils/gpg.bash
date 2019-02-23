@@ -1,5 +1,5 @@
 __p_gpg_is_id() {
-    local lines="$(__gpg --with-colons --list-keys "$@" 2>/dev/null | grep '^pub:' | wc -l)"
+    local lines="$(__gpg --with-colons --list-keys "$@" 2>/dev/null | grep -c '^pub:')"
 
     if (( lines == 1 )); then
         return 0
@@ -30,19 +30,21 @@ __p_gpg_batch_generate() {
     local email="$3"
     local password="$4"
 
-    echo "Key-Type: RSA" > "$filename"
-    echo "Key-Length: 4096" >> "$filename"
-    echo "Key-Usage: sign,auth" >> "$filename"
-    if (( $# == 4 )); then
-        echo "Passphrase: $password" >> "$filename"
-    fi
-    echo "Subkey-Type: RSA" >> "$filename"
-    echo "Subkey-Length: 4096" >> "$filename"
-    echo "Subkey-Usage: encrypt,sign" >> "$filename"
-    echo "Name-Real: $name" >> "$filename"
-    echo "Name-Email: $email" >> "$filename"
-    echo "Expire-Date: 35y" >> "$filename"
-    echo "%commit" >> "$filename"
+    {
+        echo "Key-Type: RSA"
+        echo "Key-Length: 4096"
+        echo "Key-Usage: sign,auth"
+        if (( $# == 4 )); then
+            echo "Passphrase: $password"
+        fi
+        echo "Subkey-Type: RSA"
+        echo "Subkey-Length: 4096"
+        echo "Subkey-Usage: encrypt,sign"
+        echo "Name-Real: $name"
+        echo "Name-Email: $email"
+        echo "Expire-Date: 35y"
+        echo "%commit"
+    } > "$filename"
 
     __gpg --batch --generate-key "$filename"
 }
