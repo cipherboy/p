@@ -57,18 +57,31 @@ function ___p_cat() {
             local first_line="$(head -n 1 <<< "$content")"
             local rest="$(tail -n +2 <<< "$content")"
 
+            # Check if the entire contents are json
+            __jq . >/dev/null 2>/dev/null <<< "$content"
+            local is_content_json="$?"
+
             # Check if the remaining contents are json
             __jq . >/dev/null 2>/dev/null <<< "$rest"
-            local is_json="$?"
+            local is_rest_json="$?"
 
-            if [ "$cat_show_password" == "true" ]; then
+            if [ "$cat_show_password" == "true" ] &&
+                    (( is_content_json != 0 )); then
                 echo "$first_line"
             fi
             if [ "$cat_show_json" == "true" ]; then
-                if [ "$cat_colorize" == "true" ] && [ "$is_json" == "0" ]; then
-                    __jq -C -S <<< "$rest"
-                else
-                    echo "$rest"
+                if (( is_content_json == 0 )); then
+                    if [ "$cat_colorize" == "true" ]; then
+                        __jq -C -S <<< "$content"
+                    else
+                        echo "$content"
+                    fi
+                elif (( is_rest_json == 0 )); then
+                    if [ "$cat_colorize" == "true" ]; then
+                        __jq -C -S <<< "$rest"
+                    else
+                        echo "$rest"
+                    fi
                 fi
             fi
         else
