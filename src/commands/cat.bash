@@ -15,7 +15,7 @@ function ___p_cat() {
 
     for arg in "$@"; do
         if [ "x$arg" == "x--raw" ] || [ "x$arg" == "x-raw" ] ||
-                [ "x$arg" == "-r" ]; then
+                [ "x$arg" == "x-r" ]; then
             cat_raw="true"
         elif [ "x$arg" == "x--json-only" ] || [ "x$arg" == "x-json-only" ] ||
                 [ "x$arg" == "x--json" ] || [ "x$arg" == "x-json" ] ||
@@ -30,7 +30,7 @@ function ___p_cat() {
             cat_show_password="true"
             cat_show_json="false"
         elif [ "x$arg" == "x--no-color" ] || [ "x$arg" == "x-n-color" ] ||
-                [ "x$arg" == "-n" ]; then
+                [ "x$arg" == "x-n" ]; then
             cat_colorize="false"
         else
             local arg_path="$(__p_find_file "$arg")"
