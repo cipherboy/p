@@ -77,10 +77,12 @@ function ___p_create() {
         __pass init "$gpg_id"
     fi
 
-    if ! grep -qs "^\*\.lock$" "$_p_pass_dir/.gitignore"; then
-        echo "*.lock" > "$_p_pass_dir/.gitignore"
-        __pass git add "$_p_pass_dir/.gitignore" >/dev/null
-        __pass git commit -m "Add *.lock to .gitignore" >/dev/null
+    if [ -d "$_p_pass_dir/.git" ]; then
+        if ! grep -qs "^\*\.lock$" "$_p_pass_dir/.gitignore"; then
+            echo "*.lock" > "$_p_pass_dir/.gitignore"
+            __pass git add "$_p_pass_dir/.gitignore" >/dev/null
+            __pass git commit -m "Add *.lock to .gitignore" >/dev/null
+        fi
     fi
 
     if [ ! -d "$_p_pass_dir/.p/keys" ]; then
