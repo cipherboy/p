@@ -169,6 +169,53 @@ function __p_exists() {
         fi
     fi
 
+    # Path wasn't found -- let's try a fuzzy match.
+    mapfile -t paths < <(find "$_p_pass_dir" -printf "%P\n" | sort)
+
+    cwd_results=()
+    relative_results=()
+    name_results=()
+
+    for path in "${paths[@]}"; do
+        if [[ "$path" == ".git"* ]] || [[ "$path" == ".p"* ]] ||
+                [[ "$path" == *".gpg-id" ]]; then
+            continue
+        fi
+
+        # Hide .gpg identifier
+        path="${path%.gpg}"
+
+        # Basename of file
+        local basename="${path##*/}"
+
+        if [[ "$path" == *$name* ]]; then
+            relative_results+=("$path")
+            if [[ "$path" == "$cwd_path"* ]]; then
+                cwd_results+=("$path")
+            fi
+        fi
+
+        if [[ "$basename" == *$name* ]]; then
+            name_results+=("$path")
+        fi
+    done
+
+    echo "${#cwd_results[@]} ${#relative_results[@]} ${#name_results[@]}" > /tmp/count
+
+    if (( ${#cwd_results[@]} == 1 )); then
+        echo "${cwd_results[0]}"
+        return 0
+    elif (( ${#relative_results[@]} == 1 )); then
+        echo "${relative_results[0]}"
+        return 0
+    elif (( "${#name_results[@]}" == 1 )); then
+        echo "${name_results[0]}"
+        return 0
+    fi
+
+    for path in "${relative_results[@]}"; do
+        __e "$path"
+    done
     return 1
 }
 
