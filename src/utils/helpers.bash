@@ -11,7 +11,12 @@ function __e() {
 }
 
 function __p_dir() {
-    echo -e "$(__p_ecode "$(__p_ls_color di)")$*$(__p_ecode reset)"
+    if [ ! -t 1 ]; then
+        echo "$@"
+        return 0
+    fi
+
+    echo -e "$(__p_ecode "$(__p_ls_color di)")$@$(__p_ecode reset)"
 }
 
 function __d() {
