@@ -8,7 +8,7 @@
 # remote host, except for retype-related commands.
 function ___p_json() {
     local j_command="$1"
-    local j_file="$2"
+    local j_file="$(__p_find_file "$2")"
     local j_key="$3"
     local j_value="$4"
 
@@ -24,14 +24,19 @@ function ___p_json() {
     elif [ "x$j_command" == "xset" ] && [ "x$j_file" != "x" ] &&
             (( $# == 4 )); then
 
+        if ! __p_lock "$j_file"; then
+            __e "Lock for $j_file held by another program."
+            return 1
+        fi
+        local json="$(___p_cat --json-only "$j_file")"
+
         # Perform set operation on file / key = value
         if [ "x$j_key" == "xpassword" ]; then
-            local json="$(___p_cat --json-only "$j_file")"
-
             jq ".old_passwords=[.password]+.old_passwords|.password=\"$j_value\"" <<< "$json" | __p_print_json | __pass insert -m -f "$j_file"
         else
             jq ".$j_key=\"$j_value\"" <<< "$json" | __p_print_json | __pass insert -m -f "$j_file"
         fi
+        __p_unlock "$j_file"
     elif [ "x$j_command" = "xretype" ] && [ "x$j_file" != "x" ] &&
             (( $# >= 2 )) && (( $# <= 3 )); then
 
