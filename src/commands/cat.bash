@@ -47,7 +47,7 @@ function ___p_cat() {
     fi
 
     for target in "${cat_targets[@]}"; do
-        local content="$(__pass show "$target")"
+        local content="$(___p_decrypt "$target" -)"
         if [ "$cat_raw" == "false" ]; then
             local first_line="$(head -n 1 <<< "$content")"
             local rest="$(tail -n +2 <<< "$content")"

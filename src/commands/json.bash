@@ -32,9 +32,9 @@ function ___p_json() {
 
         # Perform set operation on file / key = value
         if [ "x$j_key" == "xpassword" ]; then
-            jq ".old_passwords=[.password]+.old_passwords|.password=\"$j_value\"" <<< "$json" | __p_print_json | __pass insert -m -f "$j_file"
+            jq ".old_passwords=[.password]+.old_passwords|.password=\"$j_value\"" <<< "$json" | __p_print_json | ___p_encrypt - "$j_file"
         else
-            jq ".$j_key=\"$j_value\"" <<< "$json" | __p_print_json | __pass insert -m -f "$j_file"
+            jq ".$j_key=\"$j_value\"" <<< "$json" | __p_print_json | ___p_encrypt - "$j_file"
         fi
         __p_unlock "$j_file"
     elif [ "x$j_command" = "xretype" ] && [ "x$j_file" != "x" ] &&
