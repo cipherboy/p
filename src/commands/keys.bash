@@ -26,6 +26,8 @@ function ___p_keys() {
             ___p_keys_gpg_generate "$@"
         elif [ "x$subcommand" == "ximport" ]; then
             ___p_keys_gpg_import "$@"
+        elif [ "x$subcommand" == "xexport" ]; then
+            ___p_keys_gpg_export "$@"
         elif [ "x$subcommand" == "xlist" ]; then
             ___p_keys_gpg_list "$@"
         elif [ "x$subcommand" == "xpassword" ] ||
@@ -101,7 +103,8 @@ function ___p_keys() {
         echo ""
         echo " GPG commands:"
         echo "  - gpg generate <name> <email>: generate a new GPG key"
-        echo "  - gpg import <file>: import a key from a key file"
+        echo "  - gpg import <file>: import a key from a file"
+        echo "  - gpg export <id> <file>: export a key to a file"
         echo "  - gpg list [<id>]: list all GPG keys, optionally those matching <id>"
         echo "  - gpg password <id>: change the password on a key"
         echo "  - gpg trust <id>: trust and sign a key"
@@ -284,6 +287,13 @@ function ___p_keys_gpg_import() {
     local file="$1"
 
     __gpg --import "$file"
+}
+
+function ___p_keys_gpg_export() {
+    local id="$1"
+    local file="$2"
+
+    __gpg --export --armor "$id" > "$file"
 }
 
 function ___p_keys_gpg_list() {
