@@ -43,8 +43,8 @@ are on the target system.
 e.g., `p g <file> [<key>]` fetches the given JSON key (if specified, otherwise,
 defaults to `password`) from the specified file.
 
-`p` is opionated in that it prefers metadata to be stored as JSON, while
-remaining compatible with the defacto standard of first line being the target
+`p` is opinionated in that it prefers metadata to be stored as JSON, while
+remaining compatible with the de facto standard of first line being the target
 password. Also, `p` insists that there's one right command to perform an
 action, unlike pass where the following are equivalent:
 
