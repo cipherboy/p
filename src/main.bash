@@ -97,61 +97,11 @@ function p() {
     __p_env_check
 
     # Process command line arguments
-    __p_args "$@"
+    _p_parse_args "$@"
+    ret=$?
 
-    # Each command is expected to handle its own execution environment; that
-    # is, __p_ls() is always called and is expected to check _pc_ls to ensure
-    # whether or not it needs to run.
-
-    if [ "$_pc_cat" == "true" ]; then
-        ___p_cat "${_p_remaining[@]}"
-    elif [ "$_pc_cd" == "true" ]; then
-        ___p_cd "${_p_remaining[@]}"
-    elif [ "$_pc_clone" == "true" ]; then
-        ___p_clone "${_p_remaining[@]}"
-    elif [ "$_pc_cp" = "true" ]; then
-        ___p_cp "${_p_remaining[@]}"
-    elif [ "$_pc_create" == "true" ]; then
-        ___p_create "${_p_remaining[@]}"
-    elif [ "$_pc_locate" == "true" ]; then
-        ___p_locate "${_p_remaining[@]}"
-    elif [ "$_pc_decrypt" == "true" ]; then
-        ___p_decrypt "${_p_remaining[@]}"
-    elif [ "$_pc_edit" == "true" ]; then
-        ___p_edit "${_p_remaining[@]}"
-    elif [ "$_pc_encrypt" == "true" ]; then
-        ___p_encrypt "${_p_remaining[@]}"
-    elif [ "$_pc_find" == "true" ]; then
-        ___p_find "${_p_remaining[@]}"
-    elif [ "$_pc_generate" == "true" ]; then
-        ___p_generate "${_p_remaining[@]}"
-    elif [ "$_pc_git" == "true" ]; then
-        ___p_git "${_p_remaining[@]}"
-    elif [ "$_pc_json" == "true" ]; then
-        ___p_json "${_p_remaining[@]}"
-    elif [ "$_pc_keys" == "true" ]; then
-        ___p_keys "${_p_remaining[@]}"
-    elif [ "$_pc_ls" == "true" ]; then
-        ___p_ls "${_p_remaining[@]}"
-    elif [ "$_pc_mkdir" == "true" ]; then
-        ___p_mkdir "${_p_remaining[@]}"
-    elif [ "$_pc_mv" == "true" ]; then
-        ___p_mv "${_p_remaining[@]}"
-    elif [ "$_pc_open" == "true" ]; then
-        ___p_open "${_p_remaining[@]}"
-    elif [ "$_pc_rm" == "true" ]; then
-        ___p_rm "${_p_remaining[@]}"
-    elif [ "$_pc_search" == "true" ]; then
-        ___p_search "${_p_remaining[@]}"
-    elif [ "$_pc_sync" == "true" ]; then
-        ___p_sync "${_p_remaining[@]}"
-    elif [ "$_pc_through" == "true" ]; then
-        ___p_through "${_p_remaining[@]}"
-    elif [ "$_pc_help" == "true" ]; then
-        # Print help as the last thing we do before exiting; this ensures that if
-        # an argument error occurred during subcommand parsing, we can print help
-        # information if necessary.
-        ___p_help
+    if (( ret == 0 )); then
+        _p_dispatch_subparser
     fi
 }
 
