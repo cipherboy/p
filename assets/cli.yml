@@ -684,8 +684,8 @@ arguments:
             description: filesystem path to store the decrypted file at
         grammar:
           - "[options]"
-          - arguments.entry
-          - arguments.result_path
+          - "arguments.entry"
+          - "[arguments.result_path]"
       - name: encrypt
         description: store a file into the password store
         group: Storing files

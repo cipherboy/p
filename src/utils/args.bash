@@ -3610,7 +3610,7 @@ ___p_search_print_help_EOF
 function ___p_decrypt_parse_args() {
     local parse_args_print_help="false"
     local _parse_args_positional_index="0"
-    if (( $# < 2 )); then
+    if (( $# < 1 )); then
         parse_args_print_help="true"
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
@@ -3650,7 +3650,7 @@ function ___p_decrypt_parse_args() {
         fi
     done
 
-    if (( $_parse_args_positional_index < 2 )); then
+    if (( $_parse_args_positional_index < 1 )); then
         parse_args_print_help="true"
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
@@ -3665,7 +3665,7 @@ function ___p_decrypt_parse_args() {
 }
 function ___p_decrypt_print_help() {
     cat - << ___p_decrypt_print_help_EOF
-Usage: p decrypt [options] <entry> <result_path>
+Usage: p decrypt [options] <entry> [arguments.result_path]
 extract (decrypt) a file in the password store
 
 Arguments:
