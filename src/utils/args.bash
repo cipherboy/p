@@ -6,7 +6,6 @@ function _p_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -18,7 +17,6 @@ function _p_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif [ "x${arg:0:21}" == "x--password-store-dir=" -o "x${arg:0:20}" == "x-password-store-dir=" ]; then
             local __tmp_password_store_dir="${arg#*=}"
 
@@ -29,7 +27,6 @@ function _p_parse_args() {
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "password_store_dir=${password_store_dir}"
                 fi
-
             fi
         elif (( $_parse_args_positional_index == 0 )) && [ "x$arg" == "x--password-store-dir" -o "x$arg" == "x-password-store-dir" -o "x$arg" == "x-P" ]; then
             local __tmp_password_store_dir="$1"
@@ -42,7 +39,6 @@ function _p_parse_args() {
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "password_store_dir=${password_store_dir}"
                 fi
-
             fi
         elif [ "x${arg:0:17}" == "x--gnupg-home-dir=" -o "x${arg:0:16}" == "x-gnupg-home-dir=" ]; then
             local __tmp_gnupg_home_dir="${arg#*=}"
@@ -54,7 +50,6 @@ function _p_parse_args() {
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "gnupg_home_dir=${gnupg_home_dir}"
                 fi
-
             fi
         elif (( $_parse_args_positional_index == 0 )) && [ "x$arg" == "x--gnupg-home-dir" -o "x$arg" == "x-gnupg-home-dir" -o "x$arg" == "x-G" ]; then
             local __tmp_gnupg_home_dir="$1"
@@ -67,7 +62,6 @@ function _p_parse_args() {
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "gnupg_home_dir=${gnupg_home_dir}"
                 fi
-
             fi
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
@@ -78,151 +72,126 @@ function _p_parse_args() {
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xcd" ]; then
                 cmd="cd"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xclone" ]; then
                 cmd="clone"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xcp" -o "x$__tmp_cmd" == "xcopy" ]; then
                 cmd="cp"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xcreate" ]; then
                 cmd="create"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xdecrypt" ]; then
                 cmd="decrypt"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xdirs" -o "x$__tmp_cmd" == "xdir" ]; then
                 cmd="dirs"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xedit" -o "x$__tmp_cmd" == "xe" ]; then
                 cmd="edit"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xencrypt" ]; then
                 cmd="encrypt"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xfind" ]; then
                 cmd="find"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xgenerate" -o "x$__tmp_cmd" == "xgen" ]; then
                 cmd="generate"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xgit" -o "x$__tmp_cmd" == "xgt" ]; then
                 cmd="git"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xgpg" ]; then
                 cmd="gpg"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xgroups" -o "x$__tmp_cmd" == "xgroup" ]; then
                 cmd="groups"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xjson" -o "x$__tmp_cmd" == "xj" ]; then
                 cmd="json"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xkeys" -o "x$__tmp_cmd" == "xkey" ]; then
                 cmd="keys"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xlocate" -o "x$__tmp_cmd" == "xlt" ]; then
                 cmd="locate"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xls" -o "x$__tmp_cmd" == "xlist" ]; then
                 cmd="ls"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xmkdir" -o "x$__tmp_cmd" == "xm" ]; then
                 cmd="mkdir"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xmv" -o "x$__tmp_cmd" == "xmove" ]; then
                 cmd="mv"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xopen" ]; then
                 cmd="open"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xpass" -o "x$__tmp_cmd" == "xthrough" -o "x$__tmp_cmd" == "xthru" -o "x$__tmp_cmd" == "xt" ]; then
                 cmd="pass"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xrm" -o "x$__tmp_cmd" == "xremove" ]; then
                 cmd="rm"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xsearch" -o "x$__tmp_cmd" == "xgrep" ]; then
                 cmd="search"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             elif [ "x$__tmp_cmd" == "xsync" ]; then
                 cmd="sync"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "cmd=${cmd}"
                 fi
-
             else
                 _handle_parse_error "cmd" "$__tmp_cmd"
             fi
@@ -231,13 +200,19 @@ function _p_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "cmd_args=${cmd_args[@]} | len=${#cmd_args[@]}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         _p_print_help
@@ -360,7 +335,6 @@ function ___p_clone_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -372,26 +346,30 @@ function ___p_clone_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             uri="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "uri=${uri}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_clone_print_help
@@ -419,44 +397,46 @@ function ___p_create_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
         local arg="$1"
         local do_shift="true"
 
-        if (( $_parse_args_positional_index == 0 )) && [ "x$arg" == "x--help" -o "x$arg" == "x-help" -o "x$arg" == "x-h" ]; then
+        if [ "x$arg" == "x--help" -o "x$arg" == "x-help" -o "x$arg" == "x-h" ]; then
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
-        elif (( $_parse_args_positional_index == 0 )) && [ "x$arg" == "x--without-git" -o "x$arg" == "x-without-git" -o "x$arg" == "x-n" ]; then
-            without_git="false"
+        elif [ "x$arg" == "x--without-git" -o "x$arg" == "x-without-git" -o "x$arg" == "x-n" ]; then
+            init_git="false"
             if [ ! -z "$SHARG_VERBOSE" ]; then
-                echo "without_git=${without_git}"
+                echo "init_git=${init_git}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             gpg_id="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "gpg_id=${gpg_id}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_create_print_help
@@ -485,7 +465,6 @@ function ___p_keys_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -497,7 +476,6 @@ function ___p_keys_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             local __tmp_key_cmd="$arg"
@@ -507,49 +485,41 @@ function ___p_keys_parse_args() {
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "key_cmd=${key_cmd}"
                 fi
-
             elif [ "x$__tmp_key_cmd" == "xexport" ]; then
                 key_cmd="export"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "key_cmd=${key_cmd}"
                 fi
-
             elif [ "x$__tmp_key_cmd" == "ximport" ]; then
                 key_cmd="import"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "key_cmd=${key_cmd}"
                 fi
-
             elif [ "x$__tmp_key_cmd" == "xinit" ]; then
                 key_cmd="init"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "key_cmd=${key_cmd}"
                 fi
-
             elif [ "x$__tmp_key_cmd" == "xlist" ]; then
                 key_cmd="list"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "key_cmd=${key_cmd}"
                 fi
-
             elif [ "x$__tmp_key_cmd" == "xregen" ]; then
                 key_cmd="regen"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "key_cmd=${key_cmd}"
                 fi
-
             elif [ "x$__tmp_key_cmd" == "xrename" ]; then
                 key_cmd="rename"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "key_cmd=${key_cmd}"
                 fi
-
             elif [ "x$__tmp_key_cmd" == "xupdate" ]; then
                 key_cmd="update"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "key_cmd=${key_cmd}"
                 fi
-
             else
                 _handle_parse_error "key_cmd" "$__tmp_key_cmd"
             fi
@@ -558,13 +528,19 @@ function ___p_keys_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "key_cmd_args=${key_cmd_args[@]} | len=${#key_cmd_args[@]}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_keys_print_help
@@ -623,7 +599,6 @@ function ___p_key_init_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -635,26 +610,30 @@ function ___p_key_init_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             key_id="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "key_id=${key_id}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_key_init_print_help
@@ -682,7 +661,6 @@ function ___p_key_import_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -694,33 +672,36 @@ function ___p_key_import_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             key_nickname="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "key_nickname=${key_nickname}"
             fi
-
         elif (( $_parse_args_positional_index == 1 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             key_id="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "key_id=${key_id}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 2 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_key_import_print_help
@@ -749,7 +730,6 @@ function ___p_key_export_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -761,26 +741,30 @@ function ___p_key_export_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             key_nickname="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "key_nickname=${key_nickname}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_key_export_print_help
@@ -864,7 +848,6 @@ function ___p_key_delete_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -876,26 +859,30 @@ function ___p_key_delete_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             key_nickname="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "key_nickname=${key_nickname}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_key_delete_print_help
@@ -923,7 +910,6 @@ function ___p_key_rename_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -935,33 +921,36 @@ function ___p_key_rename_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             key_old="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "key_old=${key_old}"
             fi
-
         elif (( $_parse_args_positional_index == 1 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             key_new="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "key_new=${key_new}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 2 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_key_rename_print_help
@@ -990,7 +979,6 @@ function ___p_key_update_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -1002,26 +990,30 @@ function ___p_key_update_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             key_nickname="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "key_nickname=${key_nickname}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_key_update_print_help
@@ -1049,7 +1041,6 @@ function ___p_groups_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -1061,7 +1052,6 @@ function ___p_groups_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             local __tmp_group_cmd="$arg"
@@ -1071,31 +1061,26 @@ function ___p_groups_parse_args() {
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "group_cmd=${group_cmd}"
                 fi
-
             elif [ "x$__tmp_group_cmd" == "xcreate" ]; then
                 group_cmd="create"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "group_cmd=${group_cmd}"
                 fi
-
             elif [ "x$__tmp_group_cmd" == "xdelete" ]; then
                 group_cmd="delete"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "group_cmd=${group_cmd}"
                 fi
-
             elif [ "x$__tmp_group_cmd" == "xlist" ]; then
                 group_cmd="list"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "group_cmd=${group_cmd}"
                 fi
-
             elif [ "x$__tmp_group_cmd" == "xremove" ]; then
                 group_cmd="remove"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "group_cmd=${group_cmd}"
                 fi
-
             else
                 _handle_parse_error "group_cmd" "$__tmp_group_cmd"
             fi
@@ -1104,13 +1089,19 @@ function ___p_groups_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "group_cmd_args=${group_cmd_args[@]} | len=${#group_cmd_args[@]}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_groups_print_help
@@ -1160,7 +1151,6 @@ function ___p_group_create_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -1172,26 +1162,22 @@ function ___p_group_create_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             group_name="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "group_name=${group_name}"
             fi
-
         elif (( $_parse_args_positional_index == 1 )); then
             group_keys+=("$arg")
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "group_keys=${group_keys[@]} | len=${#group_keys[@]}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
@@ -1204,7 +1190,13 @@ function ___p_group_create_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
+    fi
 
+    if (( $_parse_args_positional_index < 2 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
     fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
@@ -1234,7 +1226,6 @@ function ___p_group_add_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -1246,26 +1237,22 @@ function ___p_group_add_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             group_name="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "group_name=${group_name}"
             fi
-
         elif (( $_parse_args_positional_index == 1 )); then
             group_keys+=("$arg")
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "group_keys=${group_keys[@]} | len=${#group_keys[@]}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
@@ -1278,7 +1265,13 @@ function ___p_group_add_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
+    fi
 
+    if (( $_parse_args_positional_index < 2 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
     fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
@@ -1308,7 +1301,6 @@ function ___p_group_remove_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -1320,26 +1312,22 @@ function ___p_group_remove_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             group_name="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "group_name=${group_name}"
             fi
-
         elif (( $_parse_args_positional_index == 1 )); then
             group_keys+=("$arg")
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "group_keys=${group_keys[@]} | len=${#group_keys[@]}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
@@ -1352,7 +1340,13 @@ function ___p_group_remove_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
+    fi
 
+    if (( $_parse_args_positional_index < 2 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
     fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
@@ -1382,7 +1376,6 @@ function ___p_group_delete_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -1394,26 +1387,30 @@ function ___p_group_delete_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             group_name="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "group_name=${group_name}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_group_delete_print_help
@@ -1469,7 +1466,6 @@ function ___p_dirs_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -1481,7 +1477,6 @@ function ___p_dirs_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             local __tmp_dir_cmd="$arg"
@@ -1491,31 +1486,26 @@ function ___p_dirs_parse_args() {
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "dir_cmd=${dir_cmd}"
                 fi
-
             elif [ "x$__tmp_dir_cmd" == "xcreate" ]; then
                 dir_cmd="create"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "dir_cmd=${dir_cmd}"
                 fi
-
             elif [ "x$__tmp_dir_cmd" == "xdelete" ]; then
                 dir_cmd="delete"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "dir_cmd=${dir_cmd}"
                 fi
-
             elif [ "x$__tmp_dir_cmd" == "xlist" ]; then
                 dir_cmd="list"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "dir_cmd=${dir_cmd}"
                 fi
-
             elif [ "x$__tmp_dir_cmd" == "xremove" ]; then
                 dir_cmd="remove"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "dir_cmd=${dir_cmd}"
                 fi
-
             else
                 _handle_parse_error "dir_cmd" "$__tmp_dir_cmd"
             fi
@@ -1524,13 +1514,19 @@ function ___p_dirs_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "dir_cmd_args=${dir_cmd_args[@]} | len=${#dir_cmd_args[@]}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_dirs_print_help
@@ -1580,7 +1576,6 @@ function ___p_dir_create_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -1592,26 +1587,22 @@ function ___p_dir_create_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             dir_path="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "dir_path=${dir_path}"
             fi
-
         elif (( $_parse_args_positional_index == 1 )); then
             dir_keys+=("$arg")
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "dir_keys=${dir_keys[@]} | len=${#dir_keys[@]}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
@@ -1624,7 +1615,13 @@ function ___p_dir_create_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
+    fi
 
+    if (( $_parse_args_positional_index < 2 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
     fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
@@ -1654,7 +1651,6 @@ function ___p_dir_add_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -1666,26 +1662,22 @@ function ___p_dir_add_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             dir_path="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "dir_path=${dir_path}"
             fi
-
         elif (( $_parse_args_positional_index == 1 )); then
             dir_keys+=("$arg")
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "dir_keys=${dir_keys[@]} | len=${#dir_keys[@]}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
@@ -1698,7 +1690,13 @@ function ___p_dir_add_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
+    fi
 
+    if (( $_parse_args_positional_index < 2 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
     fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
@@ -1728,7 +1726,6 @@ function ___p_dir_remove_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -1740,26 +1737,22 @@ function ___p_dir_remove_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             dir_path="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "dir_path=${dir_path}"
             fi
-
         elif (( $_parse_args_positional_index == 1 )); then
             dir_keys+=("$arg")
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "dir_keys=${dir_keys[@]} | len=${#dir_keys[@]}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
@@ -1772,7 +1765,13 @@ function ___p_dir_remove_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
+    fi
 
+    if (( $_parse_args_positional_index < 2 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
     fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
@@ -1802,7 +1801,6 @@ function ___p_dir_delete_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -1814,26 +1812,30 @@ function ___p_dir_delete_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             dir_path="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "dir_path=${dir_path}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_dir_delete_print_help
@@ -1889,7 +1891,6 @@ function ___p_gpg_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -1901,7 +1902,6 @@ function ___p_gpg_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             local __tmp_gpg_cmd="$arg"
@@ -1911,37 +1911,31 @@ function ___p_gpg_parse_args() {
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "gpg_cmd=${gpg_cmd}"
                 fi
-
             elif [ "x$__tmp_gpg_cmd" == "xgenerate" ]; then
                 gpg_cmd="generate"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "gpg_cmd=${gpg_cmd}"
                 fi
-
             elif [ "x$__tmp_gpg_cmd" == "ximport" ]; then
                 gpg_cmd="import"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "gpg_cmd=${gpg_cmd}"
                 fi
-
             elif [ "x$__tmp_gpg_cmd" == "xlist" ]; then
                 gpg_cmd="list"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "gpg_cmd=${gpg_cmd}"
                 fi
-
             elif [ "x$__tmp_gpg_cmd" == "xpassword" ]; then
                 gpg_cmd="password"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "gpg_cmd=${gpg_cmd}"
                 fi
-
             elif [ "x$__tmp_gpg_cmd" == "xtrust" ]; then
                 gpg_cmd="trust"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "gpg_cmd=${gpg_cmd}"
                 fi
-
             else
                 _handle_parse_error "gpg_cmd" "$__tmp_gpg_cmd"
             fi
@@ -1950,13 +1944,19 @@ function ___p_gpg_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "gpg_cmd_args=${gpg_cmd_args[@]} | len=${#gpg_cmd_args[@]}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_gpg_print_help
@@ -2009,7 +2009,6 @@ function ___p_gpg_generate_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -2021,33 +2020,36 @@ function ___p_gpg_generate_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             gpg_name="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "gpg_name=${gpg_name}"
             fi
-
         elif (( $_parse_args_positional_index == 1 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             gpg_email="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "gpg_email=${gpg_email}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 2 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_gpg_generate_print_help
@@ -2076,7 +2078,6 @@ function ___p_gpg_import_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -2088,26 +2089,30 @@ function ___p_gpg_import_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             gpg_path="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "gpg_path=${gpg_path}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_gpg_import_print_help
@@ -2135,7 +2140,6 @@ function ___p_gpg_export_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -2147,33 +2151,36 @@ function ___p_gpg_export_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             gpg_id="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "gpg_id=${gpg_id}"
             fi
-
         elif (( $_parse_args_positional_index == 1 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             gpg_path="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "gpg_path=${gpg_path}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 2 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_gpg_export_print_help
@@ -2206,20 +2213,17 @@ function ___p_gpg_list_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             gpg_id="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "gpg_id=${gpg_id}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
@@ -2253,7 +2257,6 @@ function ___p_gpg_password_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -2265,26 +2268,30 @@ function ___p_gpg_password_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             gpg_id="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "gpg_id=${gpg_id}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_gpg_password_print_help
@@ -2312,7 +2319,6 @@ function ___p_gpg_trust_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -2324,26 +2330,30 @@ function ___p_gpg_trust_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             gpg_id="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "gpg_id=${gpg_id}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_gpg_trust_print_help
@@ -2375,44 +2385,37 @@ function ___p_cd_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif [ "x${arg:0:11}" == "x--absolute=" -o "x${arg:0:10}" == "x-absolute=" ]; then
             cd_mode="absolute"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "cd_mode=${cd_mode}"
             fi
-
         elif [ "x$arg" == "x--absolute" -o "x$arg" == "x-absolute" -o "x$arg" == "x-a" ]; then
             cd_mode="absolute"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "cd_mode=${cd_mode}"
             fi
-
         elif [ "x${arg:0:11}" == "x--relative=" -o "x${arg:0:10}" == "x-relative=" ]; then
             cd_mode="relative"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "cd_mode=${cd_mode}"
             fi
-
         elif [ "x$arg" == "x--relative" -o "x$arg" == "x-relative" -o "x$arg" == "x-r" ]; then
             cd_mode="relative"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "cd_mode=${cd_mode}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             cd_path="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "cd_path=${cd_path}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
@@ -2448,7 +2451,6 @@ function ___p_cp_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -2460,39 +2462,41 @@ function ___p_cp_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif [ "x$arg" == "x--force" -o "x$arg" == "x-force" -o "x$arg" == "x-f" ]; then
             force="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "force=${force}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             old_path="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "old_path=${old_path}"
             fi
-
         elif (( $_parse_args_positional_index == 1 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             new_path="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "new_path=${new_path}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 2 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_cp_print_help
@@ -2522,7 +2526,6 @@ function ___p_ls_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -2534,31 +2537,26 @@ function ___p_ls_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif [ "x$arg" == "x--directory" -o "x$arg" == "x-directory" -o "x$arg" == "x-d" ]; then
             directory="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "directory=${directory}"
             fi
-
         elif [ "x$arg" == "x--all" -o "x$arg" == "x-all" -o "x$arg" == "x-a" ]; then
             all="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "all=${all}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             ls_paths+=("$arg")
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "ls_paths=${ls_paths[@]} | len=${#ls_paths[@]}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
@@ -2571,7 +2569,13 @@ function ___p_ls_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
+    fi
 
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
     fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
@@ -2602,7 +2606,6 @@ function ___p_mkdir_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -2614,31 +2617,26 @@ function ___p_mkdir_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif [ "x$arg" == "x--recursive" -o "x$arg" == "x-recursive" -o "x$arg" == "x-r" ]; then
             recursive="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "recursive=${recursive}"
             fi
-
         elif [ "x$arg" == "x--absolute" -o "x$arg" == "x-absolute" -o "x$arg" == "x-a" ]; then
             absolute="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "absolute=${absolute}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             mkdir_paths+=("$arg")
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "mkdir_paths=${mkdir_paths[@]} | len=${#mkdir_paths[@]}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
@@ -2651,7 +2649,13 @@ function ___p_mkdir_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
+    fi
 
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
     fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
@@ -2682,7 +2686,6 @@ function ___p_mv_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -2694,7 +2697,6 @@ function ___p_mv_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             if (( $# > 2 )); then
                 _parse_args_positional_index=$((_parse_args_positional_index + 1))
@@ -2703,20 +2705,17 @@ function ___p_mv_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "mv_srcs=${mv_srcs[@]} | len=${#mv_srcs[@]}"
             fi
-
         elif (( $_parse_args_positional_index == 1 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             mv_dest="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "mv_dest=${mv_dest}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
@@ -2729,7 +2728,13 @@ function ___p_mv_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
+    fi
 
+    if (( $_parse_args_positional_index < 2 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
     fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
@@ -2759,7 +2764,6 @@ function ___p_rm_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -2771,32 +2775,35 @@ function ___p_rm_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif [ "x$arg" == "x--recursive" -o "x$arg" == "x-recursive" -o "x$arg" == "x-r" ]; then
             recursive="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "recursive=${recursive}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             rm_paths="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "rm_paths=${rm_paths}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_rm_print_help
@@ -2825,7 +2832,6 @@ function ___p_cat_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -2837,43 +2843,36 @@ function ___p_cat_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif [ "x$arg" == "x--raw" -o "x$arg" == "x-raw" -o "x$arg" == "x-r" ]; then
             cat_raw="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "cat_raw=${cat_raw}"
             fi
-
         elif [ "x$arg" == "x--json-only" -o "x$arg" == "x-json-only" -o "x$arg" == "x-j" ]; then
             cat_json_only="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "cat_json_only=${cat_json_only}"
             fi
-
         elif [ "x$arg" == "x--password-only" -o "x$arg" == "x-password-only" -o "x$arg" == "x-p" ]; then
             cat_password_only="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "cat_password_only=${cat_password_only}"
             fi
-
         elif [ "x$arg" == "x--no-color" -o "x$arg" == "x-no-color" -o "x$arg" == "x-n" ]; then
             cat_colorize="false"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "cat_colorize=${cat_colorize}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             cat_paths+=("$arg")
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "cat_paths=${cat_paths[@]} | len=${#cat_paths[@]}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
@@ -2886,7 +2885,13 @@ function ___p_cat_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
+    fi
 
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
     fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
@@ -2919,7 +2924,6 @@ function ___p_edit_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -2931,26 +2935,30 @@ function ___p_edit_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             edit_path="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "edit_path=${edit_path}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_edit_print_help
@@ -2982,51 +2990,43 @@ function ___p_generate_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif [ "x${arg:0:9}" == "x--format=" -o "x${arg:0:8}" == "x-format=" ]; then
             format="${arg#*=}"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "format=${format}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )) && [ "x$arg" == "x--format" -o "x$arg" == "x-format" -o "x$arg" == "x-f" ]; then
             format="$1"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "format=${format}"
             fi
-
             shift
         elif (( $_parse_args_positional_index == 0 )) && [ "x$arg" == "x--random" -o "x$arg" == "x-random" -o "x$arg" == "x-r" ]; then
             random="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "random=${random}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )) && [ "x$arg" == "x--phrase" -o "x$arg" == "x-phrase" -o "x$arg" == "x-p" ]; then
             phrase="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "phrase=${phrase}"
             fi
-
         elif [ "x${arg:0:7}" == "x--save=" -o "x${arg:0:6}" == "x-save=" ]; then
             save="${arg#*=}"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "save=${save}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )) && [ "x$arg" == "x--save" -o "x$arg" == "x-save" -o "x$arg" == "x-s" ]; then
             save="$1"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "save=${save}"
             fi
-
             shift
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
@@ -3061,7 +3061,6 @@ function ___p_json_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -3073,7 +3072,6 @@ function ___p_json_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             local __tmp_json_cmd="$arg"
@@ -3083,25 +3081,21 @@ function ___p_json_parse_args() {
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "json_cmd=${json_cmd}"
                 fi
-
             elif [ "x$__tmp_json_cmd" == "xkinit" -o "x$__tmp_json_cmd" == "xk" ]; then
                 json_cmd="kinit"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "json_cmd=${json_cmd}"
                 fi
-
             elif [ "x$__tmp_json_cmd" == "xretype" -o "x$__tmp_json_cmd" == "xr" -o "x$__tmp_json_cmd" == "xtype" -o "x$__tmp_json_cmd" == "xt" ]; then
                 json_cmd="retype"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "json_cmd=${json_cmd}"
                 fi
-
             elif [ "x$__tmp_json_cmd" == "xset" -o "x$__tmp_json_cmd" == "xs" ]; then
                 json_cmd="set"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "json_cmd=${json_cmd}"
                 fi
-
             else
                 _handle_parse_error "json_cmd" "$__tmp_json_cmd"
             fi
@@ -3110,13 +3104,19 @@ function ___p_json_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "json_cmd_args=${json_cmd_args[@]} | len=${#json_cmd_args[@]}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_json_print_help
@@ -3163,7 +3163,6 @@ function ___p_json_get_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -3175,33 +3174,36 @@ function ___p_json_get_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             file="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "file=${file}"
             fi
-
         elif (( $_parse_args_positional_index == 1 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             key="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "key=${key}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 2 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_json_get_print_help
@@ -3230,7 +3232,6 @@ function ___p_json_set_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -3242,40 +3243,42 @@ function ___p_json_set_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             file="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "file=${file}"
             fi
-
         elif (( $_parse_args_positional_index == 1 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             key="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "key=${key}"
             fi
-
         elif (( $_parse_args_positional_index == 2 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             value="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "value=${value}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 3 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_json_set_print_help
@@ -3305,7 +3308,6 @@ function ___p_json_retype_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -3317,33 +3319,36 @@ function ___p_json_retype_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             file="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "file=${file}"
             fi
-
         elif (( $_parse_args_positional_index == 1 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             key="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "key=${key}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 2 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_json_retype_print_help
@@ -3372,7 +3377,6 @@ function ___p_json_kinit_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -3384,26 +3388,30 @@ function ___p_json_kinit_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             file="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "file=${file}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_json_kinit_print_help
@@ -3435,7 +3443,6 @@ function ___p_find_parse_args() {
             echo "find_args=${find_args[@]} | len=${#find_args[@]}"
         fi
 
-
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
@@ -3461,7 +3468,6 @@ function ___p_locate_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -3473,19 +3479,16 @@ function ___p_locate_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             substr+=("$arg")
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "substr=${substr[@]} | len=${#substr[@]}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
@@ -3498,7 +3501,13 @@ function ___p_locate_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
+    fi
 
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
     fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
@@ -3527,7 +3536,6 @@ function ___p_search_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -3539,14 +3547,12 @@ function ___p_search_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             if (( $# <= 1 )); then
                 do_shift="false"
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "do_shift=${do_shift}"
                 fi
-
                 _parse_args_positional_index=$((_parse_args_positional_index + 1))
             else
                 if (( $# <= 2 )); then
@@ -3556,7 +3562,6 @@ function ___p_search_parse_args() {
                 if [ ! -z "$SHARG_VERBOSE" ]; then
                     echo "grep_options=${grep_options[@]} | len=${#grep_options[@]}"
                 fi
-
             fi
         elif (( $_parse_args_positional_index == 1 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
@@ -3564,19 +3569,24 @@ function ___p_search_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "search_regex=${search_regex}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_search_print_help
@@ -3605,7 +3615,6 @@ function ___p_decrypt_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -3617,33 +3626,36 @@ function ___p_decrypt_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             entry="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "entry=${entry}"
             fi
-
         elif (( $_parse_args_positional_index == 1 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             result_path="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "result_path=${result_path}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 2 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_decrypt_print_help
@@ -3672,7 +3684,6 @@ function ___p_encrypt_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -3684,33 +3695,36 @@ function ___p_encrypt_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             file_path="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "file_path=${file_path}"
             fi
-
         elif (( $_parse_args_positional_index == 1 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             entry="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "entry=${entry}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
     done
+
+    if (( $_parse_args_positional_index < 2 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_encrypt_print_help
@@ -3739,7 +3753,6 @@ function ___p_open_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
-
     fi
 
     while (( $# > 0 )); do
@@ -3751,38 +3764,32 @@ function ___p_open_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )) && [ "x$arg" == "x--read-only" -o "x$arg" == "x-read-only" -o "x$arg" == "x-r" ]; then
             read_only="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "read_only=${read_only}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )) && [ "x$arg" == "x--no-lock" -o "x$arg" == "x-no-lock" -o "x$arg" == "x-l" ]; then
             no_lock="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "no_lock=${no_lock}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             open_entry="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "open_entry=${open_entry}"
             fi
-
         elif (( $_parse_args_positional_index == 1 )); then
             open_command+=("$arg")
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "open_command=${open_command[@]} | len=${#open_command[@]}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then
@@ -3795,7 +3802,13 @@ function ___p_open_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "parse_args_print_help=${parse_args_print_help}"
         fi
+    fi
 
+    if (( $_parse_args_positional_index < 2 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
     fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
@@ -3831,7 +3844,6 @@ function ___p_git_parse_args() {
             echo "git_args=${git_args[@]} | len=${#git_args[@]}"
         fi
 
-
         if [ "x$do_shift" == "xtrue" ]; then
             shift
         fi
@@ -3860,7 +3872,6 @@ function ___p_through_parse_args() {
         if [ ! -z "$SHARG_VERBOSE" ]; then
             echo "pass_args=${pass_args[@]} | len=${#pass_args[@]}"
         fi
-
 
         if [ "x$do_shift" == "xtrue" ]; then
             shift
@@ -3891,34 +3902,29 @@ function ___p_sync_parse_args() {
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         elif (( $_parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             branch="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "branch=${branch}"
             fi
-
         elif (( $_parse_args_positional_index == 1 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             origin="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "origin=${origin}"
             fi
-
         elif (( $_parse_args_positional_index == 2 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
             remote="$arg"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "remote=${remote}"
             fi
-
         else
             parse_args_print_help="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
                 echo "parse_args_print_help=${parse_args_print_help}"
             fi
-
         fi
 
         if [ "x$do_shift" == "xtrue" ]; then

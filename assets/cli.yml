@@ -34,6 +34,7 @@ arguments:
           - name: without-git
             short: n
             description: don't create the password store with git
+            var: init_git
             type: TrueFalse
             aliases:
               - without-git
@@ -48,6 +49,7 @@ arguments:
         grammar:
           - "[options]"
           - "arguments.gpg_id"
+        mixed_options_arguments: true
       - name: keys
         description: manage keys used to encrypt passwords
         group: Setup

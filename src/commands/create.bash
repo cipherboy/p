@@ -1,30 +1,14 @@
 function ___p_create() {
     local gpg_id=""
-    local seen_gpg_id="false"
-
     local init_git="true"
-    local help="false"
     local gpg_error="false"
 
-    while (( $# > 0 )); do
-        local arg="$1"
-        shift
+    ___p_create_parse_args "$@"
+    ret=$?
 
-        if [ "x$arg" == "x--help" ] || [ "x$arg" == "x-help" ] ||
-                [ "x$arg" == "x-h" ]; then
-            help="true"
-        elif [ "x$arg" == "x--no-git" ] || [ "x$arg" == "x-no-git" ] ||
-                [ "x$arg" == "x--ng" ] || [ "x$arg" == "x-ng" ] ||
-                [ "x$arg" == "x-n" ]; then
-            init_git="false"
-        elif [ "$seen_gpg_id" == "false" ]; then
-            gpg_id="$arg"
-            seen_gpg_id="true"
-        else
-            __e "Unrecognized argument: $arg"
-            help="true"
-        fi
-    done
+    if (( ret != 0 )); then
+        return $ret
+    fi
 
     if [ ! -e "$HOME/.gitconfig" ]; then
         __v "No ~/.gitconfig present -- refusing to initialize git"
@@ -40,20 +24,11 @@ function ___p_create() {
         fi
     fi
 
-    if [ "$help" == "true" ]; then
-        echo "Usage: p create [options] <gpg_id>"
-        echo "Create a new password store or progressively reinitialize an existing one."
+    if [ "$gpg_error" == "true" ]; then
+        ___p_create_print_help
         echo ""
-        echo "Options:"
-        echo "--no-git, -n: don't create the password store with git."
-
-        if [ "$gpg_error" == "true" ]; then
-            echo ""
-            __e "Unknown gpg key: \`$gpg_id\`"
-            return 1
-        fi
-
-        return 0
+        __e "Unknown gpg key: \`$gpg_id\`"
+        return 1
     fi
 
     if [ ! -d "$_p_pass_dir/.p" ]; then
