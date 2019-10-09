@@ -25,6 +25,7 @@ arguments:
         grammar:
           - "[options]"
           - "arguments.uri"
+        mixed_options_arguments: true
       - name: create
         description: create a password store from scratch
         group: Setup
