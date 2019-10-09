@@ -352,18 +352,23 @@ arguments:
         options:
           - name: absolute
             short: a
+            var: cd_mode
+            constant: absolute
             description: treat as an absolute path
-            type: FalseTrue
+            type: Constant
           - name: relative
             short: r
+            var: cd_mode
+            constant: relative
             description: treat as a relative path
-            type: FalseTrue
+            type: Constant
         arguments:
           - name: cd_path
             description: path to change into; absolute if prefixed with '/' or --absolute is specified, else relative
         grammar:
           - "[options]"
-          - arguments.cd_path
+          - "[arguments.cd_path]"
+        mixed_options_arguments: true
       - name: cp
         description: copy the contents of one file to another location
         group: Basic navigation
