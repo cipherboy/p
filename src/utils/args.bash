@@ -1145,6 +1145,14 @@ function ___p_group_create_parse_args() {
         fi
     done
 
+    if (( ${#group_keys} == 0 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+
+    fi
+
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_group_create_print_help
         return 1
@@ -1205,6 +1213,14 @@ function ___p_group_add_parse_args() {
         fi
     done
 
+    if (( ${#group_keys} == 0 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+
+    fi
+
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_group_add_print_help
         return 1
@@ -1264,6 +1280,14 @@ function ___p_group_remove_parse_args() {
             shift
         fi
     done
+
+    if (( ${#group_keys} == 0 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_group_remove_print_help
@@ -1517,6 +1541,14 @@ function ___p_dir_create_parse_args() {
         fi
     done
 
+    if (( ${#dir_keys} == 0 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+
+    fi
+
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_dir_create_print_help
         return 1
@@ -1577,6 +1609,14 @@ function ___p_dir_add_parse_args() {
         fi
     done
 
+    if (( ${#dir_keys} == 0 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+
+    fi
+
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_dir_add_print_help
         return 1
@@ -1636,6 +1676,14 @@ function ___p_dir_remove_parse_args() {
             shift
         fi
     done
+
+    if (( ${#dir_keys} == 0 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_dir_remove_print_help
@@ -2364,6 +2412,14 @@ function ___p_ls_parse_args() {
         fi
     done
 
+    if (( ${#ls_paths} == 0 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+
+    fi
+
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_ls_print_help
         return 1
@@ -2430,6 +2486,14 @@ function ___p_mkdir_parse_args() {
         fi
     done
 
+    if (( ${#mkdir_paths} == 0 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+
+    fi
+
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_mkdir_print_help
         return 1
@@ -2493,6 +2557,14 @@ function ___p_mv_parse_args() {
             shift
         fi
     done
+
+    if (( ${#mv_srcs} == 0 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_mv_print_help
@@ -2595,27 +2667,27 @@ function ___p_cat_parse_args() {
             fi
 
         elif [ "x$arg" == "x--raw" ] || [ "x$arg" == "x-raw" ] || [ "x$arg" == "x-r" ]; then
-            raw="true"
+            cat_raw="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
-                echo "raw=${raw}"
+                echo "cat_raw=${cat_raw}"
             fi
 
         elif [ "x$arg" == "x--json-only" ] || [ "x$arg" == "x-json-only" ] || [ "x$arg" == "x-j" ]; then
-            json_only="true"
+            cat_json_only="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
-                echo "json_only=${json_only}"
+                echo "cat_json_only=${cat_json_only}"
             fi
 
         elif [ "x$arg" == "x--password-only" ] || [ "x$arg" == "x-password-only" ] || [ "x$arg" == "x-p" ]; then
-            password_only="true"
+            cat_password_only="true"
             if [ ! -z "$SHARG_VERBOSE" ]; then
-                echo "password_only=${password_only}"
+                echo "cat_password_only=${cat_password_only}"
             fi
 
         elif [ "x$arg" == "x--no-color" ] || [ "x$arg" == "x-no-color" ] || [ "x$arg" == "x-n" ]; then
-            color="false"
+            cat_colorize="false"
             if [ ! -z "$SHARG_VERBOSE" ]; then
-                echo "color=${color}"
+                echo "cat_colorize=${cat_colorize}"
             fi
 
         elif (( $_parse_args_positional_index == 0 )); then
@@ -2630,6 +2702,14 @@ function ___p_cat_parse_args() {
             shift
         fi
     done
+
+    if (( ${#cat_paths} == 0 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_cat_print_help
@@ -3193,6 +3273,14 @@ function ___p_locate_parse_args() {
         fi
     done
 
+    if (( ${#substr} == 0 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+
+    fi
+
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_locate_print_help
         return 1
@@ -3457,6 +3545,14 @@ function ___p_open_parse_args() {
             shift
         fi
     done
+
+    if (( ${#open_command} == 0 )); then
+        parse_args_print_help="true"
+        if [ ! -z "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}"
+        fi
+
+    fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_open_print_help

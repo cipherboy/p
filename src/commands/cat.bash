@@ -3,48 +3,41 @@
 # Supports formatting and optionally colorizing the result with jq.
 function ___p_cat() {
     local cat_raw="false"
-    local cat_show_password="true"
-    local cat_show_json="true"
+    local cat_json_only="false"
+    local cat_password_only="false"
     local cat_colorize="true"
-    local cat_targets=()
+    local cat_paths=()
 
-    for arg in "$@"; do
-        if [ "x$arg" == "x--raw" ] || [ "x$arg" == "x-raw" ] ||
-                [ "x$arg" == "x-r" ]; then
-            cat_raw="true"
-        elif [ "x$arg" == "x--json-only" ] || [ "x$arg" == "x-json-only" ] ||
-                [ "x$arg" == "x--json" ] || [ "x$arg" == "x-json" ] ||
-                [ "x$arg" == "x-j" ]; then
-            cat_show_password="false"
-            cat_show_json="true"
-        elif [ "x$arg" == "x--password-only" ] ||
-                [ "x$arg" == "x-password-only" ] ||
-                [ "x$arg" == "x--password" ] ||
-                [ "x$arg" == "x-password" ] ||
-                [ "x$arg" == "x-p" ]; then
-            cat_show_password="true"
-            cat_show_json="false"
-        elif [ "x$arg" == "x--no-color" ] || [ "x$arg" == "x-n-color" ] ||
-                [ "x$arg" == "x-n" ]; then
-            cat_colorize="false"
-        else
-            local arg_path="$(__p_find_file "$arg")"
-            if [ "x$arg_path" != "x" ]; then
-                cat_targets+=("$arg_path")
-            else
-                __d "Unknown argument, path not found, or not a file: " \
-                    "$arg. If the path is a directory, note that \`p\` " \
-                    "differs from \`pass\` in that the \`cat\` command " \
-                    "will not show directories."
-            fi
-        fi
-    done
+    ___p_cat_parse_args "$@"
+    ret=$?
+
+    if (( ret != 0 )); then
+        return $ret
+    fi
 
     if [ ! -t 1 ]; then
         # Refuse to colorize when output is not a terminal; otherwise, `jq`
         # tends to throw errors...
         cat_colorize="false"
     fi
+
+    if [ "$cat_password_only" == "true" ] &&
+            [ "$cat_json_only" == "true" ]; then
+        echo "Cannot specify both --password-only and --json-only" 1>&2
+        return 1
+    fi
+
+    local cat_targets=()
+    for path in "${cat_paths[@]}"; do
+        local target="$(__p_find_file "$path")"
+        if [ "x$target" == "x" ]; then
+            __d "Unknown argument, path not found, or not a file:" \
+                "$path. If the path is a directory, note that \`p\` " \
+                "differs from \`pass\` in that the \`cat\` command " \
+                "will not show directories."
+        fi
+        cat_targets+=("$target")
+    done
 
     for target in "${cat_targets[@]}"; do
         local content="$(___p_decrypt "$target" -)"
@@ -60,8 +53,8 @@ function ___p_cat() {
             __jq . >/dev/null 2>/dev/null <<< "$rest"
             local is_rest_json="$?"
 
-            if [ "$cat_show_password" == "true" ] &&
-                    [ "$cat_show_json" == "true" ]; then
+            if [ "$cat_password_only" == "false" ] &&
+                    [ "$cat_json_only" == "false" ]; then
                 if (( is_content_json == 0 )); then
                     if [ "$cat_colorize" == "true" ]; then
                         __jq -C -S <<< "$content"
@@ -78,15 +71,15 @@ function ___p_cat() {
                 else
                     echo "$content"
                 fi
-            elif [ "$cat_show_password" == "true" ] &&
-                    [ "$cat_show_json" == "false" ]; then
+            elif [ "$cat_password_only" == "true" ] &&
+                    [ "$cat_json_only" == "false" ]; then
                 if (( is_rest_json == 0 )); then
                     echo "$first_line"
                 elif (( is_content_json != 0 )); then
                     echo "$content"
                 fi
-            elif [ "$cat_show_password" == "false" ] &&
-                    [ "$cat_show_json" == "true" ]; then
+            elif [ "$cat_password_only" == "false" ] &&
+                    [ "$cat_json_only" == "true" ]; then
                 if (( is_content_json == 0 )); then
                     if [ "$cat_colorize" == "true" ]; then
                         __jq -C -S <<< "$content"

@@ -480,27 +480,30 @@ arguments:
         options:
           - name: raw
             short: r
+            var: cat_raw
             type: FalseTrue
             description: raw, uncolorized, machine-readable output
           - name: json-only
             short: j
+            var: cat_json_only
             type: FalseTrue
             aliases:
               - json
             description: only output the json portion of these password entries, if present
           - name: password-only
             short: p
+            var: cat_password_only
             type: FalseTrue
             aliases:
               - password
             description: only output the first line of the password entry
           - name: no-color
             short: n
+            var: cat_colorize
             antonyms:
               - with-color
               - colorize
               - color
-            var: color
             type: TrueFalse
             description: don't colorize the output
         arguments:
