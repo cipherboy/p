@@ -9,7 +9,7 @@ function ___p_decrypt() {
         return $ret
     fi
 
-    if [ -z "$result_path" ]; then
+    if [ -z "$result_path" ] || [ "x$result_path" == "x-" ]; then
         __pass show "$entry"
     else
         __pass show "$entry" > "$result_path"
