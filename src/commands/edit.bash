@@ -1,21 +1,18 @@
 # Passthrough function for pass edit. Currently ignores $_p_cwd.
 function ___p_edit() {
-    local file="$(__p_find_file "$1")"
-    local is_help="false"
-    if [ "x$1" == "x--help" ] || [ "x$1" == "x-help" ] ||
-            [ "x$1" == "x-h" ] || [ "x$1" == "x" ]; then
-        is_help="true"
+    local edit_path=""
+
+    ___p_edit_parse_args "$@"
+    ret=$?
+
+    if (( ret != 0 )); then
+        return $ret
     fi
 
-    if [ $# == 1 ] && [ "$is_help" == "false" ]; then
-        if [ "x$file" != "x" ]; then
-            ___p_open "$file" -- "$_p_editor"
-        else
-            __pass edit "$1"
-        fi
+    local file="$(__p_find_file "$1")"
+    if [ "x$file" != "x" ]; then
+        ___p_open "$file" -- "$_p_editor"
     else
-        echo "Usage: p edit <file>"
-        echo ""
-        echo "<file>: path or cwd-relative path to a file tracked by pass"
+        __pass edit "$edit_path"
     fi
 }
