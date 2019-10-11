@@ -274,54 +274,129 @@ _p_print_help_EOF
 }
 function _p_dispatch_subparser() {
     if [ "x$cmd" == "xcat" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: cat | ___p_cat"
+        fi
         ___p_cat "${cmd_args[@]}"
     elif [ "x$cmd" == "xcd" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: cd | ___p_cd"
+        fi
         ___p_cd "${cmd_args[@]}"
     elif [ "x$cmd" == "xclone" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: clone | ___p_clone"
+        fi
         ___p_clone "${cmd_args[@]}"
     elif [ "x$cmd" == "xcp" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: cp | ___p_cp"
+        fi
         ___p_cp "${cmd_args[@]}"
     elif [ "x$cmd" == "xcreate" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: create | ___p_create"
+        fi
         ___p_create "${cmd_args[@]}"
     elif [ "x$cmd" == "xdecrypt" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: decrypt | ___p_decrypt"
+        fi
         ___p_decrypt "${cmd_args[@]}"
     elif [ "x$cmd" == "xdirs" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: dirs | ___p_dirs"
+        fi
         ___p_dirs "${cmd_args[@]}"
     elif [ "x$cmd" == "xedit" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: edit | ___p_edit"
+        fi
         ___p_edit "${cmd_args[@]}"
     elif [ "x$cmd" == "xencrypt" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: encrypt | ___p_encrypt"
+        fi
         ___p_encrypt "${cmd_args[@]}"
     elif [ "x$cmd" == "xfind" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: find | ___p_find"
+        fi
         ___p_find "${cmd_args[@]}"
     elif [ "x$cmd" == "xgenerate" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: generate | ___p_generate"
+        fi
         ___p_generate "${cmd_args[@]}"
     elif [ "x$cmd" == "xgit" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: git | ___p_git"
+        fi
         ___p_git "${cmd_args[@]}"
     elif [ "x$cmd" == "xgpg" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: gpg | ___p_gpg"
+        fi
         ___p_gpg "${cmd_args[@]}"
     elif [ "x$cmd" == "xgroups" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: groups | ___p_groups"
+        fi
         ___p_groups "${cmd_args[@]}"
     elif [ "x$cmd" == "xjson" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: json | ___p_json"
+        fi
         ___p_json "${cmd_args[@]}"
     elif [ "x$cmd" == "xkeys" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: keys | ___p_keys"
+        fi
         ___p_keys "${cmd_args[@]}"
     elif [ "x$cmd" == "xlocate" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: locate | ___p_locate"
+        fi
         ___p_locate "${cmd_args[@]}"
     elif [ "x$cmd" == "xls" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: ls | ___p_ls"
+        fi
         ___p_ls "${cmd_args[@]}"
     elif [ "x$cmd" == "xmkdir" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: mkdir | ___p_mkdir"
+        fi
         ___p_mkdir "${cmd_args[@]}"
     elif [ "x$cmd" == "xmv" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: mv | ___p_mv"
+        fi
         ___p_mv "${cmd_args[@]}"
     elif [ "x$cmd" == "xopen" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: open | ___p_open"
+        fi
         ___p_open "${cmd_args[@]}"
     elif [ "x$cmd" == "xpass" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: pass | ___p_through"
+        fi
         ___p_through "${cmd_args[@]}"
     elif [ "x$cmd" == "xrm" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: rm | ___p_rm"
+        fi
         ___p_rm "${cmd_args[@]}"
     elif [ "x$cmd" == "xsearch" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: search | ___p_search"
+        fi
         ___p_search "${cmd_args[@]}"
     elif [ "x$cmd" == "xsync" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: sync | ___p_sync"
+        fi
         ___p_sync "${cmd_args[@]}"
     elif [ -n "$cmd" ]; then
         _handle_dispatch_error "$cmd"
@@ -574,20 +649,44 @@ ___p_keys_print_help_EOF
 }
 function ___p_keys_dispatch_subparser() {
     if [ "x$key_cmd" == "xdelete" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: delete | ___p_key_delete"
+        fi
         ___p_key_delete "${key_cmd_args[@]}"
     elif [ "x$key_cmd" == "xexport" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: export | ___p_key_export"
+        fi
         ___p_key_export "${key_cmd_args[@]}"
     elif [ "x$key_cmd" == "ximport" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: import | ___p_key_import"
+        fi
         ___p_key_import "${key_cmd_args[@]}"
     elif [ "x$key_cmd" == "xinit" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: init | ___p_key_init"
+        fi
         ___p_key_init "${key_cmd_args[@]}"
     elif [ "x$key_cmd" == "xlist" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: list | ___p_keys_list"
+        fi
         ___p_keys_list "${key_cmd_args[@]}"
     elif [ "x$key_cmd" == "xregen" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: regen | ___p_keys_regen"
+        fi
         ___p_keys_regen "${key_cmd_args[@]}"
     elif [ "x$key_cmd" == "xrename" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: rename | ___p_key_rename"
+        fi
         ___p_key_rename "${key_cmd_args[@]}"
     elif [ "x$key_cmd" == "xupdate" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: update | ___p_key_update"
+        fi
         ___p_key_update "${key_cmd_args[@]}"
     elif [ -n "$key_cmd" ]; then
         _handle_dispatch_error "$key_cmd"
@@ -1134,14 +1233,29 @@ ___p_groups_print_help_EOF
 }
 function ___p_groups_dispatch_subparser() {
     if [ "x$group_cmd" == "xadd" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: add | ___p_group_add"
+        fi
         ___p_group_add "${group_cmd_args[@]}"
     elif [ "x$group_cmd" == "xcreate" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: create | ___p_group_create"
+        fi
         ___p_group_create "${group_cmd_args[@]}"
     elif [ "x$group_cmd" == "xdelete" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: delete | ___p_group_delete"
+        fi
         ___p_group_delete "${group_cmd_args[@]}"
     elif [ "x$group_cmd" == "xlist" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: list | ___p_group_list"
+        fi
         ___p_group_list "${group_cmd_args[@]}"
     elif [ "x$group_cmd" == "xremove" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: remove | ___p_group_remove"
+        fi
         ___p_group_remove "${group_cmd_args[@]}"
     elif [ -n "$group_cmd" ]; then
         _handle_dispatch_error "$group_cmd"
@@ -1567,14 +1681,29 @@ ___p_dirs_print_help_EOF
 }
 function ___p_dirs_dispatch_subparser() {
     if [ "x$dir_cmd" == "xadd" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: add | ___p_dir_add"
+        fi
         ___p_dir_add "${dir_cmd_args[@]}"
     elif [ "x$dir_cmd" == "xcreate" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: create | ___p_dir_create"
+        fi
         ___p_dir_create "${dir_cmd_args[@]}"
     elif [ "x$dir_cmd" == "xdelete" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: delete | ___p_dir_delete"
+        fi
         ___p_dir_delete "${dir_cmd_args[@]}"
     elif [ "x$dir_cmd" == "xlist" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: list | ___p_dir_list"
+        fi
         ___p_dir_list "${dir_cmd_args[@]}"
     elif [ "x$dir_cmd" == "xremove" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: remove | ___p_dir_remove"
+        fi
         ___p_dir_remove "${dir_cmd_args[@]}"
     elif [ -n "$dir_cmd" ]; then
         _handle_dispatch_error "$dir_cmd"
@@ -2006,16 +2135,34 @@ ___p_gpg_print_help_EOF
 }
 function ___p_gpg_dispatch_subparser() {
     if [ "x$gpg_cmd" == "xexport" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: export | ___p_gpg_export"
+        fi
         ___p_gpg_export "${gpg_cmd_args[@]}"
     elif [ "x$gpg_cmd" == "xgenerate" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: generate | ___p_gpg_generate"
+        fi
         ___p_gpg_generate "${gpg_cmd_args[@]}"
     elif [ "x$gpg_cmd" == "ximport" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: import | ___p_gpg_import"
+        fi
         ___p_gpg_import "${gpg_cmd_args[@]}"
     elif [ "x$gpg_cmd" == "xlist" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: list | ___p_gpg_list"
+        fi
         ___p_gpg_list "${gpg_cmd_args[@]}"
     elif [ "x$gpg_cmd" == "xpassword" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: password | ___p_gpg_password"
+        fi
         ___p_gpg_password "${gpg_cmd_args[@]}"
     elif [ "x$gpg_cmd" == "xtrust" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: trust | ___p_gpg_trust"
+        fi
         ___p_gpg_trust "${gpg_cmd_args[@]}"
     elif [ -n "$gpg_cmd" ]; then
         _handle_dispatch_error "$gpg_cmd"
@@ -3184,12 +3331,24 @@ ___p_json_print_help_EOF
 }
 function ___p_json_dispatch_subparser() {
     if [ "x$json_cmd" == "xget" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: get | ___p_json_get"
+        fi
         ___p_json_get "${json_cmd_args[@]}"
     elif [ "x$json_cmd" == "xkinit" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: kinit | ___p_json_kinit"
+        fi
         ___p_json_kinit "${json_cmd_args[@]}"
     elif [ "x$json_cmd" == "xretype" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: retype | ___p_json_retype"
+        fi
         ___p_json_retype "${json_cmd_args[@]}"
     elif [ "x$json_cmd" == "xset" ]; then
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "Dispatching: set | ___p_json_set"
+        fi
         ___p_json_set "${json_cmd_args[@]}"
     elif [ -n "$json_cmd" ]; then
         _handle_dispatch_error "$json_cmd"
@@ -3198,6 +3357,75 @@ function ___p_json_dispatch_subparser() {
     fi
 }
 function ___p_json_get_parse_args() {
+    local parse_args_print_help="false"
+    local _parse_args_positional_index="0"
+    if (( $# < 1 )); then
+        parse_args_print_help="true"
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}" 1>&2
+        fi
+    fi
+
+    while (( $# > 0 )); do
+        local arg="$1"
+        local do_shift="true"
+
+        if { (( _parse_args_positional_index == 0 )) && { [ "x$arg" == "x--help" ] || [ "x$arg" == "x-help" ] || [ "x$arg" == "x-h" ]; }; }; then
+            parse_args_print_help="true"
+            if [ -n "$SHARG_VERBOSE" ]; then
+                echo "parse_args_print_help=${parse_args_print_help}" 1>&2
+            fi
+        elif (( _parse_args_positional_index == 0 )); then
+            _parse_args_positional_index=$((_parse_args_positional_index + 1))
+            j_file="$arg"
+            if [ -n "$SHARG_VERBOSE" ]; then
+                echo "j_file=${j_file}" 1>&2
+            fi
+        elif (( _parse_args_positional_index == 1 )); then
+            _parse_args_positional_index=$((_parse_args_positional_index + 1))
+            j_key="$arg"
+            if [ -n "$SHARG_VERBOSE" ]; then
+                echo "j_key=${j_key}" 1>&2
+            fi
+        else
+            parse_args_print_help="true"
+            if [ -n "$SHARG_VERBOSE" ]; then
+                echo "parse_args_print_help=${parse_args_print_help}" 1>&2
+            fi
+        fi
+
+        if [ "x$do_shift" == "xtrue" ]; then
+            shift
+        fi
+    done
+
+    if (( _parse_args_positional_index < 1 )); then
+        parse_args_print_help="true"
+        if [ -n "$SHARG_VERBOSE" ]; then
+            echo "parse_args_print_help=${parse_args_print_help}" 1>&2
+        fi
+    fi
+
+    if [ "x$parse_args_print_help" == "xtrue" ]; then
+        ___p_json_get_print_help
+        return 1
+    fi
+    return 0
+}
+function ___p_json_get_print_help() {
+    cat - << ___p_json_get_print_help_EOF
+Usage: p json get [options] <file> [arguments.key]
+get a key's value from a file's JSON data
+
+Arguments:
+  file: file to read
+  key: key to read out of the file; defaults to password
+
+Options:
+  --help, -h: Print this help text.
+___p_json_get_print_help_EOF
+}
+function ___p_json_set_parse_args() {
     local parse_args_print_help="false"
     local _parse_args_positional_index="0"
     if (( $# < 2 )); then
@@ -3218,15 +3446,29 @@ function ___p_json_get_parse_args() {
             fi
         elif (( _parse_args_positional_index == 0 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
-            file="$arg"
+            j_file="$arg"
             if [ -n "$SHARG_VERBOSE" ]; then
-                echo "file=${file}" 1>&2
+                echo "j_file=${j_file}" 1>&2
             fi
         elif (( _parse_args_positional_index == 1 )); then
+            if (( $# <= 1 )); then
+                do_shift="false"
+                if [ -n "$SHARG_VERBOSE" ]; then
+                    echo "do_shift=${do_shift}" 1>&2
+                fi
+                _parse_args_positional_index=$((_parse_args_positional_index + 1))
+            else
+                _parse_args_positional_index=$((_parse_args_positional_index + 1))
+                j_key="$arg"
+                if [ -n "$SHARG_VERBOSE" ]; then
+                    echo "j_key=${j_key}" 1>&2
+                fi
+            fi
+        elif (( _parse_args_positional_index == 2 )); then
             _parse_args_positional_index=$((_parse_args_positional_index + 1))
-            key="$arg"
+            j_value="$arg"
             if [ -n "$SHARG_VERBOSE" ]; then
-                echo "key=${key}" 1>&2
+                echo "j_value=${j_value}" 1>&2
             fi
         else
             parse_args_print_help="true"
@@ -3248,81 +3490,6 @@ function ___p_json_get_parse_args() {
     fi
 
     if [ "x$parse_args_print_help" == "xtrue" ]; then
-        ___p_json_get_print_help
-        return 1
-    fi
-    return 0
-}
-function ___p_json_get_print_help() {
-    cat - << ___p_json_get_print_help_EOF
-Usage: p json get [options] <file> <key>
-get a key's value from a file's JSON data
-
-Arguments:
-  file: file to read
-  key: key to read out of the file; defaults to password
-
-Options:
-  --help, -h: Print this help text.
-___p_json_get_print_help_EOF
-}
-function ___p_json_set_parse_args() {
-    local parse_args_print_help="false"
-    local _parse_args_positional_index="0"
-    if (( $# < 3 )); then
-        parse_args_print_help="true"
-        if [ -n "$SHARG_VERBOSE" ]; then
-            echo "parse_args_print_help=${parse_args_print_help}" 1>&2
-        fi
-    fi
-
-    while (( $# > 0 )); do
-        local arg="$1"
-        local do_shift="true"
-
-        if { (( _parse_args_positional_index == 0 )) && { [ "x$arg" == "x--help" ] || [ "x$arg" == "x-help" ] || [ "x$arg" == "x-h" ]; }; }; then
-            parse_args_print_help="true"
-            if [ -n "$SHARG_VERBOSE" ]; then
-                echo "parse_args_print_help=${parse_args_print_help}" 1>&2
-            fi
-        elif (( _parse_args_positional_index == 0 )); then
-            _parse_args_positional_index=$((_parse_args_positional_index + 1))
-            file="$arg"
-            if [ -n "$SHARG_VERBOSE" ]; then
-                echo "file=${file}" 1>&2
-            fi
-        elif (( _parse_args_positional_index == 1 )); then
-            _parse_args_positional_index=$((_parse_args_positional_index + 1))
-            key="$arg"
-            if [ -n "$SHARG_VERBOSE" ]; then
-                echo "key=${key}" 1>&2
-            fi
-        elif (( _parse_args_positional_index == 2 )); then
-            _parse_args_positional_index=$((_parse_args_positional_index + 1))
-            value="$arg"
-            if [ -n "$SHARG_VERBOSE" ]; then
-                echo "value=${value}" 1>&2
-            fi
-        else
-            parse_args_print_help="true"
-            if [ -n "$SHARG_VERBOSE" ]; then
-                echo "parse_args_print_help=${parse_args_print_help}" 1>&2
-            fi
-        fi
-
-        if [ "x$do_shift" == "xtrue" ]; then
-            shift
-        fi
-    done
-
-    if (( _parse_args_positional_index < 3 )); then
-        parse_args_print_help="true"
-        if [ -n "$SHARG_VERBOSE" ]; then
-            echo "parse_args_print_help=${parse_args_print_help}" 1>&2
-        fi
-    fi
-
-    if [ "x$parse_args_print_help" == "xtrue" ]; then
         ___p_json_set_print_help
         return 1
     fi
@@ -3330,7 +3497,7 @@ function ___p_json_set_parse_args() {
 }
 function ___p_json_set_print_help() {
     cat - << ___p_json_set_print_help_EOF
-Usage: p json set [options] <file> <key> <value>
+Usage: p json set [options] <file> [arguments.key] <value>
 set a key's value in a file's JSON data
 
 Arguments:

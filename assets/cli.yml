@@ -583,13 +583,15 @@ arguments:
                 function: ___p_json_get
                 arguments:
                   - name: file
+                    var: j_file
                     description: file to read
                   - name: key
+                    var: j_key
                     description: key to read out of the file; defaults to password
                 grammar:
                   - "[options]"
                   - "arguments.file"
-                  - "arguments.key"
+                  - "[arguments.key]"
               - name: set
                 description: set a key's value in a file's JSON data
                 aliases:
@@ -597,15 +599,18 @@ arguments:
                 function: ___p_json_set
                 arguments:
                   - name: file
+                    var: j_file
                     description: file to write
                   - name: key
+                    var: j_key
                     description: key to set in the file
                   - name: value
+                    var: j_value
                     description: value of the key
                 grammar:
                   - "[options]"
                   - "arguments.file"
-                  - "arguments.key"
+                  - "[arguments.key]"
                   - "arguments.value"
               - name: retype
                 description: type the key's value from a file's JSON data
