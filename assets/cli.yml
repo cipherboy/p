@@ -544,18 +544,24 @@ arguments:
           - name: format
             short: f
             description: format string for generated password
+            type: String
           - name: random
             short: r
+            var: mode
+            type: Constant
+            constant: random
             aliases:
               - rand
-            type: FalseTrue
             description: generate a 30 alphanumeric character password
           - name: phrase
             short: p
-            type: FalseTrue
+            var: mode
+            type: Constant
+            constant: phrase
             description: generate a 3 word, 12 number phrase password
           - name: save
             short: s
+            var: name
             description: save generated password to the specified password entry
         grammar:
           - "[options]"
