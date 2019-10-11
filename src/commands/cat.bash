@@ -55,18 +55,18 @@ function ___p_cat() {
 
             if [ "$cat_password_only" == "false" ] &&
                     [ "$cat_json_only" == "false" ]; then
-                if (( is_content_json == 0 )); then
-                    if [ "$cat_colorize" == "true" ]; then
-                        __jq -C -S <<< "$content"
-                    else
-                        echo "$content"
-                    fi
-                elif (( is_rest_json == 0 )); then
+                if (( is_rest_json == 0 )); then
                     echo "$first_line"
                     if [ "$cat_colorize" == "true" ]; then
                         __jq -C -S <<< "$rest"
                     else
                         echo "$rest"
+                    fi
+                elif (( is_content_json == 0 )); then
+                    if [ "$cat_colorize" == "true" ]; then
+                        __jq -C -S <<< "$content"
+                    else
+                        echo "$content"
                     fi
                 else
                     echo "$content"
@@ -80,17 +80,17 @@ function ___p_cat() {
                 fi
             elif [ "$cat_password_only" == "false" ] &&
                     [ "$cat_json_only" == "true" ]; then
-                if (( is_content_json == 0 )); then
-                    if [ "$cat_colorize" == "true" ]; then
-                        __jq -C -S <<< "$content"
-                    else
-                        echo "$content"
-                    fi
-                elif (( is_rest_json == 0 )); then
+                if (( is_rest_json == 0 )); then
                     if [ "$cat_colorize" == "true" ]; then
                         __jq -C -S <<< "$rest"
                     else
                         echo "$rest"
+                    fi
+                elif (( is_content_json == 0 )); then
+                    if [ "$cat_colorize" == "true" ]; then
+                        __jq -C -S <<< "$content"
+                    else
+                        echo "$content"
                     fi
                 fi
             fi
