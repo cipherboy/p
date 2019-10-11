@@ -8,3 +8,6 @@ Session.vim
 
 *.pyc
 bin/p
+
+# Ignore auto-generated files
+src/utils/args.bash
