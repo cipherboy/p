@@ -24,7 +24,7 @@ function ___p_generate() {
         password="$(__genpass --phrase)"
     fi
 
-    echo "$password"
+    cat - <<< "$password"
 
     if [ "x$name" != "x" ]; then
         ___p_json set "$name" "password" "$password"
