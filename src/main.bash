@@ -72,11 +72,14 @@ function p() {
     . commands/cp.bash
     . commands/create.bash
     . commands/decrypt.bash
+    . commands/dirs.bash
     . commands/edit.bash
     . commands/encrypt.bash
     . commands/find.bash
     . commands/generate.bash
     . commands/git.bash
+    . commands/gpg.bash
+    . commands/groups.bash
     . commands/json.bash
     . commands/keys.bash
     . commands/locate.bash

@@ -93,10 +93,10 @@ arguments:
                   - arguments.key_nickname
               - name: list
                 description: list all keys in the key manager
-                function: ___p_keys_list
+                function: ___p_key_list
               - name: regen
                 description: recreate all .gpg-id files and re-encrypt passwords
-                function: ___p_keys_regen
+                function: ___p_key_regen
               - name: delete
                 description: delete a key from the key manager
                 function: ___p_key_delete
