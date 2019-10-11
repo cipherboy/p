@@ -89,8 +89,6 @@ function p() {
     . commands/sync.bash
     . commands/through.bash
 
-    . commands/help.bash
-
     # [ stage: core ] #
 
     # Validate our environment is sane.
