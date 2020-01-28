@@ -587,6 +587,7 @@ arguments:
                     description: file to read
                   - name: key
                     var: j_key
+                    default: password
                     description: key to read out of the file; defaults to password
                 grammar:
                   - "[options]"
@@ -621,13 +622,16 @@ arguments:
                 function: ___p_json_retype
                 arguments:
                   - name: file
+                    var: j_file
                     description: file to read
                   - name: key
+                    var: j_key
+                    default: password
                     description: key to read out of the file; defaults to password
                 grammar:
                   - "[options]"
                   - "arguments.file"
-                  - "arguments.key"
+                  - "[arguments.key]"
               - name: kinit
                 description: obtain a Kerberos ticket from information in the specified file's JSON data
                 aliases:
@@ -635,6 +639,7 @@ arguments:
                 function: ___p_json_kinit
                 arguments:
                   - name: file
+                    var: j_file
                     description: file to read
                 grammar:
                   - "[options]"
@@ -764,8 +769,10 @@ arguments:
             description: local branch to sync from; defaults to the current branch
           - name: origin
             description: remote origin to sync to; defaults to origin
+            default: origin
           - name: remote
             description: remote branch to sync to; defaults to master
+            default: master
         grammar:
           - "[options]"
           - "[arguments.branch]"
