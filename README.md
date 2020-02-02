@@ -11,9 +11,9 @@ will suffice.
 Using `p` requires `pass` and `jq` to be installed, or at least, available on
 the system. However, additional functionality is provided by:
 
-    - `su` -- for local user changes
-    - `ssh` -- for executing `p` on remote servers
-    - `tree`, `sed`, `grep`, `cat` and other Unix utilities.
+ - `su` -- for local user changes
+ - `ssh` -- for executing `p` on remote servers
+ - `tree`, `sed`, `grep`, `cat` and other Unix utilities.
 
 
 ## Building
@@ -48,9 +48,9 @@ remaining compatible with the de facto standard of first line being the target
 password. Also, `p` insists that there's one right command to perform an
 action, unlike pass where the following are equivalent:
 
-    - `pass <file>`
-    - `pass ls <file>`
-    - `pass show <file>`
+ - `pass <file>`
+ - `pass ls <file>`
+ - `pass show <file>`
 
 Under `p`, the `ls` operation only lists files and directories and will not
 show the contents of the file.

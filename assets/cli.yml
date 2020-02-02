@@ -6,10 +6,28 @@ options:
     short: P
     description: path to the password storage directory
     type: Directory
+    var: _p_pass_dir
   - name: gnupg-home-dir
     short: G
     description: path to the GnuPG home directory
     type: Directory
+    var: _p_pass_gpg_dir
+  - name: remote-user
+    short: RU
+    description: username for remote ssh connection
+    var: _p_remote_user
+  - name: remote-host
+    short: RH
+    description: host for remote ssh connection
+    var: _p_remote_host
+  - name: remote-port
+    short: RP
+    description: port for remote ssh connection
+    var: _p_remote_port
+  - name: editor
+    short: E
+    description: editor to edit files with
+    var: _p_editor
 arguments:
   - name: cmd
     description: p command to run

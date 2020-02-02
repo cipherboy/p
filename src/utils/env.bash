@@ -10,7 +10,7 @@ function __p_env_check() {
     # Validate path to `pass` binary.
     if [ "x$_p_pass_path" == "x" ] && [ "x$_p_pass_which" == "x" ]; then
         __e "Cannot find \`pass\` executable! Please provide it in the"
-        __e "\`P_PATH\` environment variable or install it via your"
+        __e "'P_PATH' environment variable or install it via your"
         __e "system's package manager. For more information, see:"
         __e "    $_p_pass_url"
 
@@ -23,13 +23,25 @@ function __p_env_check() {
     # Validate path to `jq` binary.
     if [ "x$_p_jq_path" == "x" ] && [ "x$_p_jq_which" == "x" ]; then
         __e "Cannot find \`jq\` executable! Please provide it in the"
-        __e "\`P_JQ\` environment variable or install it via your"
+        __e "'P_JQ' environment variable or install it via your"
         __e "system's package manager. For more information, see:"
         __e "    $_p_jq_url"
 
         exit 1
     elif [ "x$_p_jq_path" == "x" ]; then
         _p_jq_path="$_p_jq_which"
+    fi
+
+    # Validate remote access mechanism.
+    if [ "x$_p_remote_user" != "x" ] && [ "x$_p_remote_host" == "x" ]; then
+        __e "Cannot specify 'P_USER' environment variable without specifying"
+        __e "the 'P_HOST' environment variable. For more information, see:"
+        __e "    $_p_jq_url"
+
+        exit 1
+    elif [ "x$_p_remote_user" == "x" ] && [ "x$_p_remote_host" != "x" ]; then
+        # Infer user from current username.
+        _p_remote_user="$USERNAME"
     fi
 
     # If the current directory is a git repository and GITROOT/.gpg-id exists,

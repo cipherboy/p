@@ -20,8 +20,13 @@ local _p_jq_path="$P_JQ"
 local _p_jq_which="$(command -v jq)"
 local _p_jq_url="https://stedolan.github.io/jq/"
 
+# Pass-through variables
+local _p_remote_user="$P_USER"
+local _p_remote_host="$P_HOST"
+local _p_remote_port="$P_PORT"
+
 # These variables are used to control what functions are called; they use
-# the "_pa" prefix to differentiate themselves from the above variables.
+# the "_pc" prefix to differentiate themselves from the above variables.
 local _pc_cat="false"
 local _pc_cd="false"
 local _pc_clone="false"
@@ -44,5 +49,4 @@ local _pc_rm="false"
 local _pc_search="false"
 local _pc_sync="false"
 local _pc_through="false"
-
 local _pc_help="false"
