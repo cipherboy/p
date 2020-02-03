@@ -74,12 +74,13 @@ function ___p_json_retype() {
 
     # Similar to a get operation, perform a retype operation on the
     # file / key.
-    if [ "x$j_key" == "x" ]; then
-        j_key="password"
-    fi
-
     local value="$(___p_cat --json-only "$j_file" | jq -r ".$j_key")"
-    __rtypr "$value"
+    if [ "x$value" != "xnull" ]; then
+        __rtypr "$value"
+    else
+        __e "Key not found in $j_file: $j_key"
+        exit 1
+    fi
 }
 
 function ___p_json_kinit() {
