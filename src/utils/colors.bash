@@ -4,11 +4,15 @@ function __p_ls_color() {
     IFS=":" read -r -a LS_COLORS_ARRAY <<< "$LS_COLORS"
 
     for color in "${LS_COLORS_ARRAY[@]}"; do
-        color_key="${color/=*/}"
-        color_value="${color/*=/}"
+        local color_key="${color/=*/}"
+        local color_value="${color/*=/}"
+
         if [ "x$color_key" == "x$key" ]; then
             echo "$color_value"
         fi
+
+        unset color_key
+        unset color_value
     done
 
     unset key
