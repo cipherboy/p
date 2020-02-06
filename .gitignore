@@ -11,3 +11,4 @@ bin/p
 
 # Ignore auto-generated files
 src/utils/args.bash
+src/utils/remote_args.bash

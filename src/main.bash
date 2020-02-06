@@ -60,6 +60,8 @@ function p() {
     . utils/locks.bash
     . utils/paths.bash
     . utils/print_json.bash
+    . utils/remote.bash
+    . utils/remote_args.bash
     . utils/rtypr.bash
 
     # [ stage: execs ] #
@@ -100,6 +102,11 @@ function p() {
     # Process command line arguments
     _p_parse_args "$@"
     ret=$?
+
+    if __p_is_remote; then
+        __p_handle_remote "$@"
+        return $?
+    fi
 
     if (( ret == 0 )); then
         _p_dispatch_subparser

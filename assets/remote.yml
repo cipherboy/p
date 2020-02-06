@@ -1,0 +1,22 @@
+---
+name: p_remote
+description: a subparser for handling only the remote options
+options:
+  - name: remote-user
+    short: RU
+    description: username for remote ssh connection
+    var: _p_remote_user
+  - name: remote-host
+    short: RH
+    description: host for remote ssh connection
+    var: _p_remote_host
+  - name: remote-port
+    short: RP
+    description: port for remote ssh connection
+    var: _p_remote_port
+catch_remainder: true
+remainder: remote_args
+function: _p_remote
+grammar:
+  - "[options]"
+  - "[vars.remote_args...]"

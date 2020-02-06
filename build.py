@@ -14,7 +14,9 @@ MAIN_SOURCE = os.path.join(SOURCE_DIR, "main.bash")
 
 ASSETS_DIR = os.path.join(BASE_REPO, "assets")
 CLI_CONFIG = os.path.join(ASSETS_DIR, "cli.yml")
-GENERATED_PARSER = os.path.join(SOURCE_DIR, "utils", "args.bash")
+REMOTE_CONFIG = os.path.join(ASSETS_DIR, "remote.yml")
+CLI_PARSER = os.path.join(SOURCE_DIR, "utils", "args.bash")
+REMOTE_PARSER = os.path.join(SOURCE_DIR, "utils", "remote_args.bash")
 
 def main():
     # Recreate /bin/ if necessary.
@@ -25,7 +27,10 @@ def main():
     # Recreate the generated argument parser. This file is checked into the
     # repository.
     parsed_cli = sharg.parse_yaml(CLI_CONFIG)
-    parsed_cli.format_bash(_file=open(GENERATED_PARSER, 'w'))
+    parsed_cli.format_bash(_file=open(CLI_PARSER, 'w'))
+
+    parsed_remote = sharg.parse_yaml(REMOTE_CONFIG)
+    parsed_remote.format_bash(_file=open(REMOTE_PARSER, 'w'))
 
     # Build p executable.
     p_file = open(EXECUTABLE, 'w')
