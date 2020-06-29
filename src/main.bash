@@ -63,6 +63,7 @@ function p() {
     . utils/remote.bash
     . utils/remote_args.bash
     . utils/rtypr.bash
+    . utils/sharg.bash
 
     # [ stage: execs ] #
     . utils/execs.bash
@@ -102,6 +103,10 @@ function p() {
     # Process command line arguments
     _p_parse_args "$@"
     ret=$?
+
+    if (( ret != 0 )); then
+        return $ret
+    fi
 
     if __p_is_remote; then
         __p_handle_remote "$@"

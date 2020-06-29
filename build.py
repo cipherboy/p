@@ -26,11 +26,13 @@ def main():
 
     # Recreate the generated argument parser. This file is checked into the
     # repository.
-    parsed_cli = sharg.parse_yaml(CLI_CONFIG)
-    parsed_cli.format_bash(_file=open(CLI_PARSER, 'w'))
+    with open(CLI_PARSER, 'w') as out_file:
+        parsed_cli = sharg.parse_yaml(CLI_CONFIG)
+        parsed_cli.format_bash(_file=out_file)
 
-    parsed_remote = sharg.parse_yaml(REMOTE_CONFIG)
-    parsed_remote.format_bash(_file=open(REMOTE_PARSER, 'w'))
+    with open(REMOTE_PARSER, 'w') as out_file:
+        parsed_remote = sharg.parse_yaml(REMOTE_CONFIG)
+        parsed_remote.format_bash(_file=out_file)
 
     # Build p executable.
     p_file = open(EXECUTABLE, 'w')
