@@ -5,8 +5,11 @@
 
 ## Requirements
 
-Building `p` requires `python` to be installed; either Python 2 or Python 3
-will suffice.
+Building `p` requires `python` to be installed; Python 3 is necessary to use
+`sharg`.
+
+Please install the [`sharg`](https://github.com/cipherboy/sharg) Python
+module; this provides our command line argument parsing logic.
 
 Using `p` requires `pass` and `jq` to be installed, or at least, available on
 the system. However, additional functionality is provided by:
