@@ -15,6 +15,7 @@ options:
     description: port for remote ssh connection
     var: _p_remote_port
 catch_remainder: true
+add_help: false
 remainder: remote_args
 function: _p_remote
 grammar:
