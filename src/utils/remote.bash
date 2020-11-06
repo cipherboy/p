@@ -13,6 +13,5 @@ function __p_remote() {
 }
 
 function __p_handle_remote() {
-    _p_remote_parse_args "$@"
-    __p_remote "${remote_args[@]}"
+    __p_remote "${_p_remote_cmd_args[@]}"
 }

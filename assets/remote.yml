@@ -16,8 +16,8 @@ options:
     var: _p_remote_port
 catch_remainder: true
 add_help: false
-remainder: remote_args
+remainder: _p_remote_cmd_args
 function: _p_remote
 grammar:
   - "[options]"
-  - "[vars.remote_args...]"
+  - "[vars._p_remote_cmd_args...]"

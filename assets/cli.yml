@@ -798,9 +798,9 @@ arguments:
           - "[arguments.remote]"
 mixed_options_arguments: false
 catch_remainder: true
-remainder: cmd_args
+remainder: _p_cmd_args
 function: _p
 grammar:
   - "[options]"
   - "arguments.cmd"
-  - "[vars.cmd_args...]"
+  - "[vars._p_cmd_args...]"

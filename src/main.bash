@@ -100,8 +100,9 @@ function p() {
     # Validate our environment is sane.
     __p_env_check
 
-    # Process command line arguments
-    _p_parse_args "$@"
+    # Process a limited set of command line arguments, to check if we're
+    # doing a remote execution.
+    _p_remote_parse_args "$@"
     ret=$?
 
     if (( ret != 0 )); then
@@ -111,6 +112,14 @@ function p() {
     if __p_is_remote; then
         __p_handle_remote "$@"
         return $?
+    fi
+
+    # Finally, parse all other command line arguments.
+    _p_parse_args "$@"
+    ret=$?
+
+    if (( ret != 0 )); then
+        return $ret
     fi
 
     if (( ret == 0 )); then

@@ -5,7 +5,8 @@
 local _p_version="0.1"
 local _p_verbose="${VERBOSE+x}"
 local _p_cwd="/"
-local _p_remaining=()
+local _p_cmd_args=()
+local _p_remote_cmd_args=()
 
 # pass-related variables
 local _p_pass_path="$P_PATH"
