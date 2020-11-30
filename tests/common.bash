@@ -36,8 +36,16 @@ function c_home_done() {
 }
 
 function __p() {
-    __v "$__BIN_DIR/p" --password-store-dir "$pass_dir" --gpg-home-dir "$gpg_dir" "$@"
-    "$__BIN_DIR/p" --password-store-dir "$pass_dir" --gpg-home-dir "$gpg_dir" "$@"
+    if [ "x$pass_dir" != "x" ]; then
+        __v "$__BIN_DIR/p" --password-store-dir "$pass_dir" --gpg-home-dir "$gpg_dir" "$@"
+        "$__BIN_DIR/p" --password-store-dir "$pass_dir" --gpg-home-dir "$gpg_dir" "$@"
+    elif [ "x$gpg_dir" != "x" ]; then
+        __v "$__BIN_DIR/p" --gpg-home-dir "$gpg_dir" "$@"
+        "$__BIN_DIR/p" --gpg-home-dir "$gpg_dir" "$@"
+    else
+        __v "$__BIN_DIR/p" "$@"
+        "$__BIN_DIR/p" "$@"
+    fi
 }
 
 function gpg_start() {

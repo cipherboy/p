@@ -27,5 +27,8 @@ function main() {
     c_home_done
 }
 
+unset P_USER
+unset P_HOST
+
 "$__CUR_DIR"/../build.py
 main

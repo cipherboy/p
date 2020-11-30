@@ -62,7 +62,7 @@ function test_p_create() {
         t_expect_file "$pass_dir/.p/keys/config.json.gpg"
         t_expect_string_in_file "$pass_dir/.gpg-id" "p-test"
 
-        __p create
+        __p create "p-test"
         t_expect_dir "$pass_dir/.git"
 
         t_expect_done
