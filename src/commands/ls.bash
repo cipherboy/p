@@ -17,7 +17,7 @@ function ___p_ls() {
                 [ "x$arg" == "x-d" ]; then
             ls_dir="true"
         else
-            local arg_path="$(__p_exists "$arg")"
+            local arg_path="$(__p_exists "$arg" false)"
 
             if [ "x$arg_path" != "x" ]; then
                 ls_targets+=("$arg_path")

@@ -128,6 +128,7 @@ function __p_path_simplify() {
 
 function __p_exists() {
     local name="$1"
+    local with_exact_match="${2:-true}"
     local path="$(__p_path_simplify "/$name")"
     local cwd_path="$(__p_path_simplify "$_p_cwd/$name")"
 
@@ -196,8 +197,10 @@ function __p_exists() {
             fi
         fi
 
-        if [[ "$basename" == "$name" ]]; then
-            exact_name_results+=("$path")
+        if [[ "$with_exact_match" == "true" ]]; then
+            if [[ "$basename" == "$name" ]]; then
+                exact_name_results+=("$path")
+            fi
         fi
 
         if [[ "$basename" == *$name* ]]; then
