@@ -37,66 +37,66 @@ function __p_path_simplify_internal() {
 
     shopt -s extglob
 
-    # Replace occurrences of '//' with '/'
+    # 1. Replace occurrences of '//' with '/'
     current_path=""
     next_path="$path"
-    while [ "x$current_path" != "x$next_path" ]; do
-        __v "    5:current_path: $current_path"
-        __v "    5:next_path: $next_path"
-        current_path="$next_path"
-        next_path="${current_path//\/\//\/}"
-    done
-
-    # Replace occurrences of 'dir/../' with ''
-    current_path=""
     while [ "x$current_path" != "x$next_path" ]; do
         __v "    1:current_path: $current_path"
         __v "    1:next_path: $next_path"
         current_path="$next_path"
+        next_path="${current_path//\/\//\/}"
+    done
+
+    # 2. Replace occurrences of 'dir/../' with ''
+    current_path=""
+    while [ "x$current_path" != "x$next_path" ]; do
+        __v "    2:current_path: $current_path"
+        __v "    2:next_path: $next_path"
+        current_path="$next_path"
         next_path="${current_path/+([^\/])\/..\//}"
     done
 
-    # Replace occurrences of ^../ (../ at the beginning) with /
-    current_path=""
-    while [ "x$current_path" != "x$next_path" ]; do
-        __v "    2:current_path: $current_path"
-        __v "    2:next_path: $next_path"
-        current_path="$next_path"
-        next_path="${current_path/#..\//\/}"
-    done
-
-    # Replace occurrences of ^/../ with /
-    current_path=""
-    while [ "x$current_path" != "x$next_path" ]; do
-        __v "    2:current_path: $current_path"
-        __v "    2:next_path: $next_path"
-        current_path="$next_path"
-        next_path="${current_path/#\/..\//\/}"
-    done
-
-    # Replace occurrences of '/./' with '/'
+    # 3. Replace occurrences of ^../ (../ at the beginning) with /
     current_path=""
     while [ "x$current_path" != "x$next_path" ]; do
         __v "    3:current_path: $current_path"
         __v "    3:next_path: $next_path"
         current_path="$next_path"
-        next_path="${current_path//\/.\//\/}"
+        next_path="${current_path/#..\//\/}"
     done
 
-    # Replace occurrences of '#./' with '/'
+    # 4. Replace occurrences of ^/../ with /
     current_path=""
     while [ "x$current_path" != "x$next_path" ]; do
         __v "    4:current_path: $current_path"
         __v "    4:next_path: $next_path"
         current_path="$next_path"
+        next_path="${current_path/#\/..\//\/}"
+    done
+
+    # 5. Replace occurrences of '/./' with '/'
+    current_path=""
+    while [ "x$current_path" != "x$next_path" ]; do
+        __v "    5:current_path: $current_path"
+        __v "    5:next_path: $next_path"
+        current_path="$next_path"
+        next_path="${current_path//\/.\//\/}"
+    done
+
+    # 6. Replace occurrences of '#./' with '/'
+    current_path=""
+    while [ "x$current_path" != "x$next_path" ]; do
+        __v "    6:current_path: $current_path"
+        __v "    6:next_path: $next_path"
+        current_path="$next_path"
         next_path="${current_path/#.\//\/}"
     done
 
-    # Replace occurrences of '%/.' with '/'
+    # 7. Replace occurrences of '%/.' with '/'
     current_path=""
     while [ "x$current_path" != "x$next_path" ]; do
-        __v "    4:current_path: $current_path"
-        __v "    4:next_path: $next_path"
+        __v "    7:current_path: $current_path"
+        __v "    7:next_path: $next_path"
         current_path="$next_path"
         next_path="${current_path/%\/./\/}"
     done
@@ -174,7 +174,8 @@ function __p_exists() {
 
     cwd_results=()
     relative_results=()
-    name_results=()
+    exact_name_results=()
+    fuzzy_name_results=()
 
     for path in "${paths[@]}"; do
         if [[ "$path" == ".git"* ]] || [[ "$path" == ".p"* ]] ||
@@ -195,8 +196,12 @@ function __p_exists() {
             fi
         fi
 
+        if [[ "$basename" == "$name" ]]; then
+            exact_name_results+=("$path")
+        fi
+
         if [[ "$basename" == *$name* ]]; then
-            name_results+=("$path")
+            fuzzy_name_results+=("$path")
         fi
     done
 
@@ -206,8 +211,11 @@ function __p_exists() {
     elif (( ${#relative_results[@]} == 1 )); then
         echo "${relative_results[0]}"
         return 0
-    elif (( "${#name_results[@]}" == 1 )); then
-        echo "${name_results[0]}"
+    elif (( "${#exact_name_results[@]}" == 1 )); then
+        echo "${exact_name_results[0]}"
+        return 0
+    elif (( "${#fuzzy_name_results[@]}" == 1 )); then
+        echo "${fuzzy_name_results[0]}"
         return 0
     fi
 
