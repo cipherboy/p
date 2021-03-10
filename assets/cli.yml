@@ -301,7 +301,7 @@ arguments:
             type: Subparser
             whitelist:
               - name: generate
-                description: generae a new GPG key
+                description: generate a new GPG key
                 function: ___p_gpg_generate
                 arguments:
                   - name: gpg_name
@@ -450,7 +450,7 @@ arguments:
             alises:
               - parents
               - p
-            description: recrusively create the specified path
+            description: recursively create the specified path
           - name: absolute
             short: a
             type: FalseTrue
