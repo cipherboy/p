@@ -14,6 +14,10 @@ options:
     short: RP
     description: port for remote ssh connection
     var: _p_remote_port
+  - name: remote-command
+    short: RC
+    description: command for remote ssh connection's p invocation
+    var: _p_remote_command
 catch_remainder: true
 add_help: false
 remainder: _p_remote_cmd_args

@@ -9,7 +9,7 @@ function __p_remote() {
     fi
     args+=("$_p_remote_user@$_p_remote_host")
 
-    ssh "${args[@]}" -- p "$@"
+    ssh "${args[@]}" -- "$_p_remote_command" "$@"
 }
 
 function __p_handle_remote() {

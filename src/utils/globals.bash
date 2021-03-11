@@ -25,6 +25,7 @@ local _p_jq_url="https://stedolan.github.io/jq/"
 local _p_remote_user="$P_USER"
 local _p_remote_host="$P_HOST"
 local _p_remote_port="$P_PORT"
+local _p_remote_command="${P_CMD:-p}"
 
 # These variables are used to control what functions are called; they use
 # the "_pc" prefix to differentiate themselves from the above variables.
