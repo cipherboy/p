@@ -113,9 +113,13 @@ arguments:
               - name: list
                 description: list all keys in the key manager
                 function: ___p_key_list
+                grammar:
+                  - "[options]"
               - name: regen
                 description: recreate all .gpg-id files and re-encrypt passwords
                 function: ___p_key_regen
+                grammar:
+                  - "[options]"
               - name: delete
                 description: delete a key from the key manager
                 function: ___p_key_delete

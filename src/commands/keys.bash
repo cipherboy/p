@@ -12,16 +12,27 @@ function ___p_keys() {
 }
 
 function ___p_key_init() {
-    local id="$1"
-    local fingerprint="$(__p_gpg_get_fingerprint "$id")"
-    local key_base="/.p/keys"
-    local keys_absolute="$_p_pass_dir/$key_base"
+    local key_id=""
+
+    ___p_key_init_parse_args "$@"
+    ret=$?
+
+    if (( ret != 0 )); then
+        return $ret
+    fi
+
+    local fingerprint="$(__p_gpg_get_fingerprint "$key_id")"
+    if [ "x$fingerprint" == "x" ]; then
+        echo "To see a list of available keys: \`gpg2 --list-keys\`"
+        return 1
+    fi
+
+    local keys_absolute="$_p_pass_dir/$_p_key_base"
 
     mkdir -p "$keys_absolute"
 
     __p_gpg_export_key "$fingerprint" - |
-        ___p_encrypt - "$key_base/$fingerprint.pem"
-
+        ___p_encrypt - "$_p_key_base/$fingerprint.pem"
 
     # Generate initial key configuration
     echo "{}" |
@@ -32,7 +43,13 @@ function ___p_key_init() {
 }
 
 function ___p_key_list() {
-    local key_base="/.p/keys"
+    ___p_key_list_parse_args "$@"
+    ret=$?
+
+    if (( ret != 0 )); then
+        return $ret
+    fi
+
     local config="$(__p_keys_read_config)"
 
     for nickname in $(jq -r '.keys | keys[]' <<< "$config"); do
@@ -42,7 +59,7 @@ function ___p_key_list() {
         echo "key info:"
 
         # Display information about the key
-        ___p_decrypt "$key_base/$fingerprint.pem" - |
+        ___p_decrypt "$_p_key_base/$fingerprint.pem" - |
             __gpg --dry-run --keyid-format long --import-options show-only \
                 --import 2>/dev/null |
             sed 's/^/    /g'
@@ -50,106 +67,147 @@ function ___p_key_list() {
 }
 
 function ___p_key_import() {
-    local nickname="$1"
-    local id="$2"
-    local fingerprint="$(__p_gpg_get_fingerprint "$id")"
-    local key_base="/.p/keys"
+    local key_nickname=""
+    local key_id=""
 
+    ___p_key_import_parse_args "$@"
+    ret=$?
+
+    if (( ret != 0 )); then
+        return $ret
+    fi
+
+    local fingerprint="$(__p_gpg_get_fingerprint "$key_id")"
     if [ "x$fingerprint" == "x" ]; then
         echo "To see a list of available keys: \`gpg2 --list-keys\`"
         return 1
     fi
 
     __p_gpg_export_key "$fingerprint" - |
-        ___p_encrypt - "$key_base/$fingerprint.pem"
+        ___p_encrypt - "$_p_key_base/$fingerprint.pem"
 
     local config="$(__p_keys_read_config)"
 
     cat - <<< "$config" |
-        jq ".keys[\"$nickname\"]=\"$fingerprint\"" |
+        jq ".keys[\"$key_nickname\"]=\"$fingerprint\"" |
         __p_keys_write_config
 }
 
 function ___p_key_update() {
-    local nickname="$1"
-    local key_base="/.p/keys"
-    local config="$(__p_keys_read_config)"
-    local fingerprint="$(jq -r ".keys[\"$nickname\"]" <<< "$config")"
+    local key_nickname="$1"
 
-    ___p_open --read-only "$key_base/$fingerprint.pem" -- __gpg --import
+    ___p_key_update_parse_args "$@"
+    ret=$?
+
+    if (( ret != 0 )); then
+        return $ret
+    fi
+
+    local config="$(__p_keys_read_config)"
+    local fingerprint="$(jq -r ".keys[\"$key_nickname\"]" <<< "$config")"
+    if [ "x$fingerprint" == "xnull" ]; then
+        __e "Unknown key for nickname: $key_nickname"
+        return 1
+    fi
+
+    ___p_open --read-only "$_p_key_base/$fingerprint.pem" -- __gpg --import
 
     __p_gpg_export_key "$fingerprint" - |
-        ___p_encrypt - "$key_base/$fingerprint.pem"
+        ___p_encrypt - "$_p_key_base/$fingerprint.pem"
 }
 
 function ___p_key_export() {
-    local nickname="$1"
-    local key_base="/.p/keys"
-    local config="$(__p_keys_read_config)"
-    local fingerprint="$(jq -r ".keys[\"$nickname\"]" <<< "$config")"
+    local key_nickname="$1"
 
+    ___p_key_list_export_args "$@"
+    ret=$?
+
+    if (( ret != 0 )); then
+        return $ret
+    fi
+
+    local config="$(__p_keys_read_config)"
+    local fingerprint="$(jq -r ".keys[\"$key_nickname\"]" <<< "$config")"
     if [ "x$fingerprint" == "xnull" ]; then
-        __e "Unknown key for nickname: $nickname"
+        __e "Unknown key for nickname: $key_nickname"
         return 1
     fi
 
-    ___p_open --read-only "$key_base/$fingerprint.pem" -- __gpg --import
+    ___p_open --read-only "$_p_key_base/$fingerprint.pem" -- __gpg --import
 }
 
 function ___p_key_delete() {
-    local nickname="$1"
-    local key_base="/.p/keys"
-    local config="$(__p_keys_read_config)"
-    local fingerprint="$(jq -r ".keys[\"$nickname\"]" <<< "$config")"
+    local key_nickname="$1"
 
+    ___p_key_delete_parse_args "$@"
+    ret=$?
+
+    if (( ret != 0 )); then
+        return $ret
+    fi
+
+    local config="$(__p_keys_read_config)"
+    local fingerprint="$(jq -r ".keys[\"$key_nickname\"]" <<< "$config")"
     if [ "x$fingerprint" == "xnull" ]; then
-        __e "Unknown key for nickname: $nickname"
+        __e "Unknown key for nickname: $key_nickname"
         return 1
     fi
 
-    local updated="$(jq "del(.keys[\"$nickname\"])" <<< "$config")"
+    local updated="$(jq "del(.keys[\"$key_nickname\"])" <<< "$config")"
 
     for name in $(jq -r ".groups | keys[]" <<< "$config"); do
-        updated="$(jq ".groups[\"$name\"]-=[\"$nickname\"]" <<< "$updated")"
+        updated="$(jq ".groups[\"$name\"]-=[\"$key_nickname\"]" <<< "$updated")"
     done
 
     for dir in $(jq -r ".dirs | keys[]" <<< "$config"); do
-        updated="$(jq ".dirs[\"$dir\"]-=[\"$nickname\"]" <<< "$updated")"
+        updated="$(jq ".dirs[\"$dir\"]-=[\"$key_nickname\"]" <<< "$updated")"
     done
 
-    ___p_rm -rf "$key_base/$fingerprint.pem"
+    ___p_rm -f "$_p_key_base/$fingerprint.pem"
 
     __p_keys_write_config <<< "$updated"
 }
 
 function ___p_key_rename() {
-    local nickname="$1"
-    local new_nickname="$2"
-    local key_base="/.p/keys"
-    local config="$(__p_keys_read_config)"
-    local fingerprint="$(jq -r ".keys[\"$nickname\"]" <<< "$config")"
+    local key_old="$1"
+    local key_new="$2"
 
+    ___p_key_rename_parse_args "$@"
+    ret=$?
+
+    if (( ret != 0 )); then
+        return $ret
+    fi
+
+    local config="$(__p_keys_read_config)"
+    local fingerprint="$(jq -r ".keys[\"$key_old\"]" <<< "$config")"
     if [ "x$fingerprint" == "xnull" ]; then
-        __e "Unknown key for nickname: $nickname"
+        __e "Unknown key for nickname: $key_old"
         return 1
     fi
 
-    local updated="$(jq "del(.keys[\"$nickname\"])" <<< "$config")"
-    updated="$(jq ".keys[\"$new_nickname\"]=\"$fingerprint\"" <<< "$updated")"
+    local updated="$(jq "del(.keys[\"$key_old\"])" <<< "$config")"
+    updated="$(jq ".keys[\"$key_new\"]=\"$fingerprint\"" <<< "$updated")"
 
     for name in $(jq -r ".groups | keys[]" <<< "$config"); do
-        updated="$(jq "( .groups[\"$name\"] | select(\"$nickname\") ) |= \"$new_nickname\"" <<< "$updated")"
+        updated="$(jq "( .groups[\"$name\"] | select(\"$key_old\") ) |= \"$key_new\"" <<< "$updated")"
     done
 
     for dir in $(jq -r ".dirs | keys[]" <<< "$config"); do
-        updated="$(jq "( .dirs[\"$dir\"] | select(\"$nickname\") ) |= \"$new_nickname\"" <<< "$updated")"
+        updated="$(jq "( .dirs[\"$dir\"] | select(\"$key_old\") ) |= \"$key_new\"" <<< "$updated")"
     done
 
     __p_keys_write_config <<< "$updated"
 }
 
 function ___p_key_regen() {
-    local key_base="/.p/keys"
+    ___p_key_regen_parse_args "$@"
+    ret=$?
+
+    if (( ret != 0 )); then
+        return $ret
+    fi
+
     local config="$(__p_keys_read_config)"
 
     for dir in $(jq -r '.dirs | keys[]' <<< "$config"); do

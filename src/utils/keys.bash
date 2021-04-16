@@ -1,6 +1,6 @@
 __p_keys_read_config() {
     local key_base="/.p/keys"
-    _pc_decrypt="true" ___p_decrypt "$key_base/config.json" -
+    ___p_decrypt "$key_base/config.json" -
 }
 
 __p_keys_write_config() {
@@ -12,5 +12,5 @@ __p_keys_write_config() {
         return 1
     fi
 
-    _pc_encrypt="true" ___p_encrypt - "$key_base/config.json" <<< "$contents"
+    ___p_encrypt - "$key_base/config.json" <<< "$contents"
 }
