@@ -311,10 +311,13 @@ arguments:
                     description: name of the GPG key's owner
                   - name: gpg_email
                     description: email address for the GPG key
+                  - name: gpg_password
+                    description: password for the newly generated GPG key
                 grammar:
                   - "[options]"
                   - arguments.gpg_name
                   - arguments.gpg_email
+                  - '[arguments.gpg_password]'
               - name: import
                 description: import a GPG key from a file
                 function: ___p_gpg_import

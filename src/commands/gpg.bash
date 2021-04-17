@@ -12,23 +12,29 @@ function ___p_gpg() {
 }
 
 function ___p_gpg_generate() {
-    local key_base="/.p/keys"
-    local name="$1"
-    local email="$2"
+    local gpg_name="$1"
+    local gpg_email="$2"
+    local gpg_password="$3"
 
-    if __p_gpg_is_id "$name" "$email"; then
-        __e "Error: resulting GPG key will not be uniquely determined by: $name and $email"
+    ___p_gpg_generate_parse_args "$@"
+    ret=$?
+
+    if (( ret != 0 )); then
+        return $ret
+    fi
+
+    if __p_gpg_is_id "$gpg_name" "$gpg_email"; then
+        __e "Error: resulting GPG key will not be uniquely determined by: $gpg_name and $gpg_email"
         return 1
     fi
 
     # Create a temporary directory for the new key.
     local tmpdir="$(__p_mk_secure_tmp)"
     pushd "$tmpdir" >/dev/null
-        if (( $# == 3 )); then
-            local password="$3"
-            __p_gpg_batch_generate "$tmpdir/key.batch" "$name" "$email" "$password"
+        if [ ! -z "$gpg_password" ]; then
+            __p_gpg_batch_generate "$tmpdir/key.batch" "$gpg_name" "$gpg_email" "$gpg_password"
         else
-            __p_gpg_batch_generate "$tmpdir/key.batch" "$name" "$email"
+            __p_gpg_batch_generate "$tmpdir/key.batch" "$gpg_name" "$gpg_email"
         fi
         ret=$?
     popd >/dev/null
@@ -41,16 +47,30 @@ function ___p_gpg_generate() {
 }
 
 function ___p_gpg_import() {
-    local file="$1"
+    local gpg_path="$1"
 
-    __gpg --import "$file"
+    ___p_gpg_import_parse_args "$@"
+    ret=$?
+
+    if (( ret != 0 )); then
+        return $ret
+    fi
+
+    __gpg --import "$gpg_path"
 }
 
 function ___p_gpg_export() {
-    local id="$1"
-    local file="$2"
+    local gpg_id="$1"
+    local gpg_path="$2"
 
-    __gpg --export --armor "$id" > "$file"
+    ___p_gpg_export_parse_args "$@"
+    ret=$?
+
+    if (( ret != 0 )); then
+        return $ret
+    fi
+
+    __gpg --export --armor "$gpg_id" > "$gpg_path"
 }
 
 function ___p_gpg_list() {
@@ -58,14 +78,28 @@ function ___p_gpg_list() {
 }
 
 function ___p_gpg_password() {
-    local id="$1"
+    local gpg_id="$1"
 
-    __gpg --edit-key "$id" password
+    ___p_gpg_password_parse_args "$@"
+    ret=$?
+
+    if (( ret != 0 )); then
+        return $ret
+    fi
+
+    __gpg --edit-key "$gpg_id" password
 }
 
 function ___p_gpg_trust() {
-    local id="$1"
+    local gpg_id="$1"
 
-    echo -e "4\nsave\n" | __gpg --command-fd 0 --expert --edit-key "$id" trust
-    __gpg --edit-key "$id" sign
+    ___p_gpg_trust_parse_args "$@"
+    ret=$?
+
+    if (( ret != 0 )); then
+        return $ret
+    fi
+
+    echo -e "4\nsave\n" | __gpg --command-fd 0 --expert --edit-key "$gpg_id" trust
+    __gpg --edit-key "$gpg_id" sign
 }
