@@ -19,6 +19,9 @@ function ___p_ssh() {
     popd >/dev/null
 
     if (( ret == 0 )); then
+        chmod 500 "$tmp"
+        chown "$USERNAME" "$tmp"
+
         ssh -i "$tmp" "$host" "${ssh_args[@]}"
         ret=$?
     fi
