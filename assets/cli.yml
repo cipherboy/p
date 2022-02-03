@@ -56,7 +56,6 @@ arguments:
             var: init_git
             type: TrueFalse
             aliases:
-              - without-git
               - no-git
             antonyms:
               - with-git
