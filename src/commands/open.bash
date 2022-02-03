@@ -86,8 +86,15 @@ function ___p_open() {
         processed_args+=("$tmp")
     fi
 
+    __p_exists "$name" >/dev/null 2>&1
+    if (( $? != 0 )); then
+        ___p_ls "$name"
+        return 1
+    fi
+
     if [ "$read_only" == "false" ] && [ "$lock" = "true" ]; then
         if ! __p_lock "$name"; then
+            __e ""
             __e "Error acquiring lock for file."
             __e "  To remove the lock file, run \`p unlock $name\`."
             __e "  To ignore the lock file, specify the --no-lock option."

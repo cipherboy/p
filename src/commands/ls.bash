@@ -22,7 +22,8 @@ function ___p_ls() {
             if [ "x$arg_path" != "x" ]; then
                 ls_targets+=("$arg_path")
             else
-                __d "Unknown argument or path not found: '$arg'."
+                __e "Unknown argument or path not found: '$arg'."
+                return 1
             fi
         fi
     done
