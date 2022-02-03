@@ -800,6 +800,22 @@ arguments:
           - "[arguments.branch]"
           - "[arguments.origin]"
           - "[arguments.remote]"
+      - name: ssh
+        description: connect to remote machine with identity stored in pass
+        group: Managing passwords
+        function: ___p_ssh
+        arguments:
+          - name: host
+            description: remote host to connect to
+          - name: identity
+            description: identity file (within pass) to use
+        catch_remainder: true
+        remainder: ssh_args
+        grammar:
+          - "[options.help]"
+          - "arguments.host"
+          - "arguments.identity"
+          - "[vars.ssh_args...]"
 mixed_options_arguments: false
 catch_remainder: true
 remainder: _p_cmd_args

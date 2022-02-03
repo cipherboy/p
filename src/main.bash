@@ -92,6 +92,7 @@ function p() {
     . commands/mv.bash
     . commands/rm.bash
     . commands/search.bash
+    . commands/ssh.bash
     . commands/sync.bash
     . commands/through.bash
 
