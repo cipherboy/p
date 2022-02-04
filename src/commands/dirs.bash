@@ -12,9 +12,15 @@ function ___p_dirs() {
 }
 
 function ___p_dir_create() {
-    local key_base="/.p/keys"
-    local dir="$1"
-    shift
+    local dir_path=""
+    local dir_keys=()
+
+    ___p_dirs_create_parse_args "$@"
+    ret=$?
+
+    if (( ret != 0 )); then
+        return $ret
+    fi
 
     if [ "${dir:0:1}" != "/" ]; then
         __e "Directory name must begin with \`/\`: $dir"
@@ -25,7 +31,7 @@ function ___p_dir_create() {
 
     local updated="$(jq ".dirs[\"$dir\"]=[]" <<< "$config")"
 
-    for arg in "$@"; do
+    for arg in "${dir_keys[@]}"; do
         updated="$(jq ".dirs[\"$dir\"]+=[\"$arg\"]" <<< "$updated")"
     done
 
@@ -33,7 +39,6 @@ function ___p_dir_create() {
 }
 
 function ___p_dir_add() {
-    local key_base="/.p/keys"
     local dir="$1"
     shift
 
@@ -52,7 +57,6 @@ function ___p_dir_add() {
 }
 
 function ___p_dir_list() {
-    local key_base="/.p/keys"
     local config="$(__p_keys_read_config)"
 
     for dir in $(jq -r ".dirs | keys[]" <<< "$config"); do
@@ -66,7 +70,6 @@ function ___p_dir_list() {
 }
 
 function ___p_dir_regen() {
-    local key_base="/.p/keys"
     local dir="$1"
     shift
 
@@ -125,7 +128,6 @@ function ___p_dir_regen() {
 }
 
 function ___p_dir_remove() {
-    local key_base="/.p/keys"
     local dir="$1"
     shift
 
@@ -144,7 +146,6 @@ function ___p_dir_remove() {
 }
 
 function ___p_dir_delete() {
-    local key_base="/.p/keys"
     local dir="$1"
 
     if [ "${dir:0:1}" != "/" ]; then
