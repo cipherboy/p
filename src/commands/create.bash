@@ -36,11 +36,11 @@ function ___p_create() {
     fi
 
     if [ "$init_git" == "true" ]; then
-        pushd "$_p_pass_dir" >/dev/null
+        pushd "$_p_pass_dir" >/dev/null || exit
             __pass git init >/dev/null
             __pass git add -A >/dev/null
             __pass git commit -m "Store repository contents" >/dev/null
-        popd >/dev/null
+        popd >/dev/null || exit
     fi
 
     if [ ! -e "$_p_pass_dir/.gpg-id" ]; then

@@ -67,7 +67,7 @@ function ___p_ls() {
     elif [ "$ls_dir" == "true" ] && [ "$ls_all" == "false" ]; then
         # When we're in dir mode, only show the directories and prefer
         # colors. `tree` does this best, so best to defer to it.
-        pushd "$_p_pass_dir" >/dev/null
+        pushd "$_p_pass_dir" >/dev/null || exit
             for path in "${ls_targets[@]}"; do
                 if [ "$path" == "/" ]; then
                     echo "Password Store"
@@ -81,7 +81,7 @@ function ___p_ls() {
                     echo ""
                 fi
             done
-        popd >/dev/null
+        popd >/dev/null || exit
     else
         __d "Current mode ls_dir:$ls_dir,ls_all:$ls_all unsupported!"
     fi
