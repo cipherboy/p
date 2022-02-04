@@ -11,7 +11,7 @@ function ___p_generate() {
         return $ret
     fi
 
-    if [ "x$format" != "x" ]; then
+    if [ -n "$format" ]; then
         mode="format"
     fi
 
@@ -26,7 +26,7 @@ function ___p_generate() {
 
     cat - <<< "$password"
 
-    if [ "x$name" != "x" ]; then
+    if [ -n "$name" ]; then
         ___p_json set "$name" "password" "$password"
     fi
 }

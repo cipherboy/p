@@ -7,7 +7,7 @@ function __p_ls_color() {
         local color_key="${color/=*/}"
         local color_value="${color/*=/}"
 
-        if [ "x$color_key" == "x$key" ]; then
+        if [ "$color_key" == "$key" ]; then
             echo "$color_value"
         fi
 

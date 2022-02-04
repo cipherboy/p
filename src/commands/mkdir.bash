@@ -7,15 +7,15 @@ function ___p_mkdir() {
     local m_help=""
 
     for arg in "$@"; do
-        if [ "x$arg" == "x--recursive" ] || [ "x$arg" == "x-recursive" ] ||
-                [ "x$arg" == "x-r" ] || [ "x$arg" == "x-p" ]; then
+        if [ "$arg" == "--recursive" ] || [ "$arg" == "-recursive" ] ||
+                [ "$arg" == "-r" ] || [ "$arg" == "-p" ]; then
             m_recursive="--parents"
-        elif [ "x$arg" == "x--absolute" ] || [ "x$arg" == "x-absolute" ] ||
-                [ "x$arg" == "x-a" ]; then
+        elif [ "$arg" == "--absolute" ] || [ "$arg" == "-absolute" ] ||
+                [ "$arg" == "-a" ]; then
             m_absolute="true"
-        elif [ "x$m_path" == "x" ]; then
+        elif [ -z "$m_path" ]; then
             m_path="$arg"
-            if [ "x$m_help" == "x" ]; then
+            if [ -z "$m_help" ]; then
                 m_help="false"
             fi
         else
@@ -23,7 +23,7 @@ function ___p_mkdir() {
         fi
     done
 
-    if [ "x$m_help" == "xtrue" ] || [ "x$m_help" == "x" ]; then
+    if [ "$m_help" == "true" ] || [ -z "$m_help" ]; then
         echo "Usage: p mkdir [-r] <dir>"
         echo ""
         echo "<dir>: relative (to cwd) or absolute (if prefixed with a /)"
@@ -39,7 +39,7 @@ function ___p_mkdir() {
         return 0
     fi
 
-    if [ "x${m_path:0:1}" != "x/" ] && [ "$m_absolute" == "false" ]; then
+    if [ "${m_path:0:1}" != "/" ] && [ "$m_absolute" == "false" ]; then
         # When creating a directory recursively, simplify
         __v "Treating path as relative: \`$_p_cwd\` -> \`$m_path\`"
         m_path="$(__p_path_simplify "$_p_cwd/$m_path")"
@@ -57,7 +57,7 @@ function ___p_mkdir() {
             break
         fi
 
-        if [ "x$m_path_recurse" == "x/" ]; then
+        if [ "$m_path_recurse" == "/" ]; then
             # We've reached the root and can't find a .gpg-id, break.
             break
         fi

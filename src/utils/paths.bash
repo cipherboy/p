@@ -11,7 +11,7 @@
 function __p_join() {
     local concated_path=""
     for arg in "$@"; do
-        if [ "x$concated_path" == "x" ]; then
+        if [ -z "$concated_path" ]; then
             concated_path="$arg"
         else
             concated_path="$concated_path/$arg"
@@ -133,7 +133,7 @@ function __p_exists() {
     local cwd_path="$(__p_path_simplify "$_p_cwd/$name")"
 
     local first_char="${name:0:1}"
-    if [ "x$first_char" == "x/" ]; then
+    if [ "$first_char" == "/" ]; then
         # This path is absolute; treat it as coming from the root of the
         # password store.
         if [ -e "$_p_pass_dir/$path.gpg" ]; then
@@ -143,7 +143,7 @@ function __p_exists() {
             echo "$path"
             return 0
         fi
-    elif [ "x$first_char" == "x." ]; then
+    elif [ "$first_char" == "." ]; then
         # This path is relative; treat it as coming relative to cwd.
         if [ -e "$_p_pass_dir/$cwd_path.gpg" ]; then
             echo "$cwd_path"
@@ -281,11 +281,11 @@ function __p_mk_secure_tmp() {
     local user_id="$(id --user --real)"
     local group_id="$(id --group --real)"
 
-    if [ "x$tmp_base" == "x" ] && [ -d "/run/user/$user_id" ]; then
+    if [ -z "$tmp_base" ] && [ -d "/run/user/$user_id" ]; then
         tmp_base="/run/user/$user_id"
-    elif [ "x$tmp_base" == "x" ] && [ -d /dev/shm ]; then
+    elif [ -z "$tmp_base" ] && [ -d /dev/shm ]; then
         tmp_base="/dev/shm"
-    elif [ "x$tmp_base" == "x" ] && [ -d "$HOME/tmp" ]; then
+    elif [ -z "$tmp_base" ] && [ -d "$HOME/tmp" ]; then
         tmp_base="$HOME/tmp"
     else
         tmp_base="/tmp"

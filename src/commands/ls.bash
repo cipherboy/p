@@ -9,17 +9,17 @@ function ___p_ls() {
     local ls_target_count=0
 
     for arg in "$@"; do
-        if [ "x$arg" == "x--all" ] || [ "x$arg" == "x-all" ] ||
-                [ "x$arg" == "x-a" ]; then
+        if [ "$arg" == "--all" ] || [ "$arg" == "-all" ] ||
+                [ "$arg" == "-a" ]; then
             ls_all="true"
-        elif [ "x$arg" == "x--directory" ] || [ "x$arg" == "x--dir" ] ||
-                [ "x$arg" == "x-directory" ] || [ "x$arg" == "x-dir" ] ||
-                [ "x$arg" == "x-d" ]; then
+        elif [ "$arg" == "--directory" ] || [ "$arg" == "--dir" ] ||
+                [ "$arg" == "-directory" ] || [ "$arg" == "-dir" ] ||
+                [ "$arg" == "-d" ]; then
             ls_dir="true"
         else
             local arg_path="$(__p_exists "$arg" false)"
 
-            if [ "x$arg_path" != "x" ]; then
+            if [ -n "$arg_path" ]; then
                 ls_targets+=("$arg_path")
             else
                 __e "Unknown argument or path not found: '$arg'."

@@ -22,7 +22,7 @@ function ___p_key_init() {
     fi
 
     local fingerprint="$(__p_gpg_get_fingerprint "$key_id")"
-    if [ "x$fingerprint" == "x" ]; then
+    if [ -z "$fingerprint" ]; then
         echo "To see a list of available keys: \`gpg2 --list-keys\`"
         return 1
     fi
@@ -78,7 +78,7 @@ function ___p_key_import() {
     fi
 
     local fingerprint="$(__p_gpg_get_fingerprint "$key_id")"
-    if [ "x$fingerprint" == "x" ]; then
+    if [ -z "$fingerprint" ]; then
         echo "To see a list of available keys: \`gpg2 --list-keys\`"
         return 1
     fi
@@ -105,7 +105,7 @@ function ___p_key_update() {
 
     local config="$(__p_keys_read_config)"
     local fingerprint="$(jq -r ".keys[\"$key_nickname\"]" <<< "$config")"
-    if [ "x$fingerprint" == "xnull" ]; then
+    if [ "$fingerprint" == "null" ]; then
         __e "Unknown key for nickname: $key_nickname"
         return 1
     fi
@@ -128,7 +128,7 @@ function ___p_key_export() {
 
     local config="$(__p_keys_read_config)"
     local fingerprint="$(jq -r ".keys[\"$key_nickname\"]" <<< "$config")"
-    if [ "x$fingerprint" == "xnull" ]; then
+    if [ "$fingerprint" == "null" ]; then
         __e "Unknown key for nickname: $key_nickname"
         return 1
     fi
@@ -148,7 +148,7 @@ function ___p_key_delete() {
 
     local config="$(__p_keys_read_config)"
     local fingerprint="$(jq -r ".keys[\"$key_nickname\"]" <<< "$config")"
-    if [ "x$fingerprint" == "xnull" ]; then
+    if [ "$fingerprint" == "null" ]; then
         __e "Unknown key for nickname: $key_nickname"
         return 1
     fi
@@ -181,7 +181,7 @@ function ___p_key_rename() {
 
     local config="$(__p_keys_read_config)"
     local fingerprint="$(jq -r ".keys[\"$key_old\"]" <<< "$config")"
-    if [ "x$fingerprint" == "xnull" ]; then
+    if [ "$fingerprint" == "null" ]; then
         __e "Unknown key for nickname: $key_old"
         return 1
     fi

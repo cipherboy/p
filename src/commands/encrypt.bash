@@ -9,7 +9,7 @@ function ___p_encrypt() {
         return $ret
     fi
 
-    if [ "x$file_path" != "x-" ]; then
+    if [ "$file_path" != "-" ]; then
         __pass insert --multiline "$entry" < "$file_path" >/dev/null
     else
         __pass insert --multiline "$entry" >/dev/null

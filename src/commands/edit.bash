@@ -10,7 +10,7 @@ function ___p_edit() {
     fi
 
     local file="$(__p_find_file "$1")"
-    if [ "x$file" != "x" ]; then
+    if [ -n "$file" ]; then
         ___p_open "$file" -- "$_p_editor"
     else
         __pass edit "$edit_path"

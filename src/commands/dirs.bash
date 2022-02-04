@@ -85,7 +85,7 @@ function ___p_dir_regen() {
         return 1
     fi
 
-    if [ "x$(jq -r ".dirs[\"$dir\"]" <<< "$config")" == "xnull" ]; then
+    if [ "$(jq -r ".dirs[\"$dir\"]" <<< "$config")" == "null" ]; then
         __e "Directory is not tracked by keys: $dir"
         return 1
     fi
@@ -107,7 +107,7 @@ function ___p_dir_regen() {
         unset "names[0]"
         names=("${names[@]}")
 
-        if [ "x${name:0:1}" == "x@" ]; then
+        if [ "${name:0:1}" == "@" ]; then
             echo " group: $name:"
             for groupindex in $(jq -r ".groups[\"$name\"] | keys[]" <<< "$config"); do
                 local value="$(jq -r ".groups[\"$name\"][$groupindex]" <<< "$config")"

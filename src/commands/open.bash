@@ -14,24 +14,24 @@ function ___p_open() {
         shift
 
         if [ "$seen_name" == "false" ]; then
-            if [ "x$arg" == "x--help" ] || [ "x$arg" == "x-help" ] ||
-                    [ "x$arg" == "xhelp" ] || [ "x$arg" == "x-h" ]; then
+            if [ "$arg" == "--help" ] || [ "$arg" == "-help" ] ||
+                    [ "$arg" == "help" ] || [ "$arg" == "-h" ]; then
                 help="true"
-            elif [ "x$arg" == "x--read-only" ] || [ "x$arg" == "x--readonly" ] ||
-                    [ "x$arg" == "x-read-only" ] || [ "x$arg" == "x-readonly" ] ||
-                    [ "x$arg" == "x--ro" ] || [ "x$arg" == "x-ro" ] ||
-                    [ "x$arg" == "x-r" ]; then
+            elif [ "$arg" == "--read-only" ] || [ "$arg" == "--readonly" ] ||
+                    [ "$arg" == "-read-only" ] || [ "$arg" == "-readonly" ] ||
+                    [ "$arg" == "--ro" ] || [ "$arg" == "-ro" ] ||
+                    [ "$arg" == "-r" ]; then
                 read_only="true"
-            elif [ "x$arg" == "x--no-lock" ] || [ "x$arg" == "x-no-lock" ] ||
-                    [ "x$arg" == "x-n" ]; then
+            elif [ "$arg" == "--no-lock" ] || [ "$arg" == "-no-lock" ] ||
+                    [ "$arg" == "-n" ]; then
                 lock="false"
-            elif [ "x$arg" == "x--" ]; then
+            elif [ "$arg" == "--" ]; then
                 continue
             else
                 name="$arg"
                 seen_name="true"
             fi
-        elif [ "x$arg" == "x--" ]; then
+        elif [ "$arg" == "--" ]; then
             continue
         elif [ "$seen_command" == "false" ]; then
             command="$arg"
@@ -73,7 +73,7 @@ function ___p_open() {
         local arg="${args[$index]}"
         local processed_arg="${arg/\{\}/$tmp}"
 
-        if [ "x$processed_arg" != "x$arg" ]; then
+        if [ "$processed_arg" != "$arg" ]; then
             seen_filename="true"
         fi
 

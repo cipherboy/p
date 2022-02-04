@@ -53,7 +53,7 @@ function ___p_json_set() {
     local json="$(___p_cat --json-only "$j_file")"
 
     # Perform set operation on file / key = value
-    if [ "x$j_key" == "xpassword" ]; then
+    if [ "$j_key" == "password" ]; then
         jq ".old_passwords=[.password]+.old_passwords|.password=\"$j_value\"" <<< "$json" | __p_print_json | ___p_encrypt - "$j_file"
     else
         jq ".$j_key=\"$j_value\"" <<< "$json" | __p_print_json | ___p_encrypt - "$j_file"
@@ -75,7 +75,7 @@ function ___p_json_retype() {
     # Similar to a get operation, perform a retype operation on the
     # file / key.
     local value="$(___p_cat --json-only "$j_file" | jq -r ".$j_key")"
-    if [ "x$value" != "xnull" ]; then
+    if [ "$value" != "null" ]; then
         __rtypr "$value"
     else
         __e "Key not found in $j_file: $j_key"
@@ -96,7 +96,7 @@ function ___p_json_kinit() {
     local file="$(___p_cat --json-only "$j_file")"
 
     local principal="$(jq -r ".principal" <<< "$file")"
-    if [ "x$principal" == "x" ]; then
+    if [ -z "$principal" ]; then
         principal="$(jq -r ".username" <<< "$file")"
     fi
 

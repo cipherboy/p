@@ -40,9 +40,9 @@ function __genpass() {
     }
 
     if (( $# == 1 )); then
-        if [ "x$1" == "x--phrase" ]; then
+        if [ "$1" == "--phrase" ]; then
             format="$phrase_format"
-        elif [ "x$1" == "x--random" ]; then
+        elif [ "$1" == "--random" ]; then
             format="$random_format"
         else
             format="$1"
@@ -53,7 +53,7 @@ function __genpass() {
 
     for (( index=0 ; index <= ${#format} ; index++ )); do
         local char="${format:$index:1}"
-        if [ "x$char" == 'x\' ]; then
+        if [ "$char" == '\' ]; then
             index=$(( index + 1 ))
             char="${format:$index:1}"
 

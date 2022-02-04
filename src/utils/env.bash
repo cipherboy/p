@@ -8,38 +8,38 @@ function __p_env_check() {
     local git_root="$(git rev-parse --show-toplevel 2>/dev/null)"
 
     # Validate path to `pass` binary.
-    if [ "x$_p_pass_path" == "x" ] && [ "x$_p_pass_which" == "x" ]; then
+    if [ -z "$_p_pass_path" ] && [ -z "$_p_pass_which" ]; then
         __e "Cannot find \`pass\` executable! Please provide it in the"
         __e "'P_PATH' environment variable or install it via your"
         __e "system's package manager. For more information, see:"
         __e "    $_p_pass_url"
 
         exit 1
-    elif [ "x$_p_pass_path" == "x" ]; then
+    elif [ -z "$_p_pass_path" ]; then
         _p_pass_path="$_p_pass_which"
         __v "Using $_p_pass_which as path to \`pass\` binary."
     fi
 
     # Validate path to `jq` binary.
-    if [ "x$_p_jq_path" == "x" ] && [ "x$_p_jq_which" == "x" ]; then
+    if [ -z "$_p_jq_path" ] && [ -z "$_p_jq_which" ]; then
         __e "Cannot find \`jq\` executable! Please provide it in the"
         __e "'P_JQ' environment variable or install it via your"
         __e "system's package manager. For more information, see:"
         __e "    $_p_jq_url"
 
         exit 1
-    elif [ "x$_p_jq_path" == "x" ]; then
+    elif [ -z "$_p_jq_path" ]; then
         _p_jq_path="$_p_jq_which"
     fi
 
     # Validate remote access mechanism.
-    if [ "x$_p_remote_user" != "x" ] && [ "x$_p_remote_host" == "x" ]; then
+    if [ -n "$_p_remote_user" ] && [ -z "$_p_remote_host" ]; then
         __e "Cannot specify 'P_USER' environment variable without specifying"
         __e "the 'P_HOST' environment variable. For more information, see:"
         __e "    $_p_jq_url"
 
         exit 1
-    elif [ "x$_p_remote_user" == "x" ] && [ "x$_p_remote_host" != "x" ]; then
+    elif [ -z "$_p_remote_user" ] && [ -n "$_p_remote_host" ]; then
         # Infer user from current username.
         _p_remote_user="$USERNAME"
     fi

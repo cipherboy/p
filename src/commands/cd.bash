@@ -18,7 +18,7 @@ function ___p_cd() {
         return $ret
     fi
 
-    if [ "x$cd_path" == "x" ] && [ "x$cd_mode" == "x" ]; then
+    if [ -z "$cd_path" ] && [ -z "$cd_mode" ]; then
         echo "/"
         return 0
     fi
@@ -28,19 +28,19 @@ function ___p_cd() {
 
     local final_path="$_p_cwd"
 
-    if [ "x$cd_mode" == "x" ]; then
+    if [ -z "$cd_mode" ]; then
         # When path appears to be absolute, try treating it as such.
-        if [ "x${path:0:1}" == "x/" ] && [ "x$absolute_path" != "x" ]; then
+        if [ "${path:0:1}" == "/" ] && [ -n "$absolute_path" ]; then
             final_path="$absolute_path"
-        elif [ "x$relative_path" != "x" ]; then
+        elif [ -n "$relative_path" ]; then
             final_path="$relative_path"
         fi
-    elif [ "x$cd_mode" == "xrelative" ]; then
-        if [ "x$relative_path" != "x" ]; then
+    elif [ "$cd_mode" == "relative" ]; then
+        if [ -n "$relative_path" ]; then
             final_path="$relative_path"
         fi
     else
-        if [ "x$absolute_path" != "x" ]; then
+        if [ -n "$absolute_path" ]; then
             final_path="$absolute_path"
         fi
     fi

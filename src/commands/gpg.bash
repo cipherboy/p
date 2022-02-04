@@ -31,7 +31,7 @@ function ___p_gpg_generate() {
     # Create a temporary directory for the new key.
     local tmpdir="$(__p_mk_secure_tmp)"
     pushd "$tmpdir" >/dev/null
-        if [ ! -z "$gpg_password" ]; then
+        if [ -n "$gpg_password" ]; then
             __p_gpg_batch_generate "$tmpdir/key.batch" "$gpg_name" "$gpg_email" "$gpg_password"
         else
             __p_gpg_batch_generate "$tmpdir/key.batch" "$gpg_name" "$gpg_email"

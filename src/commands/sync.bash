@@ -5,8 +5,8 @@ function ___p_sync() {
     local remote="$3"
     local is_help="false"
 
-    if [ "x$1" == "x--help" ] || [ "x$1" == "x-help" ] ||
-            [ "x$1" == "x-h" ]; then
+    if [ "$1" == "--help" ] || [ "$1" == "-help" ] ||
+            [ "$1" == "-h" ]; then
         is_help="true"
     fi
 
@@ -19,15 +19,15 @@ function ___p_sync() {
         return 0
     fi
 
-    if [ "x$branch" == "x" ]; then
+    if [ -z "$branch" ]; then
         branch="$(git rev-parse --abbrev-ref HEAD)"
     fi
 
-    if [ "x$origin" == "x" ]; then
+    if [ -z "$origin" ]; then
         origin="origin"
     fi
 
-    if [ "x$remote" == "x" ]; then
+    if [ -z "$remote" ]; then
         remote="master"
     fi
 
@@ -35,7 +35,7 @@ function ___p_sync() {
 
     __pass git fetch --all
 
-    if [ "x$branch" == "x$remote" ]; then
+    if [ "$branch" == "$remote" ]; then
         __pass git checkout "$branch"
         __pass git merge "$origin/$remote"
         __pass git push "$origin" "$remote"

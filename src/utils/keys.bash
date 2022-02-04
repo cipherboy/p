@@ -7,7 +7,7 @@ __p_keys_write_config() {
     local key_base="/.p/keys"
     local contents="$(cat -)"
 
-    if [ "x$contents" == "x" ] || [ "x${contents:0:1}" != "x{" ]; then
+    if [ -z "$contents" ] || [ "${contents:0:1}" != "{" ]; then
         __e "Invalid configuration! Refusing to save."
         return 1
     fi

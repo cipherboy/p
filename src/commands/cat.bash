@@ -30,7 +30,7 @@ function ___p_cat() {
     local cat_targets=()
     for path in "${cat_paths[@]}"; do
         local target="$(__p_find_file "$path")"
-        if [ "x$target" == "x" ]; then
+        if [ -z "$target" ]; then
             __d "Unknown argument, path not found, or not a file:" \
                 "$path. If the path is a directory, note that \`p\` " \
                 "differs from \`pass\` in that the \`cat\` command " \

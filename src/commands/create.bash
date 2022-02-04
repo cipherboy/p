@@ -18,7 +18,7 @@ function ___p_create() {
     if [ ! -e "$_p_pass_dir/.gpg-id" ]; then
         __gpg --list-keys "$gpg_id" >/dev/null 2>&1
         local ret=$?
-        if [ "x$gpg_id" == "x" ] || (( ret != 0 )); then
+        if [ -z "$gpg_id" ] || (( ret != 0 )); then
             help="true"
             gpg_error="true"
         fi
