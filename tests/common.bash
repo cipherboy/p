@@ -25,9 +25,14 @@ function c_dir() {
 
 function c_home_start() {
     __v "Creating: HOME=$HOME"
+    mkdir -p "$HOME"
+    chmod 700 "$HOME"
     mkdir -p "$HOME/.git"
     git config --global user.name "Password Test"
     git config --global user.email "ptest@example.com"
+    git config --global init.defaultBranch main
+    mkdir -p "$HOME/.gnupg"
+    gpg-connect-agent reloadagent /bye
 }
 
 function c_home_done() {
@@ -50,8 +55,16 @@ function __p() {
 
 function gpg_start() {
     mkdir -p "$gpg_dir"
+    chmod 700 "$gpg_dir"
 
-    __p gpg generate "$1" "$2" "$3"
+    gpgconf --kill all
+
+    if (( $? == 2 )) || [ "$3" == "" ]; then
+        echo __p gpg generate "$@"
+        __p gpg generate --unsafe-no-password "$@"
+    else
+        __p gpg generate "$@"
+    fi
 }
 
 function c_rm() {

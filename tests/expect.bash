@@ -55,6 +55,17 @@ function t_expect_line_in_file() {
     t_expect_success=$((t_expect_success += 1))
 }
 
+function t_expect_permissions() {
+    t_expect_total=$((t_expect_total += 1))
+    stat -L -c "%a" "$1" | grep -q -F "^$2$"
+    local ret=$?
+    if (( ret != 0 )); then
+        __e "Expected permissions \`$2\` on file in \`$1\` but were $(stat -L -c "%a" "$1")."
+        exit 1
+    fi
+    t_expect_success=$((t_expect_success += 1))
+}
+
 function t_expect_done() {
     echo "[[ expectations: $t_expect_success / $t_expect_total ]]"
 }

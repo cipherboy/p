@@ -6,7 +6,7 @@ function test_p_gpg_generate() {
     local gpg_dir="$base_dir/gpg"
 
     (
-        gpg_start "p-test" "ptest@example.com" "\"\""
+        gpg_start "p-test" "ptest@example.com" "password"
         t_expect_dir "$gpg_dir"
         t_expect_file "$gpg_dir/pubring.kbx"
         t_expect_dir "$gpg_dir/private-keys-v1.d"
