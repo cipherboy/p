@@ -13,15 +13,12 @@ function ___p_ssh() {
     local basename="$(basename "$identity")"
     local tmp="$tmpdir/$basename"
 
-    pushd "$tmpdir" >/dev/null
-        ___p_decrypt "$identity" "$tmp"
+    pushd "$tmpdir" >/dev/null || exit
+        ___p_decrypt --permissions 500 --owern "$USERNAME" "$identity" "$tmp"
         ret=$?
-    popd >/dev/null
+    popd >/dev/null || exit
 
     if (( ret == 0 )); then
-        chmod 500 "$tmp"
-        chown "$USERNAME" "$tmp"
-
         ssh -i "$tmp" "$host" "${ssh_args[@]}"
         ret=$?
     fi
