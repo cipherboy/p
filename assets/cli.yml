@@ -306,6 +306,11 @@ arguments:
               - name: generate
                 description: generate a new GPG key
                 function: ___p_gpg_generate
+                options:
+                  - name: unsafe-no-password
+                    var: unsafe
+                    description: generate the key with no password protection; unsafe
+                    type: FalseTrue
                 arguments:
                   - name: gpg_name
                     description: name of the GPG key's owner

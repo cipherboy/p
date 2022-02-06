@@ -29,6 +29,7 @@ __p_gpg_batch_generate() {
     local name="$2"
     local email="$3"
     local password="$4"
+    local no_password="$5"
 
     {
         echo "Key-Type: RSA"
@@ -43,6 +44,9 @@ __p_gpg_batch_generate() {
         echo "Name-Real: $name"
         echo "Name-Email: $email"
         echo "Expire-Date: 35y"
+        if (( $# == 5)) && [ "$no_password" == "true" ]; then
+            echo "%no-protection"
+        fi
         echo "%commit"
     } > "$filename"
 

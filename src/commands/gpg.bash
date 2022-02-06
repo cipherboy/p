@@ -12,15 +12,20 @@ function ___p_gpg() {
 }
 
 function ___p_gpg_generate() {
-    local gpg_name="$1"
-    local gpg_email="$2"
-    local gpg_password="$3"
+    local gpg_name=""
+    local gpg_email=""
+    local gpg_password=""
+    local unsafe="false"
 
     ___p_gpg_generate_parse_args "$@"
     ret=$?
-
     if (( ret != 0 )); then
         return $ret
+    fi
+
+    if [ -n "$gpg_password" ] && [ "$unsafe" == "true" ]; then
+        __e "Error: cannot specify both a password and --unsafe-no-password"
+        return 1
     fi
 
     if __p_gpg_is_id "$gpg_name" "$gpg_email"; then
@@ -31,7 +36,9 @@ function ___p_gpg_generate() {
     # Create a temporary directory for the new key.
     local tmpdir="$(__p_mk_secure_tmp)"
     pushd "$tmpdir" >/dev/null || exit
-        if [ -n "$gpg_password" ]; then
+        if [ "$unsafe" == "true" ]; then
+            __p_gpg_batch_generate "$tmpdir/key.batch" "$gpg_name" "$gpg_email" "" "$unsafe"
+        elif [ -n "$gpg_password" ]; then
             __p_gpg_batch_generate "$tmpdir/key.batch" "$gpg_name" "$gpg_email" "$gpg_password"
         else
             __p_gpg_batch_generate "$tmpdir/key.batch" "$gpg_name" "$gpg_email"
