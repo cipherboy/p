@@ -718,6 +718,16 @@ arguments:
         description: extract (decrypt) a file in the password store
         group: Storing files
         function: ___p_decrypt
+        options:
+          - name: permissions
+            short: p
+            description: permissions for the file to be created
+            type: String
+            default: 600
+          - name: owner
+            short: u
+            description: owner for the file to be created
+            type: String
         arguments:
           - name: entry
             description: vault entry to decrypt

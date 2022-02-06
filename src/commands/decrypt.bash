@@ -1,4 +1,6 @@
 function ___p_decrypt() {
+    local permissions="600"
+    local owner="$USERNAME"
     local entry="$1"
     local result_path="$2"
 
@@ -12,6 +14,6 @@ function ___p_decrypt() {
     if [ -z "$result_path" ] || [ "$result_path" == "-" ]; then
         __pass show "$entry"
     else
-        __pass show "$entry" > "$result_path"
+        __pass show "$entry" | install --mode="$permissions" --owner="$owner" /dev/stdin "$result_path"
     fi
 }
