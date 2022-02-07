@@ -86,8 +86,7 @@ function ___p_open() {
         processed_args+=("$tmp")
     fi
 
-    __p_exists "$name" >/dev/null 2>&1
-    if (( $? != 0 )); then
+    if ! __p_exists "$name" >/dev/null 2>&1; then
         ___p_ls "$name"
         return 1
     fi
