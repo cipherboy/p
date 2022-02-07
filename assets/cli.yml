@@ -573,7 +573,16 @@ arguments:
         options:
           - name: format
             short: f
-            description: format string for generated password
+            description: |-
+              format string for generated password
+                                    \d: numeric digit (0-9)
+                                    \c: alpha-numeric (a-zA-Z0-9)
+                                    \l: lower-case (a-z)
+                                    \u: UPPER-case (A-Z)
+                                    \w: random word (lower-case)
+                                    \W: random word (UPPER-case)
+                                    \\\\: literal '\'
+                                    (everything else as-is)
             type: String
           - name: random
             short: r
